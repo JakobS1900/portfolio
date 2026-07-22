@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clinical Practice Platform - Jakob S.</title>
+<link rel="stylesheet" href="styles.css">
+<script>(function(){try{var t=localStorage.getItem('jsz-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" href="index.html">jakob<b>.</b>s</a>
+    <nav class="links">
+      <a href="index.html#work" class="here">Selected Work</a>
+      <a href="security.html">Security</a>
+      <a href="index.html#approach">Approach</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <button class="theme-toggle" onclick="toggleTheme()">Theme</button>
+  </div>
+</header>
+
+<main class="wrap-narrow">
+  <div class="article-head">
+    <a class="backlink" href="index.html#work">&larr; Selected Work</a>
+    <div class="eyebrow" style="margin-top:26px">
+      <span class="rule"></span>
+      <span class="readout">Case Study · Client · Healthcare</span>
+    </div>
+    <h1>Clinical Practice Platform</h1>
+    <p class="sub">
+      A booking, notes, and billing platform for a live UK clinic, handling
+      special-category health data under UK GDPR Article 9. That compliance bar
+      set the standard for everything else in the build.
+    </p>
+    <div class="tagrow">
+      <span class="chip">NestJS</span><span class="chip">PostgreSQL</span>
+      <span class="chip">Next.js</span><span class="chip">Expo / React Native</span>
+      <span class="chip">Prisma</span><span class="chip">OpenAPI</span>
+      <span class="chip">Argon2 + TOTP</span>
+    </div>
+    <div class="callout" style="margin-top:30px">
+      <b>This is a capability write-up.</b> The source stays private. There is
+      enough here to judge the engineering and nothing you could lift. A deeper
+      walkthrough happens under an NDA.
+    </div>
+  </div>
+
+  <article class="prose">
+    <h2>The job</h2>
+    <p>
+      The clinic ran the whole business by hand, across three or four
+      disconnected tools: bookings in one place, notes in another, invoices in a
+      spreadsheet, and the accounting typed in twice. The brief was to join that
+      into one system that runs the critical path with no manual hand-offs.
+    </p>
+    <div class="codeblock">book  ->  note  ->  invoice  ->  payment  ->  accounting</div>
+    <p>
+      The hard part is not the CRUD. A clinic deals in health records and money
+      at the same time, so two kinds of mistake are unacceptable: a record that
+      leaks, and a number that is silently wrong. Most of the engineering went
+      into making both impossible rather than merely unlikely.
+    </p>
+
+    <h2>What shaped it</h2>
+    <ul>
+      <li><b>Article 9 data.</b> Clinical notes are special-category personal data. That ruled out anything casual about storage, logging, access, or deletion from the first commit. You design from that constraint, you don't bolt it on later.</li>
+      <li><b>One backend, many faces.</b> Admin web, practitioner web, a client portal, a public booking page, and a mobile app with three separate roles, all sharing one source of truth. The API is the product; the clients are thin.</li>
+      <li><b>A real clinic on the other end.</b> Session packages, dual funding (part funder, part self-pay), room and practitioner availability, recurring appointments. Real rules, not a demo.</li>
+    </ul>
+
+    <h2>What I built</h2>
+    <p>
+      A TypeScript monorepo: a NestJS API, a Next.js web app, an Expo mobile app,
+      and shared packages for the types, the SDK, and the UI, so the same
+      contract drives every client. The API is described by a single OpenAPI
+      contract, and the typed client the web and mobile apps use is generated
+      from it, so the three can never drift apart quietly.
+    </p>
+    <p>
+      The money critical path is built and was verified end to end by driving it
+      over HTTP, not just by unit tests: create a client, book an appointment,
+      write an encrypted note, raise a dual-funding invoice, take a payment, with
+      the accounting export sitting behind it.
+    </p>
+
+    <h2>The parts I am actually proud of</h2>
+    <h3>Safety invariants live in the database, not in a hopeful if-statement</h3>
+    <p>The rules that must never break are enforced where application code can't bypass them:</p>
+    <ul>
+      <li>No double-booking a room or a practitioner, enforced by the database itself rather than a check a race condition can slip past.</li>
+      <li>Money is stored as whole pence, never floats, so the classic rounding cent never appears.</li>
+      <li>An invoice cannot be overpaid, a session cannot be billed twice, and an issued invoice cannot be edited. Each is a hard constraint, not a convention.</li>
+      <li>A session-package cap that genuinely cannot be exceeded, checked at the data layer and again in the UI.</li>
+    </ul>
+
+    <h3>Security that assumes the worst</h3>
+    <p>
+      Passwords hashed with Argon2id. Short-lived access tokens with rotating
+      refresh tokens, and reuse detection that kills a session the moment a
+      stolen token is replayed. Mandatory app-based two-factor for staff,
+      verified end to end. Role-based access checked globally, plus per-record
+      ownership checks, so a valid login still cannot read a record outside its
+      caseload. Clinical notes encrypted per record. Logs run through a redaction
+      allowlist, so patient data never lands in a log line.
+    </p>
+
+    <h3>The dependency supply chain is a gate, not an afterthought</h3>
+    <p>
+      CI fails the build on any new high-severity dependency advisory. The few
+      accepted exceptions are each written down with the reason they are safe in
+      this codebase and the exact condition that will clear them. This is the
+      boring discipline that stops the overnight breach nobody saw coming, and
+      it's the thing a lot of fast-built apps skip entirely.
+    </p>
+
+    <h3>Honesty about what "done" means</h3>
+    <p>
+      The system is built and demoed on seeded fake data. It is deliberately held
+      back from real patient data until a short list of deploy-time items is
+      signed off, transport encryption first. Shipping health data before that
+      list is closed would be the exact mistake this whole project exists to
+      avoid, so it waits. Knowing where that line is, and refusing to cross it
+      early, is part of the job.
+    </p>
+
+    <h2>Outcome</h2>
+    <p>
+      One system that runs the clinic's core workflow with no manual re-keying,
+      built to a compliance bar from the first commit, with the safety and money
+      rules enforced where they cannot quietly fail. The architecture is modular
+      on purpose, so the same hardened core has already seeded a second client
+      build without carrying any of the clinic's data or specifics across.
+    </p>
+
+    <div class="callout">
+      <b>What stays private:</b> the source, the data model, the encryption and
+      authentication implementation, and anything that would let someone rebuild
+      it. This page describes what it does and the decisions behind it. The rest
+      is an NDA conversation.
+    </div>
+  </article>
+
+  <div style="padding:12px 0 72px">
+    <a class="btn" href="index.html#work">&larr; Back to work</a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <h2>Available for engineering roles and select client work.</h2>
+    <div class="meta">
+      <span class="readout">Contact</span><br>
+      <a href="https://github.com/JakobS1900">github.com/JakobS1900</a><br>
+      <a href="mailto:admin@topplelabs.com">admin@topplelabs.com</a><br>
+      <span style="color:var(--ink-faint)">Built with AI. Reviewed by me.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

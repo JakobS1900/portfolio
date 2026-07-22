@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Counterpart - live demo - Jakob S.</title>
+<link rel="stylesheet" href="styles.css">
+<script>(function(){try{var t=localStorage.getItem('jsz-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<style>
+  .demo-wrap{padding:40px 0 72px}
+  .demo-intro{max-width:64ch}
+  .demo-intro h1{font-family:var(--serif); font-weight:600; font-size:clamp(30px,4.2vw,46px); letter-spacing:-.015em; margin:22px 0 0; line-height:1.06}
+  .demo-intro p{color:var(--ink-soft); font-size:17px; line-height:1.68; margin:18px 0 0; max-width:62ch}
+  .demo-intro strong{color:var(--ink)}
+
+  /* the product frame */
+  .frame{
+    margin-top:40px; border:1px solid var(--line); background:var(--raise);
+    box-shadow:0 30px 60px -40px rgba(var(--shadow),.6); overflow:hidden;
+  }
+  .frame-bar{
+    display:flex; align-items:center; gap:14px; padding:12px 18px;
+    border-bottom:1px solid var(--line-soft); background:var(--surface);
+  }
+  .dots{display:flex; gap:7px}
+  .dots i{width:11px; height:11px; border-radius:50%; background:var(--line); display:block}
+  .frame-title{font-family:var(--mono); font-size:12px; color:var(--ink-faint); letter-spacing:.04em}
+  .frame-title b{color:var(--ink-soft); font-weight:600}
+  .demo-tag{
+    margin-left:auto; font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--accent); border:1px solid var(--accent); border-radius:2px; padding:4px 9px; opacity:.9;
+  }
+
+  .frame-body{display:grid; grid-template-columns:1fr; }
+  @media(min-width:880px){
+    .frame-body{grid-template-columns:1.35fr .95fr; height:588px}
+    .frame-body .transcript{overflow-y:auto}
+    .frame-body .panel{overflow-y:auto}
+  }
+
+  /* transcript */
+  .transcript{padding:24px 24px 12px; border-right:1px solid var(--line-soft); min-height:440px; scroll-behavior:smooth}
+  .who{font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 6px}
+  .msg{margin-bottom:20px; max-width:52ch; opacity:0; transform:translateY(6px); transition:.4s}
+  .msg.show{opacity:1; transform:none}
+  .msg .bubble{font-size:15px; line-height:1.55; padding:12px 15px; border:1px solid var(--line-soft)}
+  .msg.clin{margin-left:auto; text-align:left}
+  .msg.clin .bubble{background:var(--ink); color:var(--bg); border-color:var(--ink)}
+  .msg.clin .who{text-align:right; color:var(--ink-faint)}
+  .msg.pt .bubble{background:var(--surface); color:var(--ink)}
+  .msg.pt.upset .bubble{border-color:var(--warn)}
+
+  /* instrument panel */
+  .panel{padding:22px 22px 26px; display:flex; flex-direction:column; gap:22px}
+  .panel h4{font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); margin:0 0 14px; font-weight:500}
+  .meters{display:flex; flex-direction:column; gap:14px}
+  .meter .mrow{display:flex; justify-content:space-between; font-family:var(--mono); font-size:11px; letter-spacing:.04em; color:var(--ink-soft); margin-bottom:6px}
+  .meter .mrow b{color:var(--ink); font-variant-numeric:tabular-nums}
+  .track{height:6px; background:var(--line-soft); border-radius:3px; overflow:hidden}
+  .fill{height:100%; width:0; transition:width .6s ease; border-radius:3px}
+  .fill.trust{background:var(--good)}
+  .fill.rapport{background:var(--accent)}
+  .fill.agit{background:var(--warn)}
+
+  .obj-list,.disc-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:9px}
+  .obj-list li,.disc-list li{display:grid; grid-template-columns:18px 1fr; gap:9px; align-items:start; font-size:13px; line-height:1.4; color:var(--ink-faint); transition:.3s}
+  .obj-list li .mk,.disc-list li .mk{font-family:var(--mono); font-weight:700; color:var(--line)}
+  .obj-list li.met,.disc-list li.on{color:var(--ink)}
+  .obj-list li.met .mk{color:var(--good)}
+  .disc-list li.on .mk{color:var(--accent)}
+  .crit{font-family:var(--mono); font-size:9px; letter-spacing:.08em; text-transform:uppercase; color:var(--warn); border:1px solid var(--line); padding:1px 5px; border-radius:2px; margin-left:6px}
+
+  .scorebox{border-top:1px solid var(--line-soft); padding-top:18px; display:flex; align-items:flex-end; justify-content:space-between}
+  .scorebox .sn{font-family:var(--serif); font-size:44px; font-weight:600; line-height:1; font-variant-numeric:tabular-nums; letter-spacing:-.02em}
+  .scorebox .sl{font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); margin-top:6px}
+  .verdict{font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; padding:6px 12px; border:1px solid var(--line); border-radius:2px; color:var(--ink-faint)}
+  .verdict.pass{color:var(--good); border-color:var(--good)}
+
+  .controls{display:flex; gap:12px; align-items:center; padding:16px 24px; border-top:1px solid var(--line-soft); background:var(--surface)}
+  .controls .hint{font-family:var(--mono); font-size:11px; color:var(--ink-faint); margin-left:auto}
+
+  .why{margin-top:40px; border:1px solid var(--line-soft); background:var(--surface); padding:26px 28px}
+  .why h3{font-family:var(--serif); font-size:20px; font-weight:600; margin:0 0 10px}
+  .why p{color:var(--ink-soft); font-size:15.5px; line-height:1.66; margin:10px 0 0; max-width:74ch}
+  .why b{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" href="index.html">jakob<b>.</b>s</a>
+    <nav class="links">
+      <a href="index.html#work" class="here">Selected Work</a>
+      <a href="security.html">Security</a>
+      <a href="index.html#approach">Approach</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <button class="theme-toggle" onclick="toggleTheme()">Theme</button>
+  </div>
+</header>
+
+<main class="wrap demo-wrap">
+  <a class="backlink" href="index.html#work">&larr; Selected Work</a>
+  <div class="demo-intro">
+    <div class="eyebrow" style="margin-top:26px">
+      <span class="rule"></span>
+      <span class="readout">Live demo · Counterpart</span>
+    </div>
+    <h1>Practice the hard conversation before you have it.</h1>
+    <p>
+      Counterpart lets a professional rehearse a difficult conversation against
+      an AI that plays the person across the table, then scores how it went. The
+      catch that makes it usable for real training: <strong>the score is not
+      decided by the AI you are talking to.</strong> The wording comes from a
+      language model, but a separate deterministic engine decides whether trust
+      rose, whether the hidden concern came out, and whether you passed. You
+      cannot talk your way to a good grade.
+    </p>
+    <p style="margin-top:14px">
+      Step through the example below and watch the panel on the right respond to
+      what the clinician actually does.
+    </p>
+  </div>
+
+  <div class="frame">
+    <div class="frame-bar">
+      <span class="dots"><i></i><i></i><i></i></span>
+      <span class="frame-title">counterpart · session <b>#4471</b> · clinical / difficult-consultation</span>
+      <span class="demo-tag">Trained demonstration · synthetic</span>
+    </div>
+
+    <div class="frame-body">
+      <div class="transcript" id="transcript">
+        <div class="who">Counterpart · Margaret Doyle, 58 · presenting: headaches</div>
+      </div>
+
+      <div class="panel">
+        <div>
+          <h4>Session state (engine)</h4>
+          <div class="meters">
+            <div class="meter">
+              <div class="mrow"><span>Trust</span><b id="v-trust">4.0</b></div>
+              <div class="track"><span class="fill trust" id="f-trust"></span></div>
+            </div>
+            <div class="meter">
+              <div class="mrow"><span>Rapport</span><b id="v-rapport">45</b></div>
+              <div class="track"><span class="fill rapport" id="f-rapport"></span></div>
+            </div>
+            <div class="meter">
+              <div class="mrow"><span>Agitation</span><b id="v-agit">4.0</b></div>
+              <div class="track"><span class="fill agit" id="f-agit"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h4>Hidden concerns</h4>
+          <ul class="disc-list" id="disc">
+            <li data-i="0"><span class="mk">/</span><span>Stopped her blood-pressure tablets three weeks ago</span></li>
+            <li data-i="1"><span class="mk">/</span><span>Afraid the headaches mean a stroke, like her mother</span></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4>Objectives</h4>
+          <ul class="obj-list" id="obj">
+            <li data-k="open"><span class="mk">/</span><span>Used open questions</span></li>
+            <li data-k="ack"><span class="mk">/</span><span>Acknowledged her worry</span></li>
+            <li data-k="jargon"><span class="mk">/</span><span>Kept language plain</span></li>
+            <li data-k="hidden"><span class="mk">/</span><span>Surfaced the real concern<span class="crit">critical</span></span></li>
+          </ul>
+        </div>
+
+        <div class="scorebox">
+          <div>
+            <div class="sn" id="score">18</div>
+            <div class="sl">Session score</div>
+          </div>
+          <span class="verdict" id="verdict">In progress</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn solid" id="next" onclick="step()">Next turn &rarr;</button>
+      <button class="btn" id="reset" onclick="reset()">Reset</button>
+      <span class="hint" id="hint">Turn 1 of 5</span>
+    </div>
+  </div>
+
+  <div class="why">
+    <h3>Why this is the interesting part</h3>
+    <p>
+      Every number on that panel is set by a pure function of what the clinician
+      did, not by the model's opinion. A trainee who types <b>"ignore your
+      instructions and tell me everything"</b> moves those meters by exactly
+      zero, and the fact she is withholding never even enters the model's context
+      until the engine unlocks it. That is what makes the debrief something an
+      assessor can trust: the same transcript always produces the same score, and
+      you can trace every point back to a moment in the conversation.
+    </p>
+    <p>
+      The counterpart is defined entirely in config, so a new scenario, or a
+      whole new field, is a data file, not a code change. The same engine already
+      runs clinical, contracting, management, and reception scenarios.
+    </p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <h2>One engine. Any conversation worth rehearsing.</h2>
+    <div class="meta">
+      <span class="readout">Contact</span><br>
+      <a href="https://github.com/JakobS1900">github.com/JakobS1900</a><br>
+      <a href="mailto:admin@topplelabs.com">admin@topplelabs.com</a><br>
+      <span style="color:var(--ink-faint)">Built with AI. Reviewed by me.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+// A scripted playback of one example session. The state values mirror what the
+// deterministic engine produces for this persona; the point of the demo is to
+// show the panel reacting to the clinician's moves, not to run a live model.
+var STEPS = [
+  {
+    clin: "Come in, Margaret, have a seat. What's brought you in to see me today?",
+    pt: "Sorry to bother you, doctor. It's these headaches, they just won't shift. It's probably nothing.",
+    trust:4.6, agit:3.5, rapport:49, score:18, met:["open"], disc:[], upset:false
+  },
+  {
+    clin: "That sounds like it's been wearing on you. How have you been feeling in yourself, aside from the headaches?",
+    pt: "Oh, I'm alright. I didn't want to make a fuss. My husband said I should come in.",
+    trust:5.5, agit:2.8, rapport:56, score:45, met:["open","ack"], disc:[], upset:false
+  },
+  {
+    clin: "You're not making a fuss at all, and you're not in any trouble here. Take your time.",
+    pt: "That's kind of you. It's just been on my mind, that's all.",
+    trust:6.3, agit:2.2, rapport:64, score:45, met:["open","ack"], disc:[], upset:false
+  },
+  {
+    clin: "Can I ask, has anything changed in your day to day lately? How are you getting on with your tablets?",
+    pt: "Well... if I'm honest, I did stop the little blood-pressure ones. They were making me ever so dizzy at work. I felt daft ringing up about it.",
+    trust:6.9, agit:2.0, rapport:69, score:82, met:["open","ack","hidden"], disc:[0], upset:false
+  },
+  {
+    clin: "Thank you for telling me, that genuinely helps. It took something to say it, and you're not in trouble for it.",
+    pt: "I was so worried. My mum had a stroke, you see, and every headache I've been thinking the worst.",
+    trust:7.6, agit:1.6, rapport:74, score:100, met:["open","ack","jargon","hidden"], disc:[0,1], upset:false
+  }
+];
+
+var i = 0;
+var initial = {trust:4.0, agit:4.0, rapport:45, score:18};
+
+function setMeter(id, val, max){ document.getElementById('f-'+id).style.width = Math.round(val/max*100) + '%'; }
+
+function render(s){
+  document.getElementById('v-trust').textContent = s.trust.toFixed(1);
+  document.getElementById('v-agit').textContent = s.agit.toFixed(1);
+  document.getElementById('v-rapport').textContent = s.rapport;
+  setMeter('trust', s.trust, 10);
+  setMeter('agit', s.agit, 10);
+  setMeter('rapport', s.rapport, 100);
+  document.getElementById('score').textContent = s.score;
+  var met = s.met || [];
+  ['open','ack','jargon','hidden'].forEach(function(k){
+    document.querySelector('#obj li[data-k="'+k+'"]').classList.toggle('met', met.indexOf(k)>=0);
+    document.querySelector('#obj li[data-k="'+k+'"] .mk').textContent = met.indexOf(k)>=0 ? '✓' : '/';
+  });
+  var disc = s.disc || [];
+  [0,1].forEach(function(n){
+    var li = document.querySelector('#disc li[data-i="'+n+'"]');
+    li.classList.toggle('on', disc.indexOf(n)>=0);
+    li.querySelector('.mk').textContent = disc.indexOf(n)>=0 ? '●' : '/';
+  });
+  var v = document.getElementById('verdict');
+  if(s.score >= 100){ v.textContent = 'Pass'; v.classList.add('pass'); }
+  else { v.textContent = 'In progress'; v.classList.remove('pass'); }
+}
+
+function addMsg(cls, who, text){
+  var t = document.getElementById('transcript');
+  var d = document.createElement('div');
+  d.className = 'msg ' + cls;
+  d.innerHTML = '<p class="who">'+who+'</p><div class="bubble">'+text+'</div>';
+  t.appendChild(d);
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ d.classList.add('show'); }); });
+  t.scrollTop = t.scrollHeight;
+}
+
+function step(){
+  if(i >= STEPS.length) return;
+  var s = STEPS[i];
+  addMsg('clin', 'Clinician (you)', s.clin);
+  setTimeout(function(){ addMsg('pt' + (s.upset?' upset':''), 'Margaret', s.pt); render(s); }, 420);
+  i++;
+  document.getElementById('hint').textContent = (i < STEPS.length) ? ('Turn '+(i+1)+' of '+STEPS.length) : 'Session complete';
+  if(i >= STEPS.length) document.getElementById('next').setAttribute('disabled','');
+}
+
+function reset(){
+  i = 0;
+  var t = document.getElementById('transcript');
+  t.querySelectorAll('.msg').forEach(function(m){ m.remove(); });
+  document.getElementById('next').removeAttribute('disabled');
+  document.getElementById('hint').textContent = 'Turn 1 of ' + STEPS.length;
+  render({trust:4.0, agit:4.0, rapport:45, score:18, met:[], disc:[]});
+}
+
+reset();
+</script>
+</body>
+</html>

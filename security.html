@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Security - Jakob S.</title>
+<link rel="stylesheet" href="styles.css">
+<script>(function(){try{var t=localStorage.getItem('jsz-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" href="index.html">jakob<b>.</b>s</a>
+    <nav class="links">
+      <a href="index.html#work">Selected Work</a>
+      <a href="security.html" class="here">Security</a>
+      <a href="index.html#approach">Approach</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <button class="theme-toggle" onclick="toggleTheme()">Theme</button>
+  </div>
+</header>
+
+<main>
+  <section class="hero" style="padding-bottom:40px">
+    <div class="wrap">
+      <a class="backlink" href="index.html">&larr; Back</a>
+      <div class="eyebrow" style="margin-top:28px">
+        <span class="rule"></span>
+        <span class="readout">On Security</span>
+      </div>
+      <h1 class="title" style="max-width:22ch">The AI writes the same code for everyone. Understanding it is the rare part.</h1>
+      <p class="lede">
+        The real risk of building fast, with AI or without, is not that the app
+        won't work. It's that it will work perfectly right up until the morning
+        you find out it has been quietly readable, drainable, or bootable by
+        someone who was never supposed to touch it. Generating that code is easy
+        now. Knowing exactly what it does, and catching what it quietly got
+        wrong, is the part that still takes real experience. That is the part I
+        do. Here is a sample of what I close before I hand anything over.
+      </p>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:64px">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="readout accent">The failure classes</span>
+          <h2 style="margin-top:14px">Same seven mistakes, over and over.</h2>
+        </div>
+        <p>None of these are exotic. They are the boring, common ways a
+          fast-built app gets owned. Boring is exactly why they get skipped.</p>
+      </div>
+
+      <div class="diff" style="grid-template-columns:1fr">
+        <div class="col" style="padding:0">
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">01</span><h3>Secrets in the browser</h3></div>
+            <p class="fc-them"><b>The failure.</b> The database or payment key ends up in the JavaScript bundle the browser downloads. Anyone can open dev tools and read it. This is how a vibe-coded app gets its database drained overnight.</p>
+            <p class="fc-me"><b>How I close it.</b> Secrets live server-side only, scoped to the least they need, and rotated. Nothing sensitive is ever shipped to the client. I check the built bundle, not just the source.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">02</span><h3>Authorization checked in the wrong place</h3></div>
+            <p class="fc-them"><b>The failure.</b> The app hides the "delete" button for non-admins and calls it secure. The API still does the delete for anyone who asks. Every record is readable by every logged-in user.</p>
+            <p class="fc-me"><b>How I close it.</b> Access is enforced at the data layer, where a hand-crafted request can't route around it. Role checks plus per-record ownership, so a valid login still can't reach a record outside its scope.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">03</span><h3>Endpoints with no ceiling</h3></div>
+            <p class="fc-them"><b>The failure.</b> No rate limit, no cost cap. One script hammering a usage-billed endpoint turns your monthly bill into rent, or takes the service down for everyone.</p>
+            <p class="fc-me"><b>How I close it.</b> Rate limiting, lockouts on repeated auth failures, and hard cost ceilings on anything that fans out to a paid API. The abuse case is handled before it's abused.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">04</span><h3>Queries built by gluing strings</h3></div>
+            <p class="fc-them"><b>The failure.</b> User input concatenated straight into a database query. It's the 1998 vulnerability, and AI will generate it fresh in 2026 if nobody is watching.</p>
+            <p class="fc-me"><b>How I close it.</b> Parameterized queries throughout, input validated at the edge, uploads checked by their actual file signature rather than a trusted filename.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">05</span><h3>Auth that only looks like auth</h3></div>
+            <p class="fc-them"><b>The failure.</b> Weak password hashing, no second factor, and sessions that never expire. One phished password owns the whole account forever.</p>
+            <p class="fc-me"><b>How I close it.</b> Modern password hashing, short-lived access tokens with rotating refresh and reuse detection, and real app-based two-factor. I built this for a live clinical platform, so it isn't theoretical.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">06</span><h3>PII leaking into logs</h3></div>
+            <p class="fc-them"><b>The failure.</b> The quickest way to debug is to log the whole request. Now personal data is sitting in plain text in a log file and shipped to a third-party dashboard nobody audited.</p>
+            <p class="fc-me"><b>How I close it.</b> Logs run through a redaction allowlist, so sensitive fields never land in a log line. On regulated data, that's the difference between a bug and a breach notification.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">07</span><h3>A supply chain nobody watches</h3></div>
+            <p class="fc-them"><b>The failure.</b> A few hundred dependencies pulled in and never looked at again. A known-vulnerable package sits there for a year because no one is checking.</p>
+            <p class="fc-me"><b>How I close it.</b> The build fails on any new high-severity advisory. On my clinical platform, every accepted exception is written down with why it's safe here and the exact condition that clears it. That discipline stops the breach nobody saw coming.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="gate">
+        This is the <b>public</b> list. It's the common stuff, the things I'd
+        expect any serious engineer to close. The longer list, the failure modes
+        I've actually found in real code and the specific ways I close them, is
+        the part you're hiring. Some of it stays in the workshop.
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="appr">
+        <div>
+          <span class="readout accent">Why this matters more with AI, not less</span>
+          <h2 style="margin-top:14px">The generation is the easy 80%. The review is the job.</h2>
+          <p style="margin-top:24px; color:var(--ink-soft); font-size:16.5px; line-height:1.7">
+            Everyone can produce working code now. That's precisely why the value
+            moved. When the first draft is free, the whole job is the judgment
+            that comes after: knowing which of these seven the model just quietly
+            introduced, and closing it before it ships. That is a skill the
+            prompt doesn't have and most people skip.
+          </p>
+          <p style="margin-top:16px; color:var(--ink-soft); font-size:16.5px; line-height:1.7">
+            So the honest pitch is this. Hiring someone who works with AI is not
+            the risk. Hiring someone who works with AI and doesn't read the
+            output is. I'm the first kind.
+          </p>
+          <div class="cta-row">
+            <a class="btn solid" href="index.html#work">See the work &rarr;</a>
+            <a class="btn" href="index.html#contact">Get in touch</a>
+          </div>
+        </div>
+        <div class="diagram">
+          <div class="note">// what actually ships</div>
+          <div class="row"><span class="box">AI draft</span><span class="arr">&rarr;</span><span class="box a">human review</span><span class="arr">&rarr;</span><span class="box">ship</span></div>
+          <div class="note" style="margin-top:18px">// the review pass, every time</div>
+          <div class="row"><span class="box">secrets</span><span class="box">authz</span><span class="box">limits</span></div>
+          <div class="row"><span class="box">injection</span><span class="box">sessions</span></div>
+          <div class="row"><span class="box">logs</span><span class="box">deps</span><span class="box a">+ the rest</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="contact">
+  <div class="wrap foot">
+    <h2>The one who reads the output.</h2>
+    <div class="meta">
+      <span class="readout">Contact</span><br>
+      <a href="https://github.com/JakobS1900">github.com/JakobS1900</a><br>
+      <a href="mailto:admin@topplelabs.com">admin@topplelabs.com</a><br>
+      <span style="color:var(--ink-faint)">Built with AI. Reviewed by me.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

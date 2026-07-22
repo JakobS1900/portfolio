@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jakob S. - Systems and AI Engineering</title>
+<link rel="stylesheet" href="styles.css">
+<script>(function(){try{var t=localStorage.getItem('jsz-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <div class="mark">jakob<b>.</b>s</div>
+    <nav class="links">
+      <a href="#difference">The Difference</a>
+      <a href="#work">Selected Work</a>
+      <a href="security.html">Security</a>
+      <a href="#approach">Approach</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="theme-toggle" onclick="toggleTheme()">Theme</button>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="hero-lead">
+          <div class="eyebrow">
+            <span class="rule"></span>
+            <span class="readout">Systems &amp; AI Engineering · Available for work</span>
+          </div>
+          <h1 class="title">I build production software <em>with AI</em>, and you can't tell.</h1>
+          <p class="lede">
+            Anyone can generate a working prototype now. Very few can ship something
+            that holds up in production, doesn't leak, and doesn't <strong>look</strong>
+            like it was generated. I'm on the second list. I use AI as an instrument,
+            not a crutch. The judgment is mine.
+          </p>
+          <div class="cta-row">
+            <a class="btn solid" href="#work">View selected work →</a>
+            <a class="btn" href="#difference">Why not just hire a vibe coder?</a>
+          </div>
+        </div>
+
+        <aside class="plate" aria-label="Status">
+          <div class="plate-top">
+            <span class="readout">Currently</span>
+            <span class="pulse"><i></i>Available</span>
+          </div>
+          <dl class="plate-rows">
+            <div><dt>Role</dt><dd>Open to offers</dd></div>
+            <div><dt>Based</dt><dd>United Kingdom</dd></div>
+            <div><dt>Stack</dt><dd>TypeScript · Python · Rust</dd></div>
+            <div><dt>Focus</dt><dd>AI systems · app security</dd></div>
+            <div><dt>Notice</dt><dd>Immediate</dd></div>
+          </dl>
+          <div class="plate-foot">// reviewed by a human before it ships</div>
+        </aside>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="n">19</div><div class="l">Shipped repositories</div></div>
+        <div class="stat"><div class="n">4</div><div class="l">Production client builds</div></div>
+        <div class="stat"><div class="n">15k+</div><div class="l">Lines · one engine, tested</div></div>
+        <div class="stat"><div class="n">GDPR</div><div class="l">Art. 9 health-data platform</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="difference">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="readout accent">01 · The Difference</span>
+          <h2 style="margin-top:14px">Jerry off the street builds you a website.<br>Then leaks your database.</h2>
+        </div>
+        <p>The AI wrote the same code for both of us. The difference is that one
+          of us understands what it actually does. Here's a sample of what I
+          check before anything ships. It's the list I show. There's a longer
+          one I don't.</p>
+      </div>
+
+      <div class="diff">
+        <div class="col them">
+          <h3><span class="dot"></span> The vibe-coded build</h3>
+          <ul class="checks">
+            <li><span class="sym">✕</span><div><b>API keys shipped to the browser.</b><small>Supabase / Stripe secret sitting in the JS bundle. Drained overnight.</small></div></li>
+            <li><span class="sym">✕</span><div><b>Every row readable by every user.</b><small>Row-level security never turned on; auth "checked" on the client.</small></div></li>
+            <li><span class="sym">✕</span><div><b>Endpoints with no rate limit.</b><small>One script turns your usage-based bill into rent.</small></div></li>
+            <li><span class="sym">✕</span><div><b>String-built SQL.</b><small>The 1998 vulnerability, generated fresh in 2026.</small></div></li>
+            <li><span class="sym">✕</span><div><b>Auth with no second factor, sessions that never expire.</b><small>One phished password owns the whole account.</small></div></li>
+          </ul>
+        </div>
+        <div class="col me">
+          <h3><span class="dot"></span> How I hand it over</h3>
+          <ul class="checks">
+            <li><span class="sym">✓</span><div><b>Secrets server-side, scoped, rotated.</b><small>Nothing sensitive ever reaches the client bundle.</small></div></li>
+            <li><span class="sym">✓</span><div><b>Authorization enforced at the data layer.</b><small>RLS / policy checks the client can't talk its way past.</small></div></li>
+            <li><span class="sym">✓</span><div><b>Rate limiting, input validation, cost ceilings.</b><small>The abuse cases handled before they're abused.</small></div></li>
+            <li><span class="sym">✓</span><div><b>Parameterized queries, pinned dependencies.</b><small>No injection surface, no surprise supply-chain swap.</small></div></li>
+            <li><span class="sym">✓</span><div><b>Real 2FA, expiring sessions, audited access.</b><small>Built one for a live clinical platform. It's not theoretical.</small></div></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="gate">
+        This is the <b>public</b> checklist. The full one is the part you're
+        actually hiring: the failure modes I've found in real audits, and the
+        ways I close them. Some things stay in the workshop.
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="work">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="readout accent">02 · Selected Work</span>
+          <h2 style="margin-top:14px">Real systems. Shipped, or shippable.</h2>
+        </div>
+        <p>A sample. Private and client work is shown at the capability level.
+          Enough to judge the engineering, nothing you could lift.</p>
+      </div>
+
+      <div class="work">
+        <a class="card" href="counterpart.html">
+          <span class="idx">A/01</span>
+          <div class="kind">Platform · Live</div>
+          <h3>Counterpart</h3>
+          <p>A conversation-rehearsal platform: professionals practice hard
+            conversations against AI counterparts: patients, clients, staff.
+            The scoring is deterministic and can't be talked into a pass; the
+            AI supplies wording only, the math decides outcomes.</p>
+          <div class="stack">
+            <span class="chip">Python</span><span class="chip">Next.js</span>
+            <span class="chip">Local LLM</span><span class="chip">Prisma</span>
+            <span class="chip">Pydantic</span>
+          </div>
+          <span class="lock">Try the live demo &rarr;</span>
+        </a>
+
+        <a class="card" href="clinical-platform.html">
+          <span class="idx">A/02</span>
+          <div class="kind">Client · Healthcare</div>
+          <h3>Clinical Practice Platform</h3>
+          <p>Booking and patient management for a live clinic. UK GDPR Article 9
+            (special-category health data), custom two-factor authentication,
+            role-scoped access, full audit trail. Modular by design, so the
+            structure repurposes cleanly across client builds.</p>
+          <div class="stack">
+            <span class="chip">NestJS</span><span class="chip">PostgreSQL</span>
+            <span class="chip">Next.js</span><span class="chip">2FA</span>
+          </div>
+          <span class="lock">Read the case study &rarr;</span>
+        </a>
+
+        <article class="card">
+          <span class="idx">A/03</span>
+          <div class="kind">Engine · Research</div>
+          <h3>Distributed Persona Engine</h3>
+          <p>A live multi-agent simulation: many AI personas with persistent
+            identity and autonomous behavior, each defined as pure config, not
+            code. Runs on consumer hardware via a two-stage inference split.
+            A light vision model captions locally while a stronger text model
+            reasons behind a tunnel.</p>
+          <div class="stack">
+            <span class="chip">Python</span><span class="chip">Multi-agent</span>
+            <span class="chip">Distributed inference</span><span class="chip">LM Studio</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <span class="idx">A/04</span>
+          <div class="kind">Client · Ordering</div>
+          <h3>Merchant Ordering System</h3>
+          <p>A three-role ordering platform (admin, worker, client) built on a
+            reusable authentication and control-panel core. Scaffolded from an
+            in-house starter so a new client build starts hardened, not from
+            scratch.</p>
+          <div class="stack">
+            <span class="chip">NestJS</span><span class="chip">Next.js</span>
+            <span class="chip">RBAC</span><span class="chip">TypeScript</span>
+          </div>
+          <span class="lock">Private · client build</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="approach">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="readout accent">03 · Approach</span>
+          <h2 style="margin-top:14px">AI-native. Not AI-dependent.</h2>
+        </div>
+      </div>
+      <div class="appr">
+        <div>
+          <p>The reason my work doesn't read as generated is that I treat the
+            model as a fast junior who needs supervision, not an oracle. It
+            drafts; <strong>I decide</strong>. Architecture, security boundaries,
+            the tradeoffs that don't show up until month three. Those are
+            judgment calls, and judgment is the thing that doesn't come in a
+            prompt.</p>
+          <p>It also means I engineer around real constraints instead of
+            throwing money at them. On the persona engine I was out of GPU, so I
+            <strong>split the pipeline across two machines</strong>: a small
+            vision model captions images cheaply on the desktop, and a stronger
+            model reasons over the captions from behind a tunnel, with requests
+            round-robined across hosts to spread the load. That's the
+            instinct a company is really buying: making good engineering fit the
+            budget in front of it.</p>
+        </div>
+        <div class="diagram">
+          <div class="note">// two-stage local inference</div>
+          <div class="row"><span class="box">image</span><span class="arr">→</span><span class="box a">vision · desktop</span></div>
+          <div class="row" style="padding-left:0"><span class="note">caption text ↓</span></div>
+          <div class="row"><span class="box a">text brain · tunnel</span><span class="arr">→</span><span class="box">reply</span></div>
+          <div class="note" style="margin-top:14px">// hosts round-robined, load split 2-3x</div>
+          <div class="row"><span class="box">host A</span><span class="box">host B</span><span class="box">host C</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="contact">
+  <div class="wrap foot">
+    <h2>Available for engineering roles and select client work.</h2>
+    <div class="meta">
+      <span class="readout">Contact</span><br>
+      <a href="#">github.com/JakobS1900</a><br>
+      <a href="#">admin@topplelabs.com</a><br>
+      <span style="color:var(--ink-faint)">Built with AI. Reviewed by me.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
