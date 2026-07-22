@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  :root{
+    --bg:#0f1417; --surface:#161c1f; --ink:#e8ebe8; --ink-soft:#9aa3a0;
+    --ink-faint:#69726f; --line:#26302f; --accent:#d69a4c;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --mono:"Cascadia Code",Consolas,Menlo,monospace;
+  }
+  *{margin:0; box-sizing:border-box}
+  body{width:1200px; height:630px; background:var(--bg); color:var(--ink);
+    font-family:system-ui,Arial,sans-serif; overflow:hidden; position:relative}
+  .grid{position:absolute; inset:0;
+    background-image:linear-gradient(#1c2427 1px,transparent 1px),linear-gradient(90deg,#1c2427 1px,transparent 1px);
+    background-size:60px 60px;
+    -webkit-mask-image:radial-gradient(120% 90% at 12% 0%,#000,transparent 66%);
+    mask-image:radial-gradient(120% 90% at 12% 0%,#000,transparent 66%); opacity:.55}
+  .pad{position:relative; padding:84px 90px; height:100%; display:flex; flex-direction:column}
+  .top{display:flex; align-items:center; gap:16px}
+  .rule{height:1px; width:60px; background:var(--accent)}
+  .eyebrow{font-family:var(--mono); font-size:19px; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-faint)}
+  h1{font-family:var(--serif); font-weight:600; font-size:82px; line-height:1.03; letter-spacing:-.015em; margin-top:52px; max-width:19ch}
+  h1 em{font-style:italic; color:var(--accent)}
+  .foot{margin-top:auto; display:flex; align-items:flex-end; justify-content:space-between}
+  .mark{font-family:var(--mono); font-size:26px; font-weight:600}
+  .mark b{color:var(--accent)}
+  .foot .r{font-family:var(--mono); font-size:19px; color:var(--ink-faint); text-align:right; line-height:1.8}
+  .foot .r b{color:var(--ink-soft); font-weight:500}
+</style>
+</head>
+<body>
+  <div class="grid"></div>
+  <div class="pad">
+    <div class="top"><span class="rule"></span><span class="eyebrow">Systems &amp; AI Engineering</span></div>
+    <h1>I build production software <em>with AI</em>, and you can't tell.</h1>
+    <div class="foot">
+      <div class="mark">jakob<b>.</b>s</div>
+      <div class="r"><b>github.com/JakobS1900</b><br>security · systems · shipped, not slop</div>
+    </div>
+  </div>
+</body>
+</html>

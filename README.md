@@ -1,4 +1,4 @@
-# Jakob S. — Portfolio
+# Jakob S. - Portfolio
 
 A portfolio site for a systems and AI engineer. Static, no build step, no
 dependencies. Open `index.html` and it runs.
