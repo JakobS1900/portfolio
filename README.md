@@ -3,6 +3,8 @@
 A portfolio site for a systems and AI engineer. Static, no build step, no
 dependencies. Open `index.html` and it runs.
 
+**Live site: [jakobs1900.github.io/portfolio](https://jakobs1900.github.io/portfolio/)**
+
 ## Pages
 
 | Page | What it is |
@@ -38,5 +40,6 @@ happen under an NDA.
 
 ## Contact
 
+- Live site: [jakobs1900.github.io/portfolio](https://jakobs1900.github.io/portfolio/)
 - GitHub: [github.com/JakobS1900](https://github.com/JakobS1900)
-- Email: admin@topplelabs.com
+- Email: jakob.stanfield@ras-software.com
