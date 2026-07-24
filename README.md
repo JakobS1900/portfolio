@@ -11,6 +11,7 @@ dependencies. Open `index.html` and it runs.
 | `security.html` | The security argument, seven failure classes and how I close them |
 | `clinical-platform.html` | Case study: a live UK clinic platform (capability write-up, source private) |
 | `counterpart.html` | An interactive demo of Counterpart, a conversation-training platform |
+| `persona-engine.html` | Case study: a multi-agent AI simulation on consumer hardware |
 
 ## Design
 

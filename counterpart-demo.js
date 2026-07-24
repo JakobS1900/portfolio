@@ -18,7 +18,7 @@
   // off and the canned banks run, so the demo works everywhere.
   var LIVE = {
     base: "http://localhost:1234/v1",
-    model: "meta-llama-3.1-8b-instruct-abliterated",
+    model: "local-model", // replaced by whatever the local server reports
     available: false,
     on: false
   };
@@ -210,6 +210,7 @@
   var over = false;
   var history = []; // {role, content} for live-mode continuity
   var busy = false;
+  var session = 0; // bumped on scenario switch so a stale reply can't land
 
   function el(id) {
     return document.getElementById(id);
@@ -252,8 +253,8 @@
     txt = txt.replace(/<think>[\s\S]*?<\/think>/gi, "");
     txt = txt.replace(/^["'\s]+|["'\s]+$/g, "");
     // keep it to a couple of sentences even if the model runs long
-    var parts = txt.split(/(?<=[.!?])\s+/);
-    if (parts.length > 3) txt = parts.slice(0, 3).join(" ");
+    var parts = txt.match(/[^.!?]+[.!?]+|[^.!?]+$/g);
+    if (parts && parts.length > 3) txt = parts.slice(0, 3).join(" ").replace(/\s+/g, " ");
     return txt.trim();
   }
 
@@ -314,6 +315,7 @@
       .then(function (d) {
         if (d && d.data && d.data.length) {
           LIVE.available = true;
+          if (d.data[0].id) LIVE.model = d.data[0].id;
           var wrap = el("live-wrap");
           if (wrap) wrap.style.display = "inline-flex";
         }
@@ -336,6 +338,8 @@
     state = E.initialState(scenario);
     over = false;
     history = [];
+    busy = false;
+    session++;
 
     Array.prototype.forEach.call(document.querySelectorAll("#scenario-tabs .tab"), function (t) {
       t.classList.toggle("on", t.getAttribute("data-k") === key);
@@ -388,7 +392,15 @@
     var t = el("transcript");
     var d = document.createElement("div");
     d.className = "msg " + cls;
-    d.innerHTML = '<p class="who">' + who + '</p><div class="bubble">' + text + "</div>";
+    // textContent, never innerHTML: in live mode this text comes from a model
+    var w = document.createElement("p");
+    w.className = "who";
+    w.textContent = who;
+    var b = document.createElement("div");
+    b.className = "bubble";
+    b.textContent = text;
+    d.appendChild(w);
+    d.appendChild(b);
     t.appendChild(d);
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
@@ -405,6 +417,7 @@
 
   function playMove(i) {
     if (over || busy) return;
+    busy = true; // one move at a time, canned or live
     var move = scenario.moves[i];
     addMsg("clin", scenario.you, cap(move.label));
     history.push({ role: "user", content: "[The professional chooses to: " + move.label + "]" });
@@ -412,8 +425,10 @@
     var next = E.advance(scenario, state, move.sig);
     state = next;
     var upset = next.agitation >= 6 ? " upset" : "";
+    var mySession = session;
 
     function show(text) {
+      if (mySession !== session) return; // scenario changed underneath us
       history.push({ role: "assistant", content: text });
       addMsg("pt" + upset, scenario.name, text);
       render();
@@ -422,7 +437,6 @@
     }
 
     if (LIVE.on && LIVE.available) {
-      busy = true;
       var typing = addTyping();
       generateLive(next, next.justUnlocked)
         .then(function (text) {
