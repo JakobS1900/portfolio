@@ -113,6 +113,21 @@
   .debrief-list li.met .mk{color:var(--good)} .debrief-list li.miss .mk{color:var(--warn)}
   .debrief-foot{padding:16px 26px; border-top:1px solid var(--line-soft)}
 
+  .src{margin-top:22px; border:1px solid var(--line); background:var(--raise)}
+  .src-head{padding:18px 24px 0}
+  .src-head h3{font-family:var(--serif); font-size:20px; font-weight:600; margin:0}
+  .src-head p{color:var(--ink-soft); font-size:15.5px; line-height:1.6; margin:10px 0 0; max-width:72ch}
+  .src-list{margin:18px 0 0; padding:0; list-style:none; border-top:1px solid var(--line-soft)}
+  .src-list li{border-bottom:1px solid var(--line-soft)}
+  .src-list li:last-child{border-bottom:0}
+  .src-list a{display:block; padding:16px 24px; text-decoration:none; transition:.15s}
+  .src-list a:hover{background:var(--surface)}
+  .src-file{font-family:var(--mono); font-size:13px; color:var(--accent); display:flex; align-items:baseline; gap:10px; flex-wrap:wrap}
+  .src-file .lines{color:var(--ink-faint); font-size:11px; letter-spacing:.06em; text-transform:uppercase}
+  .src-list p{margin:6px 0 0; color:var(--ink-soft); font-size:14.5px; line-height:1.55; max-width:70ch}
+  .src-foot{padding:16px 24px; border-top:1px solid var(--line-soft); background:var(--surface);
+    font-family:var(--mono); font-size:12px; color:var(--ink-faint); line-height:1.7}
+
   .why{margin-top:40px; border:1px solid var(--line-soft); background:var(--surface); padding:26px 28px}
   .why h3{font-family:var(--serif); font-size:20px; font-weight:600; margin:0 0 10px}
   .why p{color:var(--ink-soft); font-size:15.5px; line-height:1.66; margin:10px 0 0; max-width:74ch}
@@ -241,6 +256,53 @@
       whole new field, is a data file, not a code change. Every tab above runs
       on the same engine.
     </p>
+  </div>
+
+  <div class="src">
+    <div class="src-head">
+      <h3>Read it yourself</h3>
+      <p>
+        The demo you just used is not a mockup of the engine, it is the engine,
+        ported to the browser so it runs with no server. The source is in this
+        site's repository and you can read all of it. Three files, no build step
+        and no framework. Start with the two constants at the top of the first
+        one, because the rest follows from them.
+      </p>
+    </div>
+    <ul class="src-list">
+      <li>
+        <a href="https://github.com/JakobS1900/portfolio/blob/main/counterpart-engine.js">
+          <span class="src-file">counterpart-engine.js <span class="lines">about 200 lines</span></span>
+          <p>The whole integrity argument. One turn can move a trait by at most
+            1.5 and resistance by at most 12, so no single input can swing the
+            result however it is worded. A disclosure needs the right topic and
+            enough earned rapport, which is why asking the perfect question too
+            early is supposed to fail. Every function is pure: same state and
+            same signal, same answer, every time.</p>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/JakobS1900/portfolio/blob/main/counterpart-signals.js">
+          <span class="src-file">counterpart-signals.js <span class="lines">the narrow gate</span></span>
+          <p>Everything you type has to squeeze through this into a handful of
+            booleans and a topic string. That is the reason the injection line
+            does nothing: there is no field on the signal for it to land in.
+            In production a local model does this annotation instead, and the
+            engine still receives nothing wider.</p>
+        </a>
+      </li>
+      <li>
+        <a href="https://github.com/JakobS1900/portfolio/blob/main/counterpart-demo.js">
+          <span class="src-file">counterpart-demo.js <span class="lines">scenarios + controller</span></span>
+          <p>The five scenarios as plain data, and the glue that renders them.
+            Adding a sixth field means adding an object here. No engine change,
+            which is the claim above made checkable.</p>
+        </a>
+      </li>
+    </ul>
+    <div class="src-foot">
+      // the Python core these mirror, and the personas, stay private
+    </div>
   </div>
 </main>
 

@@ -14,6 +14,23 @@ dependencies. Open `index.html` and it runs.
 | `clinical-platform.html` | Case study: a live UK clinic platform (capability write-up, source private) |
 | `counterpart.html` | An interactive demo of Counterpart, a conversation-training platform |
 | `persona-engine.html` | Case study: a multi-agent AI simulation on consumer hardware |
+| `resume.html` | Resume, and the print stylesheet that turns it into the CV |
+
+## The Counterpart engine is in here, and you can read it
+
+`counterpart.html` is not a mockup. The deterministic core that scores the
+conversation runs client-side, and the source is in this repo:
+
+| File | What to look for |
+|---|---|
+| `counterpart-engine.js` | The integrity argument. A turn can move a trait by at most 1.5 and resistance by at most 12, so no single input can swing the result however it is phrased. A hidden fact needs the right topic **and** enough earned rapport, so asking the perfect question too early is meant to fail. Every function is pure. |
+| `counterpart-signals.js` | The narrow gate. Whatever a user types is reduced to a few booleans and a topic string before the engine sees it. That is why a prompt-injection line does nothing: there is no field for it to land in. |
+| `counterpart-demo.js` | The scenarios as plain data. A new vertical is an object here, not an engine change. |
+
+In production a local language model does the annotation and writes the
+counterpart's replies, and the engine still receives nothing wider than that
+same bounded signal. The Python core these mirror, and the personas, are
+private.
 
 ## Design
 
