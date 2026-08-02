@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jakobs1900.github.io/portfolio/sitemap.xml

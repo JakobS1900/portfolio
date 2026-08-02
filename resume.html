@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Resume - Jakob Stanfield</title>
+<link rel="stylesheet" href="styles.css">
+<meta name="description" content="Resume for Jakob Stanfield, systems and AI engineer. Production software with AI, built with a focus on security, safety, and things that hold up under load.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Resume - Jakob Stanfield">
+<meta property="og:description" content="Resume for Jakob Stanfield, systems and AI engineer. Production software with AI, built with a focus on security, safety, and things that hold up under load.">
+<meta property="og:url" content="https://jakobs1900.github.io/portfolio/resume.html">
+<meta property="og:image" content="https://jakobs1900.github.io/portfolio/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>(function(){try{var t=localStorage.getItem('jsz-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<style>
+/* Resume-specific layout. Everything else comes from styles.css. */
+.cv-grid{display:grid; grid-template-columns:1fr; gap:40px; padding:8px 0 24px}
+@media(min-width:900px){.cv-grid{grid-template-columns:1fr 300px; gap:52px; align-items:start}}
+.cv-entry{margin:26px 0 0; padding-top:26px; border-top:1px solid var(--line-soft)}
+.cv-entry:first-of-type{border-top:0; padding-top:0}
+.cv-entry-head{display:flex; align-items:baseline; justify-content:space-between; gap:16px; flex-wrap:wrap}
+.cv-entry-head h3{margin:0}
+.cv-role{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); white-space:nowrap}
+.cv-side .plate{margin-top:0}
+.cv-side .stack{margin-top:0}
+.cv-side-block{margin-top:22px}
+.cv-side-block .readout{display:block; margin-bottom:12px}
+
+/* Print: strip the site furniture so the page prints as a CV document. */
+@media print{
+  :root{
+    --bg:#fff; --surface:#fff; --raise:#fff;
+    --ink:#000; --ink-soft:#222; --ink-faint:#555;
+    --line:#bbb; --line-soft:#ddd; --accent:#7a4a15;
+  }
+  header.bar,footer,.menu-btn,.mobile-menu,.backlink,.cv-noprint{display:none !important}
+  body{font-size:11pt; line-height:1.42; background:#fff; color:#000}
+  .wrap,.wrap-narrow{max-width:none; padding:0}
+  main{padding:0}
+  .article-head{padding:0}
+  .article-head h1{font-size:24pt; margin:0}
+  .article-head .sub{font-size:11pt; margin-top:8px; max-width:none}
+  .cv-grid{display:block; padding:0}
+  .cv-side{margin-top:16px; break-inside:avoid}
+  .cv-side .plate{border:1px solid #bbb}
+  .prose h2{font-size:13pt; margin:16pt 0 0; break-after:avoid}
+  .prose h3{font-size:11.5pt; break-after:avoid}
+  .prose p,.prose ul{font-size:10.5pt; margin-top:6px; max-width:none}
+  .prose ul li{margin:5px 0}
+  .cv-entry{break-inside:avoid; margin-top:14px; padding-top:14px}
+  .callout{break-inside:avoid; padding:10px 14px; font-size:10pt}
+  a{text-decoration:none}
+  @page{margin:14mm}
+}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" href="index.html">jakob<b>.</b>s</a>
+    <nav class="links">
+      <a href="index.html#work">Selected Work</a>
+      <a href="security.html">Security</a>
+      <a href="resume.html" class="here">Resume</a>
+      <a href="index.html#approach">Approach</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <button class="theme-toggle" onclick="toggleTheme()">Theme</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="article-head">
+    <a class="backlink" href="index.html">&larr; Home</a>
+    <div class="eyebrow" style="margin-top:26px">
+      <span class="rule"></span>
+      <span class="readout">Resume · Systems &amp; AI Engineering</span>
+    </div>
+    <h1>Jakob Stanfield</h1>
+    <p class="sub">
+      I build production software with AI and ship it so you can't tell. The
+      model drafts; I decide the architecture, the security boundaries, and the
+      tradeoffs that only show up in month three.
+    </p>
+    <p class="cv-noprint" style="margin-top:22px">
+      <a class="btn" href="javascript:window.print()">Save as PDF</a>
+    </p>
+  </div>
+
+  <div class="cv-grid">
+    <article class="prose">
+
+      <h2>Selected work</h2>
+
+      <div class="cv-entry">
+        <div class="cv-entry-head">
+          <h3>Clinical practice platform</h3>
+          <span class="cv-role">Client build · Healthcare</span>
+        </div>
+        <p>
+          Booking, clinical notes, invoicing, and payments for a live UK clinic,
+          handling special-category health data under UK GDPR Article 9. One
+          NestJS API behind an admin web app, a practitioner view, a client
+          portal, and a React Native mobile app, all driven from a single
+          OpenAPI contract so the clients cannot drift from the server.
+        </p>
+        <ul>
+          <li>Safety rules enforced as database constraints rather than application checks: no double-booked room or practitioner, no overpaid invoice, no twice-billed session, no editable issued invoice.</li>
+          <li>Money stored as whole pence, so the rounding error never happens.</li>
+          <li>Argon2id hashing, short-lived access tokens with rotating refresh tokens and replay detection, mandatory app-based two-factor for staff, per-record encryption on clinical notes, and a log redaction allowlist.</li>
+          <li>CI fails the build on any new high-severity dependency advisory, with each accepted exception written down alongside the condition that clears it.</li>
+        </ul>
+        <div class="stack" style="margin-top:14px">
+          <span class="chip">NestJS</span><span class="chip">PostgreSQL</span>
+          <span class="chip">Next.js</span><span class="chip">React Native</span>
+          <span class="chip">Prisma</span><span class="chip">OpenAPI</span>
+        </div>
+      </div>
+
+      <div class="cv-entry">
+        <div class="cv-entry-head">
+          <h3>Counterpart</h3>
+          <span class="cv-role">Product · AI simulation</span>
+        </div>
+        <p>
+          A conversation-rehearsal platform where professionals practice hard
+          conversations against an AI counterpart. The design decision that makes
+          it work: a deterministic engine owns every outcome, and the language
+          model supplies wording only. Per-turn changes to trust and agitation
+          are clamped, so a trainee cannot prompt-inject a passing grade, and
+          facts the counterpart is withholding never enter the model context
+          until the engine unlocks them. That makes the debrief auditable.
+        </p>
+        <ul>
+          <li>Personas are pure YAML config, so a new scenario or a whole new field is a data file rather than a code change. Five verticals run on one engine.</li>
+          <li>Runs fully local against LM Studio, which is the privacy argument for clinical and regulated buyers.</li>
+          <li>Test suite covers the integrity property directly, not just the happy path.</li>
+        </ul>
+        <div class="stack" style="margin-top:14px">
+          <span class="chip">Python</span><span class="chip">Pydantic</span>
+          <span class="chip">Local LLM</span><span class="chip">Vanilla JS</span>
+        </div>
+      </div>
+
+      <div class="cv-entry">
+        <div class="cv-entry-head">
+          <h3>Distributed persona engine</h3>
+          <span class="cv-role">Research · Multi-agent</span>
+        </div>
+        <p>
+          A multi-agent simulation running many AI personas with persistent
+          identity and autonomous behaviour on consumer hardware. I was out of
+          GPU, so I split the pipeline in two: a small vision model captions
+          images locally while a stronger text model reasons over the caption
+          from behind a tunnel, with requests round-robined across hosts. Good
+          engineering made to fit the budget in front of it.
+        </p>
+        <div class="stack" style="margin-top:14px">
+          <span class="chip">Python</span><span class="chip">Multi-agent</span>
+          <span class="chip">Distributed inference</span><span class="chip">LM Studio</span>
+        </div>
+      </div>
+
+      <div class="cv-entry">
+        <div class="cv-entry-head">
+          <h3>Merchant ordering system</h3>
+          <span class="cv-role">Client build · Ordering</span>
+        </div>
+        <p>
+          A three-role ordering platform covering admin, worker, and client,
+          scaffolded from an in-house authentication and control-panel core so a
+          new client build starts hardened rather than starting from scratch.
+        </p>
+        <div class="stack" style="margin-top:14px">
+          <span class="chip">NestJS</span><span class="chip">Next.js</span>
+          <span class="chip">RBAC</span><span class="chip">TypeScript</span>
+        </div>
+      </div>
+
+      <h2>How I work</h2>
+      <p>
+        AI-native, not AI-dependent. I treat the model as a fast junior who needs
+        supervision, not an oracle. It drafts, I read every line, and I close
+        what it quietly gets wrong. Hiring someone who works with AI is not the
+        risk. Hiring someone who works with AI and does not read the output is.
+      </p>
+      <p>
+        In practice that means the same set of checks runs before anything ships:
+        secrets stay server-side and scoped, authorization is enforced at the
+        data layer where the client cannot talk its way past it, endpoints carry
+        rate limits and cost ceilings, queries are parameterized, dependencies
+        are pinned and audited in CI, and sessions expire. Most of these are the
+        failure modes that generated code produces by default.
+      </p>
+
+      <div class="callout">
+        <b>On private work.</b> The clinical platform and the client builds are
+        described here at the capability level. The source stays private. A
+        deeper walkthrough happens under an NDA.
+      </div>
+
+    </article>
+
+    <aside class="cv-side">
+      <div class="plate">
+        <div class="plate-top">
+          <span class="readout">Currently</span>
+          <span class="pulse"><i></i>Available</span>
+        </div>
+        <dl class="plate-rows">
+          <div><dt>Role</dt><dd>Open to offers</dd></div>
+          <div><dt>Based</dt><dd>United Kingdom</dd></div>
+          <div><dt>Focus</dt><dd>AI systems · app security</dd></div>
+          <div><dt>Notice</dt><dd>Immediate</dd></div>
+        </dl>
+        <div class="plate-foot">// reviewed by a human before it ships</div>
+      </div>
+
+      <div class="cv-side-block">
+        <span class="readout accent">Languages</span>
+        <div class="stack">
+          <span class="chip">TypeScript</span><span class="chip">Python</span>
+          <span class="chip">Rust</span><span class="chip">Kotlin</span>
+          <span class="chip">SQL</span>
+        </div>
+      </div>
+
+      <div class="cv-side-block">
+        <span class="readout accent">Platform</span>
+        <div class="stack">
+          <span class="chip">NestJS</span><span class="chip">Next.js</span>
+          <span class="chip">React Native</span><span class="chip">PostgreSQL</span>
+          <span class="chip">Prisma</span><span class="chip">Docker</span>
+          <span class="chip">GitHub Actions</span>
+        </div>
+      </div>
+
+      <div class="cv-side-block">
+        <span class="readout accent">AI systems</span>
+        <div class="stack">
+          <span class="chip">Local inference</span><span class="chip">LM Studio</span>
+          <span class="chip">Multi-agent</span><span class="chip">Whisper</span>
+          <span class="chip">Prompt-injection defence</span>
+        </div>
+      </div>
+
+      <div class="cv-side-block">
+        <span class="readout accent">Security practice</span>
+        <div class="stack">
+          <span class="chip">Argon2id</span><span class="chip">TOTP 2FA</span>
+          <span class="chip">Token rotation</span><span class="chip">RBAC</span>
+          <span class="chip">GDPR Art. 9</span><span class="chip">Dependency audit gates</span>
+        </div>
+      </div>
+
+      <div class="cv-side-block">
+        <span class="readout accent">Contact</span>
+        <div style="font-family:var(--mono); font-size:12px; line-height:2; color:var(--ink-soft)">
+          <a href="mailto:jakob.stanfield@ras-software.com" style="text-decoration:none">jakob.stanfield@ras-software.com</a><br>
+          <a href="https://github.com/JakobS1900" style="text-decoration:none">github.com/JakobS1900</a><br>
+          <a href="https://jakobs1900.github.io/portfolio/" style="text-decoration:none">jakobs1900.github.io/portfolio</a>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="cv-noprint" style="padding:12px 0 72px">
+    <a class="btn" href="index.html#work">&larr; Back to work</a>
+  </div>
+</main>
+
+<footer id="contact">
+  <div class="wrap foot">
+    <h2>Available for engineering roles and select client work.</h2>
+    <div class="meta">
+      <span class="readout">Contact</span><br>
+      <a href="https://github.com/JakobS1900">github.com/JakobS1900</a><br>
+      <a href="https://www.linkedin.com/in/jakob-stanfield-65a4b85a/">linkedin.com/in/jakob-stanfield</a><br>
+      <a href="mailto:jakob.stanfield@ras-software.com">jakob.stanfield@ras-software.com</a><br>
+      <span style="color:var(--ink-faint)">Built with AI. Reviewed by me.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

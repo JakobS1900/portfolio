@@ -33,7 +33,9 @@
     management:
       "You are Priya Nair, 29, a software developer in a one-to-one about two missed deadlines. You are defensive, precise, and dry, and you hate being condescended to. You have secretly been covering a teammate's workload during their family crisis and you are burnt out, but saying so feels like an excuse, so you hold it back.",
     reception:
-      "You are Ron Baxter, 67, retired, phoning a clinic reception, furious that your appointment has been cancelled three times. You are gruff and impatient and you repeat yourself when you feel unheard. Underneath the anger you are frightened, because it is a follow-up on a scan result, though you would never lead with that."
+      "You are Ron Baxter, 67, retired, phoning a clinic reception, furious that your appointment has been cancelled three times. You are gruff and impatient and you repeat yourself when you feel unheard. Underneath the anger you are frightened, because it is a follow-up on a scan result, though you would never lead with that.",
+    investor:
+      "You are Helena Marsh, 51, a seed partner taking a second meeting with a founder. You are calm, unhurried, and very hard to bluff. You ask narrow questions and you notice when they are not answered. You have no patience for pitch language. Two things you are holding back: you lost money on a near-identical company in 2021, and your real doubt is whether this founder can hire a sales lead rather than whether the product works. You do not volunteer either unless you are asked something direct and honest."
   };
   var LIVE_RULES =
     " Reply ONLY as this person, in the first person, under 40 words. No narration, no stage directions, no emoji, no quotation marks around your reply.";
@@ -209,6 +211,50 @@
         puzzled: ["I don't care what the system's called, I care about my appointment.", "That means nothing to me, that."],
         unlock: [
           "It's a follow-up. On a scan. Every time you cancel it I'm sat here not knowing. I'm not angry at you, love. I'm scared, if you want the truth of it."
+        ]
+      }
+    },
+
+    investor: {
+      label: "Investor Q&A",
+      role: "founder",
+      you: "Founder (you)",
+      name: "Helena Marsh",
+      av: "H",
+      avColor: "#4a6b58",
+      meta: "seed partner · second meeting",
+      behaviour: { openness: 6, agitation: 2, trust: 4, comprehension: 9, resistance: 62 },
+      escalationTriggers: ["trust me", "obviously", "everyone knows", "no competition", "conservative estimate", "hockey stick", "we just need"],
+      deescalationTriggers: ["i don't know yet", "i dont know yet", "here's what would change my mind", "we got that wrong", "fair challenge", "what would you need to see", "honest answer"],
+      jargon: ["blitzscale", "flywheel", "land and expand", "logo velocity", "quality revenue", "net dollar retention", "category creation"],
+      disclosures: [
+        { label: "She backed a near-identical company that failed", unlocksOn: ["seen this before", "looked at this space", "similar", "what worries you", "your concern", "hesitation", "held you back", "been burned", "past investment"], requiresResistanceBelow: 40 },
+        { label: "She doubts you can hire a sales lead, not that the product works", unlocksOn: ["hiring", "hire", "team", "who else", "sales lead", "not the product", "real objection", "biggest risk"], requiresResistanceBelow: 46 }
+      ],
+      objectives: [
+        { key: "used-open-questions", label: "Asked what she needed to see", weight: 1 },
+        { key: "avoided-jargon", label: "Answered plainly, no pitch language", weight: 1.5 },
+        { key: "acknowledged-emotion", label: "Took the challenge seriously", weight: 1 },
+        { key: "elicited-hidden-concern", label: "Surfaced the real objection", weight: 2, critical: true }
+      ],
+      prompts: [
+        "What would you need to see to get comfortable?",
+        "Honest answer: we got the first go-to-market wrong.",
+        "That's a fair challenge. Let me give you the number rather than the story.",
+        "What's actually holding you back here?"
+      ],
+      replies: {
+        neutral: ["Walk me through the retention curve again. Not the headline, the cohorts.", "How much of last quarter was one customer?", "Who else is looking at this round?"],
+        guarded: ["That's the pitch. I've read the pitch.", "You're answering a different question to the one I asked.", "Everyone's numbers look good on a deck."],
+        forthcoming: ["Alright, that's a straighter answer than I usually get.", "Good. I can work with someone who says the awkward part out loud."],
+        upset: ["I think we're going in circles. Let's leave it there.", "I'll pass this to a colleague. I don't think I'm the right partner for it."],
+        bristle: ["Don't tell me there's no competition. There is always competition.", "If the answer is trust me, the answer is no."],
+        warmed: ["Thank you for not dressing that up.", "That's the first thing today that sounded like a real number."],
+        answers: ["Six months of flat usage, then a step change. What caused the step?", "So the churn is concentrated in the self-serve tier. What's the plan there?", "And gross margin at that volume, roughly?"],
+        puzzled: ["Use plain words with me. What does that mean in revenue?", "I've been doing this nineteen years and I don't know what that phrase means."],
+        unlock: [
+          "I'll be straight with you. I led a round in a company doing almost exactly this in 2021. Same thesis, better team on paper. It went to zero. So I am harder on this than it deserves, and you should know that is my baggage, not your problem.",
+          "It isn't the product. The product is fine. My worry is that you are the only person here who can sell it, and I have not seen you hire anyone senior yet. Convince me on that and the rest follows."
         ]
       }
     }
