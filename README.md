@@ -18,8 +18,9 @@ dependencies. Open `index.html` and it runs.
 ## Design
 
 One shared stylesheet (`styles.css`) drives every page. Light and dark themes,
-the toggle persists across pages (`app.js`). No web fonts, no external calls, no
-tracking. It works offline.
+the toggle persists across pages (`app.js`). No web fonts and no framework, so
+the only third-party request on the page is GoatCounter, which is cookie-less
+and counts page views. Everything else still works with the network off.
 
 ## Running it
 
