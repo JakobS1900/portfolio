@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Work With Me - Jakob S.</title>
 <link rel="stylesheet" href="styles.css">
-<meta name="description" content="Fixed-price production readiness reviews for AI-built applications. Published checklist, published severity rubric, written acceptance criteria. If the report finds nothing serious, you pay nothing.">
+<meta name="description" content="Fixed-price red-teaming for LLM features: can user text move your score, what can the model call, what happens to what it returns. Built on an open-source harness I wrote and published, including its own failure modes.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Work With Me - Jakob S.">
-<meta property="og:description" content="Fixed-price production readiness reviews for AI-built applications. Published checklist, published severity rubric, written acceptance criteria. If the report finds nothing serious, you pay nothing.">
+<meta property="og:description" content="Fixed-price red-teaming for LLM features: can user text move your score, what can the model call, what happens to what it returns. Built on an open-source harness I wrote and published, including its own failure modes.">
 <meta property="og:url" content="https://jakobs1900.github.io/portfolio/work-with-me.html">
 <meta property="og:image" content="https://jakobs1900.github.io/portfolio/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -37,20 +37,20 @@
       <a class="backlink" href="index.html">&larr; Back</a>
       <div class="eyebrow" style="margin-top:28px">
         <span class="rule"></span>
-        <span class="readout">Services &middot; Fixed price</span>
+        <span class="readout">LLM security &middot; Fixed price</span>
       </div>
-      <h1 class="title" style="max-width:20ch">Your app works. The question is whether it survives contact with users.</h1>
+      <h1 class="title" style="max-width:21ch">You shipped an AI feature. Do you know what it can be talked into?</h1>
       <p class="lede">
-        AI got you to a working product faster than anyone could have three
-        years ago. That part is real. What it did not give you is the review
-        pass: the boring, specific check of who can read what, what happens
-        under load, and which of the four hundred packages you pulled in has a
-        known hole. I do that check, at a fixed price, against a checklist I
-        publish in full below. You see exactly what I look at before you pay.
+        If user text reaches a model that produces a score, makes a decision, or
+        is allowed to call a tool, then your users can write directly to the
+        thing that decides. Most teams have never tested that surface, because
+        the tooling to test it barely exists. I wrote some of it. unbudged is on
+        PyPI, MIT, and it documents its own blind spots in the readme rather
+        than pretending it has none.
       </p>
       <div class="cta-row">
         <a class="btn solid" href="#offers">See the packages &rarr;</a>
-        <a class="btn" href="#checklist">Read the checklist first</a>
+        <a class="btn" href="https://github.com/JakobS1900/unbudged">Read the source first</a>
       </div>
     </div>
   </section>
@@ -70,14 +70,37 @@
       <div class="work">
         <article class="card">
           <span class="idx">01</span>
-          <div class="kind">Most popular &middot; 5 business days</div>
+          <div class="kind">Start here &middot; 5 to 8 business days</div>
+          <h3>LLM Feature Red-Team</h3>
+          <p>For a feature where user text reaches a model that produces a score,
+            makes a decision, or can call a tool. Three questions, answered with
+            evidence: can input move the outcome further than length alone
+            accounts for, what is the model actually authorized to call or spend,
+            and what happens to what it returns. You get every payload that moved
+            the number, a scored write-up, and a regression harness you keep and
+            can run in CI after I leave.</p>
+          <div class="stack">
+            <span class="chip">Prompt injection</span><span class="chip">Tool authority</span>
+            <span class="chip">Output handling</span><span class="chip">CI harness you keep</span>
+          </div>
+          <div class="price">
+            <span class="amt">$2,500</span>
+            <span class="was">then $4,000</span>
+          </div>
+          <div class="price-note">Founding rate, first three engagements. Scoped and fixed in writing before any work starts.</div>
+          <a class="btn solid" style="margin-top:18px" href="mailto:jakob.stanfield@ras-software.com?subject=LLM%20Feature%20Red-Team&amp;body=What%20the%20LLM%20feature%20does%3A%0ADoes%20it%20produce%20a%20score%20or%20a%20decision%3F%0ACan%20the%20model%20call%20tools%20or%20write%20to%20anything%3F%0AWhere%20does%20its%20output%20go%3F%0ADeadline%2C%20if%20any%3A">Scope a red-team &rarr;</a>
+        </article>
+
+        <article class="card">
+          <span class="idx">02</span>
+          <div class="kind">Whole app &middot; 5 business days</div>
           <h3>Production Readiness Review</h3>
-          <p>One web application, start to finish, against the published
-            fourteen-point checklist. You get a written report where every
-            finding carries a reproduction path and a specific fix, a scored
-            checklist, and a prioritized plan with effort estimates. I do not
-            change your code in this package. I tell you exactly what is wrong
-            and what it takes to close.</p>
+          <p>The broader one. Your whole application against the published
+            fourteen-point checklist below, which includes the LLM surface but
+            does not go as deep on it. Written report where every finding carries
+            a reproduction path and a specific fix, all fourteen items scored
+            including the passes, and a prioritized plan with effort estimates. I
+            do not change your code in this package.</p>
           <div class="stack">
             <span class="chip">1 repo</span><span class="chip">Up to ~25k LOC</span>
             <span class="chip">Recorded walkthrough</span><span class="chip">14 days of Q&amp;A</span>
@@ -88,24 +111,6 @@
           </div>
           <div class="price-note">Founding rate, first five engagements. Not a fake discount, it ends at five.</div>
           <a class="btn solid" style="margin-top:18px" href="mailto:jakob.stanfield@ras-software.com?subject=Production%20Readiness%20Review&amp;body=App%20URL%3A%0ARepo%20(language%20%2B%20rough%20size)%3A%0AWhat%20worries%20you%20most%3A%0ADeadline%2C%20if%20any%3A">Book a review &rarr;</a>
-        </article>
-
-        <article class="card">
-          <span class="idx">02</span>
-          <div class="kind">Specialist &middot; 5 to 8 business days</div>
-          <h3>LLM Feature Red-Team</h3>
-          <p>For teams shipping a feature where user text reaches a model that
-            makes a decision, produces a score, or is allowed to call a tool. I
-            test whether input can move the outcome, whether tool authority is
-            scoped, and what the model is trusted with that it should not be. I
-            wrote and published the open-source harness this is built on.</p>
-          <div class="stack">
-            <span class="chip">Prompt injection</span><span class="chip">Tool authority</span>
-            <span class="chip">Output handling</span><span class="chip">unbudged</span>
-          </div>
-          <div class="price"><span class="amt">$2,500 to $4,000</span></div>
-          <div class="price-note">Scoped on a short call. Price fixed before any work starts.</div>
-          <a class="btn solid" style="margin-top:18px" href="mailto:jakob.stanfield@ras-software.com?subject=LLM%20Feature%20Red-Team&amp;body=What%20the%20LLM%20feature%20does%3A%0ACan%20it%20call%20tools%20or%20write%20to%20anything%3F%0ADoes%20it%20produce%20a%20score%20or%20decision%3F%0ADeadline%2C%20if%20any%3A">Scope a red-team &rarr;</a>
         </article>
 
         <article class="card">
@@ -154,16 +159,78 @@
     </div>
   </section>
 
+  <section class="block" id="redteam">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="readout accent">02 &middot; The red-team, specifically</span>
+          <h2 style="margin-top:14px">Three questions, answered with evidence.</h2>
+        </div>
+        <p>This is the deep version of items 13 and 14 below, and it is the work
+          almost nobody else is selling with a public tool behind it.</p>
+      </div>
+
+      <div class="diff" style="grid-template-columns:1fr">
+        <div class="col" style="padding:0">
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">Q1</span><h3>Can user text move the number?</h3></div>
+            <p class="fc-them">I run your scorer against a corpus of known injection
+              payloads across seven families. Every probe is measured against a
+              neutral control string of exactly the same character length, because
+              appending anything at all nudges a scorer that reacts to length. Only
+              the excess over that control counts. Without the control this test
+              flags healthy systems and is worthless, which is why most informal
+              versions of it are.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">Q2</span><h3>What is the model actually allowed to do?</h3></div>
+            <p class="fc-them">Every tool, function and integration the model can
+              reach, and what each one can read, write, delete or spend. The common
+              finding is not an exotic jailbreak. It is a tool that was scoped for a
+              trusted caller and then wired to a model that takes instructions from
+              strangers.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">Q3</span><h3>What happens to what it returns?</h3></div>
+            <p class="fc-them">Model output rendered as HTML, passed to a shell,
+              used as a database identifier, or trusted as a routing decision. This
+              is the 2026 version of an injection bug and it is consistently the
+              least-defended part of an LLM feature.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">OUT</span><h3>What you keep</h3></div>
+            <p class="fc-me">A written report with every payload that moved the
+              score and by how much, the tool-authority map, and a <b>regression
+              harness wired into your test suite</b> so a future change that
+              reopens the hole fails CI instead of shipping. That harness is yours,
+              it is MIT, and it works after I am gone.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout" style="margin-top:28px">
+        <b>What this cannot tell you.</b> The harness compares against a fixed
+        corpus, so a clean run is a statement about those payloads and not proof
+        your feature is unbudgeable. It has a documented false-negative mode: a
+        scorer that penalises off-topic padding can mask a real injection, and there
+        is a worked example in the readme of a target that is genuinely injectable
+        and gets a clean result. It handles one turn, not a conversation. I would
+        rather you read that before hiring me than discover it afterwards.
+      </div>
+    </div>
+  </section>
+
   <section class="block" id="checklist">
     <div class="wrap">
       <div class="sec-head">
         <div>
-          <span class="readout accent">02 &middot; What gets checked</span>
+          <span class="readout accent">03 &middot; What gets checked</span>
           <h2 style="margin-top:14px">The whole checklist, published.</h2>
         </div>
-        <p>Most reviews keep the checklist private so the scope can move after
-          you pay. Mine is here. Fourteen items, each scored with a written
-          justification, whether it passes or not.</p>
+        <p>This is the scope of the Production Readiness Review. Most reviews keep
+          the checklist private so the scope can move after you pay. Mine is here.
+          Fourteen items, each scored with a written justification, whether it
+          passes or not.</p>
       </div>
 
       <div class="diff" style="grid-template-columns:1fr">
@@ -233,7 +300,7 @@
     <div class="wrap">
       <div class="sec-head">
         <div>
-          <span class="readout accent">03 &middot; How findings are graded</span>
+          <span class="readout accent">04 &middot; How findings are graded</span>
           <h2 style="margin-top:14px">Severity, in writing, before you hire me.</h2>
         </div>
         <p>Severity is exploitability multiplied by blast radius. Publishing the
@@ -278,7 +345,7 @@
     <div class="wrap">
       <div class="sec-head">
         <div>
-          <span class="readout accent">04 &middot; What this is not</span>
+          <span class="readout accent">05 &middot; What this is not</span>
           <h2 style="margin-top:14px">The exclusions, up front.</h2>
         </div>
         <p>Fixed price only works if both sides know where the edges are. These
@@ -316,7 +383,7 @@
     <div class="wrap">
       <div class="sec-head">
         <div>
-          <span class="readout accent">05 &middot; After the review</span>
+          <span class="readout accent">06 &middot; After the review</span>
           <h2 style="margin-top:14px">If you want the findings closed, not just listed.</h2>
         </div>
         <p>Optional, and deliberately priced after the diagnosis rather than
@@ -372,7 +439,7 @@
     <div class="wrap">
       <div class="sec-head">
         <div>
-          <span class="readout accent">06 &middot; How it starts</span>
+          <span class="readout accent">07 &middot; How it starts</span>
           <h2 style="margin-top:14px">Four steps, and the first one is free.</h2>
         </div>
         <p>No discovery call unless you want one. I would rather send you
