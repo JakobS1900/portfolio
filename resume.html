@@ -167,6 +167,31 @@
 
       <div class="cv-entry">
         <div class="cv-entry-head">
+          <h3>unbudged</h3>
+          <span class="cv-role">Open source · Tooling</span>
+        </div>
+        <p>
+          A public test harness for anything that scores text:
+          <a href="https://github.com/JakobS1900/unbudged">github.com/JakobS1900/unbudged</a>.
+          It appends known prompt-injection payloads to real inputs and reports
+          where the score moved more than a length-matched neutral control moved
+          it. The control is the design. Without it, any scorer that reacts to
+          input length reads as compromised and the tool is a false-positive
+          generator.
+        </p>
+        <ul>
+          <li>Ships as a library, a CLI, and a one-line assertion for someone else's existing test suite, so it can gate a build rather than only produce a report.</li>
+          <li>Attacks are versioned data across seven families, so a new family is a file rather than a code change.</li>
+          <li>The docs publish the tool's own limitations, including the case where a scorer that penalises padding can hide a real injection from it.</li>
+        </ul>
+        <div class="stack" style="margin-top:14px">
+          <span class="chip">Python</span><span class="chip">Prompt injection</span>
+          <span class="chip">pytest</span><span class="chip">GitHub Actions</span>
+        </div>
+      </div>
+
+      <div class="cv-entry">
+        <div class="cv-entry-head">
           <h3>Merchant ordering system</h3>
           <span class="cv-role">Client build · Ordering</span>
         </div>
