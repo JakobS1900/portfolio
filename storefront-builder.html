@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Storefront Builder - Jakob S.</title>
+<link rel="stylesheet" href="styles.css">
+<meta name="description" content="A compiler that turns a block document into host-correct Markdown, so artists can build a commission page without learning Markdown. Public source, readable engine, every review on the record.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Storefront Builder - Jakob S.">
+<meta property="og:description" content="A compiler that turns a block document into host-correct Markdown, so artists can build a commission page without learning Markdown. Public source, readable engine, every review on the record.">
+<meta property="og:url" content="https://jakobs1900.github.io/portfolio/storefront-builder.html">
+<meta property="og:image" content="https://jakobs1900.github.io/portfolio/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>(function(){try{var t=localStorage.getItem('jsz-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<style>
+  .bugs{margin-top:26px; border:1px solid var(--line); background:var(--raise)}
+  .bug{padding:20px 22px; border-bottom:1px solid var(--line-soft)}
+  .bug:last-child{border-bottom:0}
+  .bug .tag{font-family:var(--mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-faint)}
+  .bug h4{margin:8px 0 0; font-size:15.5px; font-weight:600}
+  .bug p{margin:8px 0 0; font-size:14.5px; line-height:1.6; color:var(--ink-soft)}
+  .bug p b{color:var(--ink)}
+  .stat-row{display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-top:26px}
+  @media(min-width:700px){.stat-row{grid-template-columns:repeat(4,1fr)}}
+  .stat-row .s{background:var(--raise); padding:18px 16px}
+  .stat-row .n{font-family:var(--serif); font-size:26px; font-weight:600; letter-spacing:-.01em}
+  .stat-row .l{font-family:var(--mono); font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-faint); margin-top:6px}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" href="index.html">jakob<b>.</b>s</a>
+    <nav class="links">
+      <a href="work-with-me.html">Work With Me</a>
+      <a href="index.html#work" class="here">Selected Work</a>
+      <a href="security.html">Security</a>
+      <a href="index.html#approach">Approach</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <button class="theme-toggle" onclick="toggleTheme()">Theme</button>
+  </div>
+</header>
+
+<main class="wrap-narrow">
+  <div class="article-head">
+    <a class="backlink" href="index.html#work">&larr; Selected Work</a>
+    <div class="eyebrow" style="margin-top:26px">
+      <span class="rule"></span>
+      <span class="readout">Case Study &middot; Compiler &middot; Source public</span>
+    </div>
+    <h1>Storefront Builder</h1>
+    <p class="sub">
+      Artists sell commissions from pages they host on Markdown paste sites. They
+      do not know Markdown, so they pay someone who does. This turns that into a
+      compiler problem: a block document in, host-correct Markdown out, with a
+      warning for every compromise made on the way.
+    </p>
+    <div class="tagrow">
+      <span class="chip">TypeScript</span><span class="chip">Zero runtime deps</span>
+      <span class="chip">Golden-file tests</span><span class="chip">Vitest</span>
+      <span class="chip">axe-core</span><span class="chip">PWA</span>
+    </div>
+    <div class="callout" style="margin-top:30px">
+      <b>The source is public and meant to be read.</b> The engine is a few
+      hundred lines of pure functions with no dependencies. Every architecture
+      review and every bug it caught is committed alongside the code, including
+      the ones that make me look slow.
+    </div>
+  </div>
+
+  <article class="prose">
+    <h2>The job</h2>
+    <p>
+      Go and look at how illustrators sell work. A large share of them run their
+      commission page on rentry.co or something like it: a free Markdown paste
+      site, no account, no platform cut. It is a genuinely good choice, and it
+      has one problem. The page is written in Markdown.
+    </p>
+    <p>
+      So people who draw for a living end up learning table syntax, or paying
+      someone forty dollars to lay out a price list. The gap is not talent or
+      taste. It is a text format.
+    </p>
+    <div class="codeblock">blocks  ->  document  ->  target capabilities  ->  markdown + diagnostics</div>
+    <p>
+      The obvious build is a WYSIWYG editor that emits Markdown. That is the
+      version I did not build, because it hides the actual difficulty. Every
+      host renders a slightly different dialect, so the same page is correct on
+      one and broken on another, and the artist finds out after they publish.
+    </p>
+
+    <h2>What shaped it</h2>
+    <ul>
+      <li><b>It is a compiler, not an editor.</b> Blocks become a document, a
+        per-host emitter turns that into Markdown, and a lint pass reports every
+        compromise. That last part is the product: it is the thing an artist
+        would otherwise pay a person to know.</li>
+      <li><b>Hosts are data, never code.</b> A supported site is a record of
+        capability values with a cited source for each one. No emitter branches
+        on which host it is compiling for. A test proves it by inventing a host
+        inside the test and compiling against it, which only works if the claim
+        is true.</li>
+      <li><b>Nothing an artist types may become structure.</b> Their text lands
+        on a page hosted on someone else's domain, whose sanitizer I cannot
+        inspect. So the escaper emits HTML entities rather than backslash
+        escapes: the character is absent from the output entirely, and no
+        renderer can build a tag out of what is not there.</li>
+      <li><b>Losing their page is the one unforgivable failure.</b> The document
+        format is versioned, a page from a future version is refused rather than
+        guessed at, and a page that cannot be opened can still be downloaded
+        exactly as it was saved.</li>
+    </ul>
+
+    <h2>The guards, and what they caught</h2>
+    <p>
+      I ran an architecture review before writing each feature and a holistic
+      review across the whole diff after. Both are committed. Four of the bugs
+      they found would have shipped, and none of them were the kind a test I had
+      already thought to write would catch.
+    </p>
+
+    <div class="bugs">
+      <div class="bug">
+        <div class="tag">Architecture review &middot; feature 001</div>
+        <h4>The writer could destroy a page on the way to disk</h4>
+        <p>
+          <code>JSON.stringify</code> turns <code>NaN</code> and
+          <code>Infinity</code> into <code>null</code>, and <code>null</code> is
+          never valid in this format. Neither can arrive by parsing, since
+          neither is legal JSON, but both arrive easily from an editor field
+          computed as <code>parseInt("")</code>. <b>A page would have been
+          written in a state that could not be read back:</b> work destroyed by
+          the save path itself. The writer now validates before it writes.
+        </p>
+      </div>
+
+      <div class="bug">
+        <div class="tag">Holistic review &middot; feature 001</div>
+        <h4>Validation handed back the caller's own object</h4>
+        <p>
+          The editor validates a draft it is still holding, so the application's
+          saved page and the page being typed into were <b>one object</b>. The
+          saved copy changes underneath the app, silently, with no write and no
+          event. Every function was individually correct, and no per-chunk test
+          could see it, because within one chunk there was never a second holder
+          of the object. It surfaces months later as a storage bug in a file
+          nobody connects to this one.
+        </p>
+      </div>
+
+      <div class="bug">
+        <div class="tag">Holistic review &middot; feature 002</div>
+        <h4>Two languages that disagree about what whitespace is</h4>
+        <p>
+          A newline inside a heading ends the heading and turns everything after
+          it into body text, so the escaper collapsed whitespace with JavaScript's
+          <code>\s</code>. That does not include U+0085. <b>Python's
+          <code>splitlines</code> does, and rentry is a Python service.</b> A
+          heading could pass our check and still be cut in half by the renderer.
+          The escaper now collapses the union of both sets.
+        </p>
+      </div>
+
+      <div class="bug">
+        <div class="tag">First run of the app</div>
+        <h4>The first thing a new user does broke saving</h4>
+        <p>
+          Adding an "About you" section creates a profile with no name yet, and
+          the schema marked that field non-empty, so the page became unsaveable
+          before the artist typed anything. The fix was not placeholder text,
+          which puts words in their mouth. <b>The constraint was in the wrong
+          place.</b> An empty name is a valid document; it is a page that renders
+          oddly, and this project's rule is that the compiler warns rather than
+          the format refuses. Emptiness is a publishing concern, not a storage
+          one.
+        </p>
+      </div>
+    </div>
+
+    <p>
+      The last one is the one I would want to be asked about. No test caught it,
+      because every test I wrote encoded the same wrong assumption as the schema.
+      It took opening the thing in a browser and clicking the first button.
+    </p>
+
+    <h2>What is enforced, not merely intended</h2>
+    <p>
+      A project of this size accumulates good intentions. These are the ones
+      wired to the build, so they fail rather than drift:
+    </p>
+    <ul>
+      <li><b>Engine purity</b> is an ESLint rule. The engine cannot reference
+        <code>document</code>, <code>window</code>, <code>fetch</code>,
+        <code>Date.now</code>, or <code>Math.random</code>. I verified it fires
+        rather than assuming it does.</li>
+      <li><b>Schema drift</b> fails a parity test that snapshots every field
+        name, type, and order. Changing the format is possible; changing it by
+        accident is not.</li>
+      <li><b>Output correctness</b> is byte-compared against checked-in Markdown
+        files, kept readable so a human can judge a diff. The most valuable bug
+        on this page was found by reading one of them, not by a test.</li>
+      <li><b>Accessibility</b> runs axe-core over the rendered interface plus
+        assertions a machine cannot make: that every control has a real name,
+        that no placeholder stands in for a label, that the touch target minimum
+        is actually in the stylesheet. Colour contrast is switched off with the
+        reason stated, because the test environment lays nothing out and the
+        number would be meaningless.</li>
+    </ul>
+
+    <div class="stat-row">
+      <div class="s"><div class="n">441</div><div class="l">Tests</div></div>
+      <div class="s"><div class="n">0</div><div class="l">Runtime deps</div></div>
+      <div class="s"><div class="n">11 kB</div><div class="l">App, gzipped</div></div>
+      <div class="s"><div class="n">14</div><div class="l">Review findings fixed</div></div>
+    </div>
+
+    <h2>What I would tell you in an interview</h2>
+    <p>
+      Two hosts ship today, and they produce <b>identical output</b> for every
+      current fixture. Both support six heading levels and both support tables,
+      so nothing in the current section types distinguishes them. The
+      compatibility machinery is proved by synthetic hosts in the tests rather
+      than by a visible difference between the two real ones.
+    </p>
+    <p>
+      I could have manufactured a difference to make the demo look better. The
+      honest position is that the architecture is right and its payoff is
+      deferred until a third host or a section type that uses rentry's
+      extensions. That trade is written into the review document, not discovered
+      by whoever reads the code next.
+    </p>
+    <p>
+      The other thing I have not done: nobody has pasted the output into live
+      rentry. Every capability value cites their published documentation, which
+      is evidence, and it is not the same as having tried it. That gap is on the
+      roadmap and labelled as the only claim in the project resting on trust.
+    </p>
+
+    <div class="callout" style="margin-top:34px">
+      <b>Why this one is worth reading.</b> Most portfolio pieces show a working
+      thing. This one shows the working thing plus the reasoning that produced
+      it, including the four times the reasoning was wrong and what caught it.
+      If you want to know how I would behave on your codebase, that is the part
+      that generalises.
+    </div>
+  </article>
+
+  <div style="padding:12px 0 72px">
+    <a class="btn" href="index.html#work">&larr; Back to work</a>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <h2>This is the standard I review other people's apps against.</h2>
+    <div class="meta">
+      <span class="readout">Contact</span><br>
+      <a href="https://github.com/JakobS1900">github.com/JakobS1900</a><br>
+      <a href="https://www.linkedin.com/in/jakob-stanfield-65a4b85a/">linkedin.com/in/jakob-stanfield</a><br>
+      <a href="mailto:jakob.stanfield@ras-software.com">jakob.stanfield@ras-software.com</a><br>
+      <span style="color:var(--ink-faint)">Built with AI. Reviewed by me.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script data-goatcounter="https://js101923.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</body>
+</html>
