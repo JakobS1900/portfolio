@@ -66,7 +66,8 @@
       <span class="chip">Cloudflare Worker</span>
     </div>
     <div class="callout" style="margin-top:30px">
-      <b>The source is public and meant to be read:
+      <b><a href="https://jakobs1900.github.io/markdown-storefront-builder/">Use it here</a>,
+      and read the source at
       <a href="https://github.com/JakobS1900/markdown-storefront-builder">github.com/JakobS1900/markdown-storefront-builder</a>.</b>
       The engine is a few hundred lines of pure functions with no dependencies.
       Every architecture review and every bug it caught is committed alongside
@@ -120,8 +121,8 @@
     <h2>The guards, and what they caught</h2>
     <p>
       I ran an architecture review before writing each feature and a holistic
-      review across the whole diff after. Both are committed. Four of the bugs
-      they found would have shipped, and none of them were the kind a test I had
+      review across the whole diff after. Both are committed. Five of the bugs
+      below would have shipped, and not one of them was the kind a test I had
       already thought to write would catch.
     </p>
 
@@ -164,6 +165,22 @@
           <code>splitlines</code> does, and rentry is a Python service.</b> A
           heading could pass our check and still be cut in half by the renderer.
           The escaper now collapses the union of both sets.
+        </p>
+      </div>
+
+      <div class="bug">
+        <div class="tag">Pasting output into the real host</div>
+        <h4>The line break the specification promised does not exist</h4>
+        <p>
+          Every capability value cited rentry's documentation, which is evidence
+          and is not the same as having tried it. So I pasted the compiled output
+          into their editor and read the preview. The hard line break, written as
+          a trailing backslash because that is what CommonMark says, produced no
+          break at all: rentry runs Python-Markdown, which does not implement it.
+          <b>Worse, the backslash was swallowed, so two sentences rendered as
+          "each.Refunds".</b> No test caught it, because every test asserted the
+          backslash was emitted. The tests encoded the same assumption as the
+          code. Only the renderer disagreed.
         </p>
       </div>
 
@@ -214,7 +231,7 @@
     </ul>
 
     <div class="stat-row">
-      <div class="s"><div class="n">489</div><div class="l">Tests</div></div>
+      <div class="s"><div class="n">490</div><div class="l">Tests</div></div>
       <div class="s"><div class="n">0</div><div class="l">Runtime deps</div></div>
       <div class="s"><div class="n">12 kB</div><div class="l">App, gzipped</div></div>
       <div class="s"><div class="n">14</div><div class="l">Review findings fixed</div></div>
@@ -222,24 +239,24 @@
 
     <h2>What I would tell you in an interview</h2>
     <p>
-      Two hosts ship today, and they produce <b>identical output</b> for every
-      current fixture. Both support six heading levels and both support tables,
-      so nothing in the current section types distinguishes them. The
-      compatibility machinery is proved by synthetic hosts in the tests rather
-      than by a visible difference between the two real ones.
+      For most of the build, the two shipped hosts produced <b>identical
+      output</b>, and I wrote that down rather than manufacturing a difference
+      to make the demo look better. The compatibility machinery was real and
+      proved only by synthetic hosts in the tests.
     </p>
     <p>
-      I could have manufactured a difference to make the demo look better. The
-      honest position is that the architecture is right and its payoff is
-      deferred until a third host or a section type that uses rentry's
-      extensions. That trade is written into the review document, not discovered
-      by whoever reads the code next.
+      That changed when I finally pasted real output into rentry, and it changed
+      because the paste found a bug. They now differ on exactly one thing, the
+      hard line break, and that difference exists because the renderer disagreed
+      with the specification, not because it was designed in. Everything else in
+      the current section types still renders the same on both.
     </p>
     <p>
-      The other thing I have not done: nobody has pasted the output into live
-      rentry. Every capability value cites their published documentation, which
-      is evidence, and it is not the same as having tried it. That gap is on the
-      roadmap and labelled as the only claim in the project resting on trust.
+      What I would still tell you: one genuine divergence is a thin proof for an
+      architecture this deliberate. The payoff arrives with a third host, or
+      with a section type that uses rentry's own extensions. The machinery is
+      right and it is not yet earning its keep, and I would rather say that than
+      let a diagram imply otherwise.
     </p>
 
     <div class="callout" style="margin-top:34px">
