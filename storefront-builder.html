@@ -308,6 +308,44 @@ WebView             [0,110][1080,452]     342px   909px short</div>
           into, so "no items" stays a state the file can honestly hold.
         </p>
       </div>
+
+      <div class="bug">
+        <div class="tag">Typing on the phone &middot; caused by the fix above</div>
+        <h4>The keyboard hands text to an element, and I kept replacing it</h4>
+        <p>
+          Typing "Full colour bust" into that new placeholder row produced
+          "Ful colour bust". Three runs in eight lost a character, always the
+          one straight after the first keystroke.
+        </p>
+        <p>
+          The app was not losing events. It applied every one it received: the
+          number of <code>beforeinput</code> events always equalled the length
+          of the value, so the character never reached the page at all. The
+          convenient conclusion was that the test harness drops keys. A bare
+          page with one input and no application code, driven by the same
+          injection at the same speed, lost nothing in six runs, <b>which took
+          that excuse away and pointed back at me.</b>
+        </p>
+        <p>
+          Android binds the keyboard to the focused editable through an
+          InputConnection. A repaint rebuilds the DOM, so the focused input
+          becomes a different element, the connection is torn down and rebuilt,
+          and a character committed during the gap has nowhere to land. Tagging
+          every element and recording which one each keystroke hit made it
+          exact:
+        </p>
+        <div class="codeblock">empty section, first key adds a row   2 nodes, 1 swap   3 of 8 dropped
+section that already has a row       1 node,  0 swaps  0 of 8 dropped</div>
+        <p>
+          <b>My own earlier fix caused it.</b> When I made repaints wait for a
+          pause in typing, I exempted changes to the shape of the page. Typing
+          the first character into a placeholder row genuinely adds a row, which
+          is a shape change, so it repainted at once, mid-word. Repaints now
+          wait whenever a field has focus, whatever changed. Same experiment
+          afterwards: zero drops in eight runs, and no element swapped mid-word
+          in any of them.
+        </p>
+      </div>
     </div>
 
     <p>
@@ -399,6 +437,12 @@ WebView             [0,110][1080,452]     342px   909px short</div>
       using the app, and invisible for as long as you only run its tests.</b>
     </p>
     <p>
+      Going back a second time found one more, and it was mine: the fix for the
+      dead-end section had introduced a fresh way to drop a keystroke. That is
+      the case for doing this repeatedly rather than once. A fix is a change,
+      and a change is a thing that can be wrong.
+    </p>
+    <p>
       The tests are still worth having, and there are more of them now, written
       to type character by character and to ask the document what is focused
       before each key rather than holding a reference. But I would not now
@@ -479,10 +523,10 @@ WebView             [0,110][1080,452]     342px   909px short</div>
     </ul>
 
     <div class="stat-row">
-      <div class="s"><div class="n">561</div><div class="l">Tests</div></div>
+      <div class="s"><div class="n">565</div><div class="l">Tests</div></div>
       <div class="s"><div class="n">14 kB</div><div class="l">App, gzipped</div></div>
       <div class="s"><div class="n">8</div><div class="l">Caught before users</div></div>
-      <div class="s"><div class="n">9</div><div class="l">Caught by using it</div></div>
+      <div class="s"><div class="n">10</div><div class="l">Caught by using it</div></div>
     </div>
 
     <h2>What I would tell you in an interview</h2>
@@ -510,7 +554,7 @@ WebView             [0,110][1080,452]     342px   909px short</div>
     <div class="callout" style="margin-top:34px">
       <b>Why this one is worth reading.</b> Most portfolio pieces show a working
       thing. This one shows the working thing plus the reasoning that produced
-      it, including the seventeen times the reasoning was wrong, the time I
+      it, including the eighteen times the reasoning was wrong, the time I
       called something a bug and it was not, the feature I deleted after
       building it, and the afternoon the owner told me the whole thing was
       unusable and it was. If you want to know how I would behave on your
