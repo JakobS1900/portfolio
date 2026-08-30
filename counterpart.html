@@ -23,8 +23,9 @@
 
   .scenario-tabs{display:flex; flex-wrap:wrap; gap:8px; margin-top:34px}
   .tab{font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase;
-    padding:9px 16px; border:1px solid var(--line); background:var(--raise); color:var(--ink-soft);
-    cursor:pointer; border-radius:2px; transition:.15s}
+    padding:0 16px; border:1px solid var(--line); background:var(--raise); color:var(--ink-soft);
+    cursor:pointer; border-radius:2px; transition:.15s;
+    display:inline-flex; align-items:center; min-height:44px}
   .tab:hover{border-color:var(--accent); color:var(--ink)}
   .tab.on{background:var(--ink); color:var(--bg); border-color:var(--ink)}
 
@@ -86,7 +87,7 @@
   .say-row input{flex:1; min-width:0; font-family:var(--sans); font-size:14.5px; color:var(--ink);
     background:var(--bg); border:1px solid var(--line); border-radius:2px; padding:11px 13px}
   .say-row input::placeholder{color:var(--ink-faint)}
-  .say-row .btn{padding:10px 18px}
+  .say-row .btn{padding:0 18px; min-height:44px}
   .heard{margin-top:10px; display:flex; flex-wrap:wrap; gap:6px; align-items:center; min-height:24px}
   .sigchip{font-family:var(--mono); font-size:10.5px; letter-spacing:.05em; text-transform:uppercase;
     color:var(--accent); border:1px solid var(--line); border-radius:2px; padding:3px 8px}
@@ -94,7 +95,8 @@
   .prompts-head{margin-top:14px}
   #prompts{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px}
   .prompt{text-align:left; font-family:var(--sans); font-size:13px; line-height:1.35; color:var(--ink-soft);
-    background:var(--bg); border:1px dashed var(--line); border-radius:2px; padding:8px 12px; cursor:pointer; transition:.15s}
+    background:var(--bg); border:1px dashed var(--line); border-radius:2px; padding:8px 12px; cursor:pointer; transition:.15s;
+    display:inline-flex; align-items:center; min-height:44px}
   .prompt:hover{border-color:var(--accent); color:var(--ink)}
   @media(max-width:640px){.say-row{flex-direction:column}}
 

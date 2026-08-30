@@ -69,19 +69,31 @@ header.bar{
   border-bottom:1px solid var(--line-soft);
 }
 .bar .wrap{display:flex; align-items:center; justify-content:space-between; height:62px}
-.mark{font-family:var(--mono); font-weight:600; letter-spacing:.02em; font-size:15px; text-decoration:none}
+.mark{font-family:var(--mono); font-weight:600; letter-spacing:.02em; font-size:15px; text-decoration:none;
+  display:inline-flex; align-items:center; min-height:44px}
 .mark b{color:var(--accent)}
 nav.links{display:flex; gap:28px}
 nav.links a{
   font-family:var(--mono); font-size:12.5px; letter-spacing:.08em;
   text-transform:uppercase; color:var(--ink-soft); text-decoration:none;
   padding:4px 0; border-bottom:1px solid transparent; transition:.18s;
+  position:relative;
+}
+/*
+ * The underline marks the current page, so it has to stay tight under the
+ * word it belongs to. Growing the box would drag it away. The hit area is
+ * expanded instead: a thumb can find it and the design cannot see it. It
+ * spans only this link's own width, so neighbouring links never overlap.
+ */
+nav.links a::after{
+  content:""; position:absolute; left:0; right:0; top:50%;
+  transform:translateY(-50%); height:44px;
 }
 nav.links a:hover,nav.links a.here{color:var(--ink); border-color:var(--accent)}
 @media(max-width:720px){nav.links{display:none}}
 
 /* mobile nav (injected by app.js) */
-.menu-btn{display:none; flex-direction:column; gap:4px; width:36px; height:32px;
+.menu-btn{display:none; flex-direction:column; gap:4px; width:44px; height:44px;
   align-items:center; justify-content:center; margin-left:auto; margin-right:10px;
   background:none; border:1px solid var(--line); border-radius:2px; cursor:pointer}
 .menu-btn span{display:block; width:16px; height:1.5px; background:var(--ink-soft); transition:.2s}
@@ -101,7 +113,8 @@ nav.links a:hover,nav.links a.here{color:var(--ink); border-color:var(--accent)}
 .theme-toggle{
   font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase;
   background:none; border:1px solid var(--line); color:var(--ink-soft);
-  padding:6px 12px; cursor:pointer; border-radius:2px;
+  padding:0 14px; cursor:pointer; border-radius:2px;
+  display:inline-flex; align-items:center; min-height:44px;
 }
 .theme-toggle:hover{border-color:var(--accent); color:var(--accent)}
 
@@ -242,14 +255,27 @@ footer{border-top:1px solid var(--line-soft); padding:56px 0 72px}
 .foot{display:flex; justify-content:space-between; align-items:flex-end; gap:30px; flex-wrap:wrap}
 .foot h2{max-width:18ch}
 .foot .meta{font-family:var(--mono); font-size:12px; color:var(--ink-faint); letter-spacing:.06em; line-height:1.9; text-align:right}
-.foot .meta a{color:var(--ink-soft); text-decoration:none}
+/*
+ * Stacked links, so the target is grown rather than merely padded. Padding
+ * with a negative margin would have kept the footer its old height and made
+ * every link overlap the one above it, which trades a target that is hard to
+ * hit for one that is easy to hit by mistake.
+ */
+.foot .meta a{color:var(--ink-soft); text-decoration:none;
+  display:inline-flex; align-items:center; min-height:44px}
 .foot .meta a:hover{color:var(--accent)}
 
 /* ---- article / case-study prose ---- */
 .article{padding:64px 0 40px}
+/*
+ * Padded rather than made taller, and pulled back by the same amount, so the
+ * space above the title does not change. Safe here in a way it is not in the
+ * footer: this link has no neighbour to overlap.
+ */
 .backlink{
   font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase;
   color:var(--ink-faint); text-decoration:none; display:inline-flex; gap:8px; align-items:center;
+  padding:13px 0; margin:-13px 0;
 }
 .backlink:hover{color:var(--accent)}
 .article-head{padding:40px 0 8px}
