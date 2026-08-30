@@ -63,7 +63,7 @@
       <span class="chip">TypeScript</span><span class="chip">Zero runtime deps</span>
       <span class="chip">Golden-file tests</span><span class="chip">Vitest</span>
       <span class="chip">axe-core</span><span class="chip">Offline PWA</span>
-      <span class="chip">Cloudflare Worker</span>
+      <span class="chip">Capacitor / Android</span><span class="chip">Verified on device</span>
     </div>
     <div class="callout" style="margin-top:30px">
       <b><a href="https://jakobs1900.github.io/markdown-storefront-builder/">Use it here</a>,
@@ -121,9 +121,12 @@
     <h2>The guards, and what they caught</h2>
     <p>
       I ran an architecture review before writing each feature and a holistic
-      review across the whole diff after. Both are committed. Five of the bugs
-      below would have shipped, and not one of them was the kind a test I had
-      already thought to write would catch.
+      review across the whole diff after. Both are committed. Every one of the
+      bugs below would have shipped, and not one of them was the kind a test I
+      had already thought to write would catch. The later ones came from
+      putting the app on a physical phone and then from someone else using it,
+      both of which have their own sections further down, because holding the
+      thing found what reading it did not.
     </p>
 
     <div class="bugs">
@@ -198,12 +201,240 @@
           one.
         </p>
       </div>
+
+      <div class="bug">
+        <div class="tag">Preparing the phone upload test &middot; accessibility</div>
+        <h4>The gate was passing on code it had never rendered</h4>
+        <p>
+          The image upload control is only built when an API key is present at
+          build time, and the test run never set one. So the accessibility gate,
+          the one thing standing between me and an unusable control, had been
+          reporting green on a component <b>it had never once put on the
+          page.</b> The moment a key existed it failed immediately: the file
+          input had no accessible name, so a screen reader met an unlabelled
+          second control for the same action. A gate that cannot fail is worse
+          than no gate, because it is also collecting trust.
+        </p>
+      </div>
+
+      <div class="bug">
+        <div class="tag">On a phone &middot; checked against the live API</div>
+        <h4>An error message that told the artist to wait forever</h4>
+        <p>
+          A refused upload showed "wait a few minutes", which is right for rate
+          limiting. I checked what a bad key actually returns instead of assuming:
+          Imgur answers <code>POST /3/image</code> with <b>429 Too Many
+          Requests</b>, byte for byte identical to a real limit, while
+          <code>/3/credits</code> answers 403 "Invalid client_id". So a build
+          with a dead key would have told every artist to be patient, on every
+          upload, forever. The two cases cannot be told apart from inside the
+          app, so the message now covers both rather than promising one.
+        </p>
+      </div>
+
+      <div class="bug">
+        <div class="tag">On a phone &middot; the Android build</div>
+        <h4>The app served itself an older copy of itself</h4>
+        <p>
+          The offline service worker earns its place on the web. Inside the
+          Android package every asset is already on local disk, so it cached
+          nothing useful and instead <b>shadowed the app's own files with the
+          previous build.</b> An install containing one bundle served the one
+          before it, and the update only appeared on a second launch. Declining
+          to register it would have fixed nothing for anyone who already had the
+          app, since the registration and its cache survive an update, so the
+          native build now tears both down. Verified by watching the handover
+          across three launches on the device.
+        </p>
+      </div>
+
+      <div class="bug">
+        <div class="tag">Reported by the owner, minutes into using it</div>
+        <h4>Typing one character closed the keyboard</h4>
+        <p>
+          Type a letter into any field and the field went away. Type the next
+          and it went away again, so the only way to enter a heading was one
+          character at a time, reopening the field between each. Two faults
+          compounding: the interface rebuilds its whole DOM on every state
+          change, and a keystroke is a state change, so the element holding the
+          caret was destroyed on every letter. Field ids came from a counter
+          that only ever climbed, so <b>nothing could find the field again
+          afterwards.</b> Fixing focus was not enough. One rebuild cost 37ms on
+          that phone and every character caused two, because reporting "Saved"
+          is also a state change, so roughly 75ms of blocked main thread per
+          key. The WebView discarded anything typed at speed:
+          <code>AriDrawsCommissions</code> arrived as <code>Ari</code>. Now
+          1.9ms, once.
+        </p>
+      </div>
+
+      <div class="bug">
+        <div class="tag">Driving the app with real taps &middot; Android</div>
+        <h4>The keyboard took the screen away twice</h4>
+        <p>
+          Opening the keyboard collapsed the usable page from 672 to <b>114 CSS
+          pixels</b>: a sliver of the form, the tab bar jumping up beneath it,
+          and a dead band the height of a second keyboard below that. Measuring
+          the native view tree showed the window resize was correct and the
+          WebView was not, by exactly the height of the keyboard:
+        </p>
+        <div class="codeblock">parent FrameLayout  [0,110][1080,1361]   1251px   correct
+WebView             [0,110][1080,452]     342px   909px short</div>
+        <p>
+          Capacitor picks its inset strategy by reading the page's own viewport
+          meta tag. Finding <code>viewport-fit=cover</code> on a recent WebView
+          it takes a branch written for Android 15, where the window is edge to
+          edge and is never resized, and pads the WebView's parent by the
+          keyboard height. <b>Unlike the branch directly below it, that one
+          carries no OS version guard.</b> On Android 10 the window had already
+          shrunk, so the keyboard came off twice. Deleting one attribute routed
+          it to the guarded branch and gave the screen back.
+        </p>
+      </div>
+
+      <div class="bug">
+        <div class="tag">Driving the app with real taps</div>
+        <h4>My own fix had missed the state he was actually in</h4>
+        <p>
+          I had already reworked the price list so a new section arrives with an
+          empty item ready to type into, verified it on the device, and reported
+          it done. His saved section held <i>zero</i> items, and a section with
+          zero items rendered no fields at all: a button offering to add
+          "another" item that did not exist, and a folded settings group.
+          <b>That is every section saved before the change, and every section
+          whose last row is deleted.</b> I had verified the fix against the
+          state I created rather than the state he was in. An empty section now
+          draws a placeholder row that joins the document the moment it is typed
+          into, so "no items" stays a state the file can honestly hold.
+        </p>
+      </div>
     </div>
 
     <p>
-      The last one is the one I would want to be asked about. No test caught it,
-      because every test I wrote encoded the same wrong assumption as the schema.
-      It took opening the thing in a browser and clicking the first button.
+      The unsaveable first run is the one I would want to be asked about. No
+      test caught it, because every test I wrote encoded the same wrong
+      assumption as the schema. It took opening the thing in a browser and
+      clicking the first button.
+    </p>
+    <p>
+      The accessibility one is the sharpest, though, and it is the reason the
+      three phone bugs are on this page at all. I had a green gate, a test
+      count, and a habit of quoting both. None of that was worth anything for
+      the control it never rendered.
+    </p>
+
+    <h2>Putting it on a real phone</h2>
+    <p>
+      The app is a Capacitor wrapper around the same code, because the web build
+      was already offline and local, so there was nothing for a native layer to
+      add except a launcher icon and a real file picker. Building an APK proves
+      almost nothing, though, and I had written exactly that in the repository:
+      it builds, nobody has ever tapped a button in it.
+    </p>
+    <p>
+      So I drove it on a Moto G7 over adb, evaluating against the WebView's own
+      debugger, and checked the whole loop an artist performs: add a section,
+      type a name, kill the app, relaunch it, and read the document back out of
+      storage. Then compile, then copy, then paste it back to prove the text
+      reached the system clipboard.
+    </p>
+    <div class="callout">
+      <b>The first result was a false alarm, and the interesting part is how I
+      knew.</b> Nothing persisted, and the obvious reading was a broken storage
+      layer on Android. Before touching the code I instrumented it: a 50ms timer
+      never fired, while promises still resolved. That is not a storage bug, it
+      is a stopped task queue. The screen had switched off, and Android freezes
+      a hidden WebView, so <code>indexedDB.open</code> was sitting there
+      returning no event at all: not success, not error, not blocked. One
+      command to wake the screen and it opened first try. I had already reported
+      it as a real defect, and had to go back and say so.
+    </div>
+    <p>
+      That is the honest shape of the work. Two of the three phone bugs above
+      were found only because the first thing I found was not a bug, and I kept
+      measuring instead of starting to fix.
+    </p>
+
+    <h2>Then the owner used it, and it was unusable</h2>
+    <p>
+      Everything above I found myself, on my own terms, with the app doing what
+      I expected. Then Jakob opened the build on his own phone and typed a
+      heading. <b>One character, and the keyboard closed.</b> His verdict was
+      that it felt obviously machine-designed, overwhelming, clunky, and
+      completely unusable. He was right on every count.
+    </p>
+    <p>
+      Five hundred and thirty tests were passing at the time. Not one of them
+      could have found it, and that is the part worth explaining, because it was
+      not bad luck. <b>Every test I had written set a field's value in a single
+      assignment and fired one event.</b> A person does not do that. The defect
+      lived entirely in the second keystroke, and my method was shaped so that a
+      second keystroke never happened. The test count was not evidence of
+      anything; it was a number I had grown used to quoting.
+    </p>
+    <div class="callout">
+      <b>A green gate that cannot see the failure is the same problem twice.</b>
+      Earlier on this page, an accessibility gate reported green on a control it
+      had never rendered. This is that shape again, in a different place: a
+      suite that could not express the thing users do. Noticing the pattern the
+      first time did not stop me shipping it the second.
+    </div>
+    <p>
+      So I stopped testing the app and started using it. I drove the real build
+      on the Moto G7 with real Android input: taps sent through adb at computed
+      screen coordinates, text through the actual keyboard, with the page
+      recording every <code>pointerdown</code> so a tap that missed was reported
+      as a broken harness rather than quietly accepted as a broken app. That
+      found <b>eight more defects in an afternoon</b>, including two the fix
+      above had left behind.
+    </p>
+    <p>
+      They were not exotic. Deleting a section was instant and irreversible from
+      a control sitting between two harmless ones, 44 pixels apart, on a phone.
+      An unfilled item pasted a row of empty cells into the artist's page. The
+      row that opened a section read "Edit" whether it was open or shut, so the
+      button offering to edit was the one that took the editor away. Empty
+      sections vanished from the preview with no explanation, which reads as the
+      tool losing them. <b>Every one of those is obvious within a minute of
+      using the app, and invisible for as long as you only run its tests.</b>
+    </p>
+    <p>
+      The tests are still worth having, and there are more of them now, written
+      to type character by character and to ask the document what is focused
+      before each key rather than holding a reference. But I would not now
+      describe a feature as done on the strength of a suite passing, and I would
+      rather say that here than let a test count on this page imply otherwise.
+    </p>
+
+    <h2>The feature I removed on purpose</h2>
+    <p>
+      Image uploading worked. The picker opened, the file decoded, the request
+      reached the host and came back. I took it out of the published build
+      anyway, and I think that is the most senior decision on this page.
+    </p>
+    <p>
+      Uploading needs an API key, and a key shipped in a public bundle is shared
+      by every artist who uses the site. It identifies the application rather
+      than a person, so nobody's uploads land in my account, but the
+      registration is mine and so is the responsibility: <b>one artist posting
+      something against the host's rules gets the whole application banned, and
+      uploads then break for every user at once.</b> The daily quota is shared
+      the same way.
+    </p>
+    <p>
+      The tidy fix, asking each artist to register their own key, is worse than
+      the problem it solves. Registering an API application is harder than
+      learning the Markdown this entire project exists to remove. So the
+      published build has no key, no upload button, and a field that tells an
+      artist where to put an image and how to get its address back. That is what
+      they already do today, and it costs nobody anything.
+    </p>
+    <p>
+      The upload path is still in the repository, still tested, and switched on
+      by supplying a key in your own build. In the published bundle it is not
+      hidden, it is <b>absent</b>: no endpoint, no key header, no image decoding,
+      verified by fetching the deployed JavaScript and searching it rather than
+      trusting the build log.
     </p>
 
     <h2>What is enforced, not merely intended</h2>
@@ -228,13 +459,30 @@
         is actually in the stylesheet. Colour contrast is switched off with the
         reason stated, because the test environment lays nothing out and the
         number would be meaningless.</li>
+      <li><b>The gate now runs against the build that ships</b>, not just the
+        richer one. Which build gets tested used to depend on an environment
+        file, so a contributor's machine and the CI checked different interfaces
+        and neither said so. Tests that care about that difference now declare
+        which build they are checking, and I confirmed the results are identical
+        with the key present and absent.</li>
+      <li><b>Typing is now tested by typing.</b> The suite enters text one
+        character at a time and asks the document what is focused before each
+        key rather than holding a reference, because holding a reference is
+        exactly the assumption that hid the worst bug on this page: the old node
+        still accepts input, it is just no longer on the page.</li>
+      <li><b>Every gate on this list was checked by breaking it.</b> Not by
+        reading it and agreeing with it. I removed the label, removed the
+        attribute, disabled the platform check, put the viewport attribute back,
+        and watched each one go red before trusting it again. That habit is what
+        turned the accessibility blind spot from a comforting green tick into a
+        finding.</li>
     </ul>
 
     <div class="stat-row">
-      <div class="s"><div class="n">529</div><div class="l">Tests</div></div>
-      <div class="s"><div class="n">0</div><div class="l">Runtime deps</div></div>
-      <div class="s"><div class="n">12 kB</div><div class="l">App, gzipped</div></div>
-      <div class="s"><div class="n">14</div><div class="l">Review findings fixed</div></div>
+      <div class="s"><div class="n">561</div><div class="l">Tests</div></div>
+      <div class="s"><div class="n">14 kB</div><div class="l">App, gzipped</div></div>
+      <div class="s"><div class="n">8</div><div class="l">Caught before users</div></div>
+      <div class="s"><div class="n">9</div><div class="l">Caught by using it</div></div>
     </div>
 
     <h2>What I would tell you in an interview</h2>
@@ -262,9 +510,11 @@
     <div class="callout" style="margin-top:34px">
       <b>Why this one is worth reading.</b> Most portfolio pieces show a working
       thing. This one shows the working thing plus the reasoning that produced
-      it, including the four times the reasoning was wrong and what caught it.
-      If you want to know how I would behave on your codebase, that is the part
-      that generalises.
+      it, including the seventeen times the reasoning was wrong, the time I
+      called something a bug and it was not, the feature I deleted after
+      building it, and the afternoon the owner told me the whole thing was
+      unusable and it was. If you want to know how I would behave on your
+      codebase, that is the part that generalises.
     </div>
   </article>
 
