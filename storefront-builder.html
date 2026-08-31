@@ -682,7 +682,51 @@ visible    ~   ^   $</div>
           model is not a feature until something in the interface reaches
           it.</b> The Build screen now carries a folded list of every saved
           page, still standing after a refusal, because that is the case it
-          exists for. It does not delete anything.
+          exists for.
+        </p>
+        <p>
+          Shipping it made the rest of the hole obvious. It was a list you could
+          switch with, could not add to except by importing a file, and could
+          never remove anything from: the function that starts a page had been
+          sitting in the store with no caller since the app shell. Both gaps
+          were named as out of scope when the list was specified, which was the
+          right call and did not make them any less missing. <b>They landed next,
+          and the rule that made them safe is that the page on screen cannot be
+          removed.</b> Deleting what somebody is looking at asks "what is open
+          now", and every answer is worse than the question: opening the next
+          page swaps their work for another document without being asked,
+          opening nothing looks exactly like the thing this project exists to
+          never do. So the open row has no remove control, and the store refuses
+          the current page whatever calls it. The last remaining page cannot be
+          removed either, which is correct.
+        </p>
+      </div>
+
+      <div class="bug">
+        <div class="tag">The gate I had just written &middot; twenty minutes later</div>
+        <h4>It failed on the markup I had written to test it</h4>
+        <p>
+          Removing a page turns its row into the question, so I extended the
+          accessibility gate to render that state, on the reasoning that a state
+          the gate never draws is the exact failure this page already documents
+          twice. Then it went red on my own markup, which had put
+          <code>role="group"</code> on a list item to label the question.
+        </p>
+        <div class="codeblock">aria-allowed-role   list</div>
+        <p>
+          Overriding a list item's role breaks the list it is in: the item stops
+          being an item, and the list stops being a list, so a screen reader
+          user loses both the count and their place in it. I moved the role to a
+          wrapper inside the item. <b>The fix was to the markup, not to the
+          test</b>, which is the whole distinction between a gate and a
+          formality.
+        </p>
+        <p>
+          Earlier on this page the same gate had been reporting green on a
+          control it never rendered, and I wrote that a gate which cannot fail
+          is worse than none because it is also collecting trust. This is what
+          the other version looks like: it could fail, it did, on code twenty
+          minutes old, written by the person who had just extended it.
         </p>
       </div>
     </div>
@@ -875,6 +919,15 @@ visible    ~   ^   $</div>
       later by whoever wonders why the list cannot delete a page. That is one
       feature, not a reformed habit, and I would rather report it that way.
     </p>
+    <p>
+      The twelfth is those two omissions, and it opens by amending a requirement
+      the eleventh had got right for a switcher and wrong for what the screen
+      became. <b>The amendment is written in the new document rather than edited
+      into the old one</b>, because a specification that quietly changes to match
+      the code is worth nothing: it stops being a thing the code is checked
+      against and becomes a description of whatever was built. That is the same
+      failure as the three comments above, wearing the costume of diligence.
+    </p>
 
     <h2>What is enforced, not merely intended</h2>
     <p>
@@ -928,7 +981,7 @@ visible    ~   ^   $</div>
     </ul>
 
     <div class="stat-row">
-      <div class="s"><div class="n">674</div><div class="l">Tests</div></div>
+      <div class="s"><div class="n">687</div><div class="l">Tests</div></div>
       <div class="s"><div class="n">14 kB</div><div class="l">App, gzipped</div></div>
       <div class="s"><div class="n">8</div><div class="l">Caught before users</div></div>
       <div class="s"><div class="n">21</div><div class="l">Caught by using it</div></div>
@@ -959,7 +1012,7 @@ visible    ~   ^   $</div>
     <div class="callout" style="margin-top:34px">
       <b>Why this one is worth reading.</b> Most portfolio pieces show a working
       thing. This one shows the working thing plus the reasoning that produced
-      it, including the thirty times the reasoning was wrong, the time I
+      it, including the thirty one times the reasoning was wrong, the time I
       called something a bug and it was not, the feature I deleted after
       building it, and the afternoon the owner told me the whole thing was
       unusable and it was. If you want to know how I would behave on your
