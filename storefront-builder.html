@@ -486,6 +486,46 @@ Build -> Preview -> Copy -> Build -> Copy  then back -> Preview</div>
           come back clean.
         </p>
       </div>
+
+      <div class="bug">
+        <div class="tag">Pasted into the real host &middot; the price bug</div>
+        <h4>An artist writing "$45" published "\$45"</h4>
+        <p>
+          The escaper backslashes every character that could begin a Markdown
+          construct. Its own comment justified the breadth: a wide list is safe,
+          and <b>the artist never reads the source.</b> Both halves were wrong.
+          The Copy screen shows them the source, it being the entire output of
+          the tool. And rentry renders with Python-Markdown, whose escapable set
+          is narrower than CommonMark's "all ASCII punctuation".
+        </p>
+        <p>
+          One paragraph per character, pasted into rentry's live preview:
+        </p>
+        <div class="codeblock">honoured   ` * _ { } [ ] ( ) # + - . ! |   and a literal backslash
+visible    ~   ^   $</div>
+        <p>
+          So a price of <code>$45</code>, the likeliest input this application
+          will ever receive, reached the artist's published page as
+          <code>\$45</code>. The fix is the answer the same file already gives
+          for <code>&lt;</code>, <code>&amp;</code> and <code>&gt;</code>: a
+          numeric character reference, which takes the character out of the
+          source entirely so no renderer can build a construct from it, while
+          every renderer displays it. Verified in the same session, including
+          that <code>&amp;#126;&amp;#126;text&amp;#126;&amp;#126;</code> stays
+          literal while a real <code>~~</code> is still struck through, so the
+          protection survives.
+        </p>
+        <p>
+          <b>The cause was a sentence, not a character.</b> The capability record
+          said escaping was standard, sourced as "documents no divergence from
+          standard escaping", which is an absence of documentation written down
+          as a presence of behaviour. The header of that very file forbids
+          exactly that: a value may not be written from assumption, and an
+          undocumented one is recorded as unknown. It is the second capability
+          in that record written that way to turn out wrong. The first was the
+          line break, four cards above.
+        </p>
+      </div>
     </div>
 
     <p>
@@ -705,10 +745,10 @@ Build -> Preview -> Copy -> Build -> Copy  then back -> Preview</div>
     </ul>
 
     <div class="stat-row">
-      <div class="s"><div class="n">625</div><div class="l">Tests</div></div>
+      <div class="s"><div class="n">647</div><div class="l">Tests</div></div>
       <div class="s"><div class="n">14 kB</div><div class="l">App, gzipped</div></div>
       <div class="s"><div class="n">8</div><div class="l">Caught before users</div></div>
-      <div class="s"><div class="n">16</div><div class="l">Caught by using it</div></div>
+      <div class="s"><div class="n">17</div><div class="l">Caught by using it</div></div>
     </div>
 
     <h2>What I would tell you in an interview</h2>
@@ -736,7 +776,7 @@ Build -> Preview -> Copy -> Build -> Copy  then back -> Preview</div>
     <div class="callout" style="margin-top:34px">
       <b>Why this one is worth reading.</b> Most portfolio pieces show a working
       thing. This one shows the working thing plus the reasoning that produced
-      it, including the twenty four times the reasoning was wrong, the time I
+      it, including the twenty five times the reasoning was wrong, the time I
       called something a bug and it was not, the feature I deleted after
       building it, and the afternoon the owner told me the whole thing was
       unusable and it was. If you want to know how I would behave on your
