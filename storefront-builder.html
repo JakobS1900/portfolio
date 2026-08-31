@@ -560,6 +560,44 @@ visible    ~   ^   $</div>
           the whole diff is for, and this change did not get one.
         </p>
       </div>
+
+      <div class="bug">
+        <div class="tag">Exercising the warnings &middot; the part that is the product</div>
+        <h4>It told the artist to fill in a section they had just filled in</h4>
+        <p>
+          Pasting an unusable image address produced two notes about the same
+          section. First <b>"one of your images does not have an http address,
+          so it has been left out"</b>, which is true and useful. Then
+          <b>"this section has nothing in it yet, fill it in and it will show
+          up"</b>, which is false, contradicts the line above it, and sends
+          someone looking for a second problem that does not exist. The preview
+          then offered two ways back to that one section, with identical labels.
+        </p>
+        <p>
+          A section that produced nothing now says so only when nothing else has
+          already explained why. Emptiness with a cause is reported as the
+          cause.
+        </p>
+        <p>
+          This came from finally exercising the warnings rather than the editor.
+          They are the product, in the sense that the compiler telling you what
+          it compromised is the thing an artist would otherwise pay someone to
+          know, and almost every check until then had been about typing,
+          layout and storage. The same pass confirmed the two hosts really do
+          diverge on the phone, rentry taking two trailing spaces where the
+          portable baseline takes a backslash, and that a
+          <code>javascript:</code> address reaches neither the preview nor the
+          pasted output.
+        </p>
+        <p>
+          <b>My first check of the fix said it had not worked.</b> It had. A
+          gallery left behind by the previous run meant I was counting notes
+          across two sections and reading it as one section repeating itself.
+          Restoring to a known document and counting by section rather than by
+          the words on the button gave the real answer. Leftover state is its
+          own way of asking a question that cannot come back right.
+        </p>
+      </div>
     </div>
 
     <p>
@@ -779,10 +817,10 @@ visible    ~   ^   $</div>
     </ul>
 
     <div class="stat-row">
-      <div class="s"><div class="n">652</div><div class="l">Tests</div></div>
+      <div class="s"><div class="n">656</div><div class="l">Tests</div></div>
       <div class="s"><div class="n">14 kB</div><div class="l">App, gzipped</div></div>
       <div class="s"><div class="n">8</div><div class="l">Caught before users</div></div>
-      <div class="s"><div class="n">18</div><div class="l">Caught by using it</div></div>
+      <div class="s"><div class="n">19</div><div class="l">Caught by using it</div></div>
     </div>
 
     <h2>What I would tell you in an interview</h2>
@@ -810,7 +848,7 @@ visible    ~   ^   $</div>
     <div class="callout" style="margin-top:34px">
       <b>Why this one is worth reading.</b> Most portfolio pieces show a working
       thing. This one shows the working thing plus the reasoning that produced
-      it, including the twenty six times the reasoning was wrong, the time I
+      it, including the twenty seven times the reasoning was wrong, the time I
       called something a bug and it was not, the feature I deleted after
       building it, and the afternoon the owner told me the whole thing was
       unusable and it was. If you want to know how I would behave on your
