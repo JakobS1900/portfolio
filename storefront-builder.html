@@ -404,6 +404,58 @@ section that already has a row       1 node,  0 swaps  0 of 8 dropped</div>
           assumption.
         </p>
       </div>
+
+      <div class="bug">
+        <div class="tag">Opening it on a desktop &middot; caused by an earlier fix</div>
+        <h4>Every form quietly undid the field before it</h4>
+        <p>
+          Type an item name, move to the price, and the name reverted. Typing the
+          same two fields on the deployed app with different pauses between them
+          puts the cause beyond argument:
+        </p>
+        <div class="codeblock">pause   0ms -> {"name":"seed","price":"120"}              the name was lost
+pause 120ms -> {"name":"seed","price":"120"}              lost
+pause 250ms -> {"name":"Full colour bust","price":"120"}  kept</div>
+        <p>
+          The boundary is exactly the repaint delay, which is where it came from.
+          Repaints wait for a pause in typing, so between keystrokes the controls
+          on screen are older than the document. Every handler was built during
+          the last render and closed over the section as it was then, so a second
+          handler rebuilt the section from a stale copy and reinstated what the
+          first had changed. <b>It was not confined to prices: all five section
+          kinds lost data the same way.</b> Handlers now read the section as it
+          is at the moment they run.
+        </p>
+        <p>
+          Silent data loss in every form in the application, caused by the fix
+          for the typing bug two cards above, and found because I noticed a
+          screenshot showing an empty field I had just typed into. No test
+          caught it. There are five now.
+        </p>
+      </div>
+
+      <div class="bug">
+        <div class="tag">Asked where the desktop version was</div>
+        <h4>Nobody had ever opened it on a computer, including me</h4>
+        <p>
+          Every test I had run was at phone width or on the phone itself. Asked
+          where the PC version was, I opened the URL that had been live for two
+          weeks. <b>The navigation bar was sitting in the middle of the page</b>,
+          below the editor: it is the last element in the document, which is
+          right while it is pinned to the bottom of a phone and wrong the moment
+          the wide-screen rule makes it static. Text fields ran 1088 pixels wide.
+        </p>
+        <p>
+          And the wide-screen rules in both the stylesheet and the shell were
+          introduced as "Build beside Preview, since there is room to see both".
+          <b>There was no split view and there never had been.</b> Two files had
+          described an intention as though it shipped, which is exactly why
+          nobody went looking for it, the same failure as the corpus test above.
+          It exists now, and it is the one thing a desktop offers that a phone
+          cannot: watching the page take shape without switching away from what
+          you are typing.
+        </p>
+      </div>
     </div>
 
     <p>
@@ -539,6 +591,41 @@ section that already has a row       1 node,  0 swaps  0 of 8 dropped</div>
       trusting the build log.
     </p>
 
+    <h2>Three comments that stopped anyone looking</h2>
+    <p>
+      The same failure happened three times in this project, and it is the one I
+      would most want to be asked about, because it is not a coding mistake. It
+      is a documentation habit that disables the person who comes next.
+    </p>
+    <ul>
+      <li><b>"The XSS corpus test asserts exactly that."</b> Written at the top
+        of the only file that can turn text into a live address. There was no
+        such test, and nothing anywhere imported the file.</li>
+      <li><b>"Build beside Preview, since there is room to see both."</b>
+        Introducing the wide-screen rules in two separate files. There was no
+        split view in either of them.</li>
+      <li><b>"Read the current plan."</b> The project's own instructions sent
+        every new session to a plan finished a month and thirty five commits
+        earlier, so each one began by reading a description of work already
+        done.</li>
+    </ul>
+    <p>
+      None of these was a lie anyone told on purpose. Each was an intention
+      written in the present tense and then left there. <b>The cost is specific:
+      a claim that sounds like a guarantee is a reason not to check, so the
+      thing it describes goes unexamined for exactly as long as the comment
+      survives.</b> A missing comment leaves you curious. A confident wrong one
+      leaves you satisfied.
+    </p>
+    <p>
+      All three are corrected, and the correction is not "delete the claim". Two
+      of them are now true, because the test and the split view were built. The
+      third names the gap it used to hide: the specification pipeline covers the
+      first three features and stops, everything after that shipped without one,
+      and the index says so on its front page rather than making a reader work
+      it out from the file listing.
+    </p>
+
     <h2>What is enforced, not merely intended</h2>
     <p>
       A project of this size accumulates good intentions. These are the ones
@@ -567,6 +654,13 @@ section that already has a row       1 node,  0 swaps  0 of 8 dropped</div>
         and neither said so. Tests that care about that difference now declare
         which build they are checking, and I confirmed the results are identical
         with the key present and absent.</li>
+      <li><b>The storage layer is tested against a real IndexedDB.</b> It had no
+        tests at all until the review that produced this section, despite being
+        the module the project's own constitution guards most closely. Sixteen
+        now, including the promise that a page this version cannot parse still
+        comes back byte for byte. Confirmed they bite by storing the parsed
+        object instead of the exact text, which is the shortcut that rule exists
+        to forbid.</li>
       <li><b>Typing is now tested by typing.</b> The suite enters text one
         character at a time and asks the document what is focused before each
         key rather than holding a reference, because holding a reference is
@@ -581,10 +675,10 @@ section that already has a row       1 node,  0 swaps  0 of 8 dropped</div>
     </ul>
 
     <div class="stat-row">
-      <div class="s"><div class="n">596</div><div class="l">Tests</div></div>
+      <div class="s"><div class="n">623</div><div class="l">Tests</div></div>
       <div class="s"><div class="n">14 kB</div><div class="l">App, gzipped</div></div>
       <div class="s"><div class="n">8</div><div class="l">Caught before users</div></div>
-      <div class="s"><div class="n">12</div><div class="l">Caught by using it</div></div>
+      <div class="s"><div class="n">15</div><div class="l">Caught by using it</div></div>
     </div>
 
     <h2>What I would tell you in an interview</h2>
@@ -612,7 +706,7 @@ section that already has a row       1 node,  0 swaps  0 of 8 dropped</div>
     <div class="callout" style="margin-top:34px">
       <b>Why this one is worth reading.</b> Most portfolio pieces show a working
       thing. This one shows the working thing plus the reasoning that produced
-      it, including the twenty times the reasoning was wrong, the time I
+      it, including the twenty three times the reasoning was wrong, the time I
       called something a bug and it was not, the feature I deleted after
       building it, and the afternoon the owner told me the whole thing was
       unusable and it was. If you want to know how I would behave on your
