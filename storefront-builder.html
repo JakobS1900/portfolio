@@ -929,6 +929,101 @@ visible    ~   ^   $</div>
       failure as the three comments above, wearing the costume of diligence.
     </p>
 
+    <h2>Then I built a whole shop with it, and published it</h2>
+    <p>
+      Everything above was found by using the app on small pages. The obvious
+      next question was whether it could carry a real one, so I authored a
+      complete storefront: twelve sections, three price tables with a photograph
+      and a specification list per item, a gallery, shipping bands, returns,
+      warranty, and terms. Then I published it to
+      <a href="https://rentry.co/q7nyo28n">rentry</a> and read the page back to
+      count what the host had actually built from it.
+    </p>
+    <div class="codeblock">headings   9 asked,  9 built     bullets  22 asked, 22 built
+tables     4 asked,  4 built     bold     12 asked, 12 built
+rows      14 asked, 14 built     links     5 asked,  5 built
+images    13 asked, 13 built</div>
+    <p>
+      Seventy nine of seventy nine. Every price legible, no stray escape
+      characters and no entity codes visible to a reader. <b>That is the
+      compiler's whole thesis, tested on a real host with a real page for the
+      first time</b>, and it held.
+    </p>
+    <p>
+      It also found four things, and one of them mattered. <b>The output carried
+      74 backslashes and not one of them was necessary.</b> The tagline read
+      <code>Small\-batch everyday carry\. Machined in Sheffield\.</code> Every
+      full stop and hyphen in the page was escaped, in the middle of sentences,
+      where neither can begin anything.
+    </p>
+    <div class="callout">
+      <b>This is the same lesson, learned twice, in the same file.</b> When
+      <code>$45</code> published as <code>\$45</code>, I narrowed the escape set
+      to what rentry's renderer <i>consumes</i>. The question I did not ask was
+      the other one: which of these characters needs escaping at all, and where.
+      A hash only makes a heading at the start of a line. A full stop only
+      continues a list after digits. Round brackets only mean anything inside an
+      address the compiler writes itself. The original comment defended the
+      breadth as safe, and it was safe, and it was also 36 backslashes of noise
+      on the one screen the whole product exists to fill.
+    </div>
+    <p>
+      The escaper is now position-aware, and the storefront compiles to
+      <b>zero backslashes</b>. The golden files were regenerated as the evidence:
+      36 escapes removed, and every character that can still do damage kept its
+      count exactly. Then the narrowed output went back up to the same rentry
+      page and was read back again, because that renderer's behaviour is known
+      here by experiment and not by documentation.
+    </p>
+    <p>
+      <b>The tests caught a hole in my reasoning before it shipped.</b> I had
+      dropped the exclamation mark from the set, arguing that an image needs
+      <code>![</code> and that <code>[</code> is always escaped. True of anything
+      the artist types, and false of the brackets the compiler writes itself for
+      a link it has accepted, so <code>![alt](url)</code> in a paragraph became a
+      real embedded image. "X is always escaped" was true of one code path and
+      false of another, and the reasoning never asked which path wrote the
+      bracket. It is escaped at that one seam now, and the specification records
+      the correction rather than being quietly edited to match the code.
+    </p>
+    <p>
+      Two assertions had to change, and neither was relaxed. Both were proxies
+      that had become cruder than the property they stood for: they searched for
+      the substring <code>](</code> and found it inside <code>\](</code>, which
+      is not a link because the bracket beside it is escaped. They now assert the
+      property itself, that no unescaped <code>](</code> exists anywhere.
+    </p>
+
+    <h2>And then on a desktop, for the first time</h2>
+    <p>
+      The app had been driven on a phone for weeks and opened on a computer
+      exactly once, by me, in a hurry, which is how the navigation bar was found
+      sitting in the middle of the page. Every claim about the wide layout since
+      then rested on a test environment that lays nothing out at all.
+    </p>
+    <p>
+      So I drove real Chrome over the same debugger protocol used for the phone,
+      at four window sizes, against the build as it stands rather than the
+      deployed copy. The split view appears at 1024 and above and collapses
+      below it; the tab bar sits at the top of a wide window and pins to the
+      bottom of a narrow one; nothing scrolls sideways at any width; the
+      storefront opens with all twelve sections and renders 13 images and 4
+      tables into the preview pane beside the editor. Typed character by
+      character, nothing was dropped and focus was never lost. The Copy screen
+      matched the engine to the byte. <b>No console errors of any kind.</b>
+    </p>
+    <div class="callout warn">
+      <b>The first desktop run reported a mismatch, and it was right to.</b> The
+      output was eight characters longer than the engine produced, which is
+      exactly the eight doubled full stops from a defect fixed two commits
+      earlier: I was testing the deployed site, which was behind. Pointing it at
+      the current build gave a byte-for-byte match. The second run found the same
+      thing again, and that time the cause was a stale bundler cache serving a
+      transform of engine source that had since changed. Both were the check
+      doing its job on the wrong artifact, and both would have read as a bug in
+      the app if I had stopped at the first number.
+    </div>
+
     <h2>What is enforced, not merely intended</h2>
     <p>
       A project of this size accumulates good intentions. These are the ones
@@ -981,10 +1076,10 @@ visible    ~   ^   $</div>
     </ul>
 
     <div class="stat-row">
-      <div class="s"><div class="n">687</div><div class="l">Tests</div></div>
+      <div class="s"><div class="n">731</div><div class="l">Tests</div></div>
       <div class="s"><div class="n">14 kB</div><div class="l">App, gzipped</div></div>
       <div class="s"><div class="n">8</div><div class="l">Caught before users</div></div>
-      <div class="s"><div class="n">21</div><div class="l">Caught by using it</div></div>
+      <div class="s"><div class="n">25</div><div class="l">Caught by using it</div></div>
     </div>
 
     <h2>What I would tell you in an interview</h2>
@@ -1012,7 +1107,7 @@ visible    ~   ^   $</div>
     <div class="callout" style="margin-top:34px">
       <b>Why this one is worth reading.</b> Most portfolio pieces show a working
       thing. This one shows the working thing plus the reasoning that produced
-      it, including the thirty one times the reasoning was wrong, the time I
+      it, including the thirty four times the reasoning was wrong, the time I
       called something a bug and it was not, the feature I deleted after
       building it, and the afternoon the owner told me the whole thing was
       unusable and it was. If you want to know how I would behave on your
