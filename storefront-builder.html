@@ -634,6 +634,57 @@ visible    ~   ^   $</div>
           exactly one handset.
         </p>
       </div>
+
+      <div class="bug">
+        <div class="tag">Verifying the hardest promise &middot; on the device</div>
+        <h4>It refused the damaged page correctly, and left nowhere to go</h4>
+        <p>
+          The constitution's strongest rule is that a page this version cannot
+          read is not opened, not repaired and not deleted, and that the exact
+          bytes come back on request. It had unit tests and it had never once
+          been seen happen on a phone, which is the only place the recovery has
+          to travel through a native file handoff that was itself broken until
+          this week. So I planted a record holding a value the schema refuses,
+          gave it a newer timestamp so the app would open it at launch, and
+          restarted the app.
+        </p>
+        <p>
+          Every part of it was right. The refusal was announced as an alert, it
+          said nothing had been changed, it offered to save exactly what was
+          stored, the file arrived through the native handoff <b>byte for byte
+          identical</b> to the damaged record, and the artist's own page was
+          untouched at three sections. Then I asked the only question left:
+          what can they actually do from that screen.
+        </p>
+        <div class="codeblock">any way in the interface to choose a different saved page: false</div>
+        <p>
+          Storage had been multi-page since the app shell was built. Every page
+          has its own id, and the code to open one by id had been there and
+          working the entire time. <b>Nothing in the interface had ever let
+          anyone choose one.</b> The app opens whichever page has the newest
+          timestamp, and a refused page keeps the newest timestamp forever, so
+          it is what opens at every launch from then on, with the artist's real
+          page sitting behind it, intact, saved, and unreachable.
+        </p>
+        <p>
+          Importing a backup had quietly made that routine rather than rare.
+          Opening a file deliberately creates a new page so that the wrong file
+          cannot destroy the right one, which is correct, and which stranded the
+          previous page every single time. <b>Two behaviours that are each
+          right on their own, composing into a dead end.</b> Neither one is a
+          bug in the place you would go looking.
+        </p>
+        <p>
+          It is also the second time on this page that a capability existed with
+          no way to reach it: a backup button with no importer, and now many
+          saved pages with no way to open one. Both lived in the storage layer
+          and nowhere else, which is the blind spot worth naming. <b>A data
+          model is not a feature until something in the interface reaches
+          it.</b> The Build screen now carries a folded list of every saved
+          page, still standing after a refusal, because that is the case it
+          exists for. It does not delete anything.
+        </p>
+      </div>
     </div>
 
     <p>
@@ -680,6 +731,19 @@ visible    ~   ^   $</div>
       were found only because the first thing I found was not a bug, and I kept
       measuring instead of starting to fix.
     </p>
+    <div class="callout">
+      <b>I made this exact mistake again, on this exact cause, after publishing
+      the paragraph above.</b> Verifying the page switcher weeks later, four
+      device runs in a row hung partway through. I wrote a retry. Then I found a
+      plausible race in the debugger connection and fixed that too. Both were
+      guesses and both were wrong. The harness scrolls a control into view and
+      waits two animation frames before tapping it, a sleeping WebView produces
+      no frames, and the phone had dozed off exactly as it had the first time.
+      One command said so: <code>mWakefulness=Dozing</code>. Knowing a failure
+      mode, writing it down, and publishing it did not stop me spending forty
+      minutes rediscovering it. What worked was what worked before: stop
+      fixing, go and measure.
+    </div>
 
     <h2>Then the owner used it, and it was unusable</h2>
     <p>
@@ -803,6 +867,14 @@ visible    ~   ^   $</div>
       and the index says so on its front page rather than making a reader work
       it out from the file listing.
     </p>
+    <p>
+      Naming a gap is cheaper than closing one, so it is worth saying which
+      happened. <b>The eleventh feature is the first since the engine to have
+      its specification written before its code</b>, including the two things it
+      deliberately leaves out, which are named there rather than discovered
+      later by whoever wonders why the list cannot delete a page. That is one
+      feature, not a reformed habit, and I would rather report it that way.
+    </p>
 
     <h2>What is enforced, not merely intended</h2>
     <p>
@@ -825,7 +897,10 @@ visible    ~   ^   $</div>
         that no placeholder stands in for a label, that the touch target minimum
         is actually in the stylesheet. Colour contrast is switched off with the
         reason stated, because the test environment lays nothing out and the
-        number would be meaningless.</li>
+        number would be meaningless. It now also renders the page switcher,
+        which only exists when a second page is saved: a gate that never draws a
+        control is the exact failure this page already documents, and knowing
+        that is only worth something if it changes what gets written next.</li>
       <li><b>The gate now runs against the build that ships</b>, not just the
         richer one. Which build gets tested used to depend on an environment
         file, so a contributor's machine and the CI checked different interfaces
@@ -853,10 +928,10 @@ visible    ~   ^   $</div>
     </ul>
 
     <div class="stat-row">
-      <div class="s"><div class="n">662</div><div class="l">Tests</div></div>
+      <div class="s"><div class="n">674</div><div class="l">Tests</div></div>
       <div class="s"><div class="n">14 kB</div><div class="l">App, gzipped</div></div>
       <div class="s"><div class="n">8</div><div class="l">Caught before users</div></div>
-      <div class="s"><div class="n">20</div><div class="l">Caught by using it</div></div>
+      <div class="s"><div class="n">21</div><div class="l">Caught by using it</div></div>
     </div>
 
     <h2>What I would tell you in an interview</h2>
@@ -884,7 +959,7 @@ visible    ~   ^   $</div>
     <div class="callout" style="margin-top:34px">
       <b>Why this one is worth reading.</b> Most portfolio pieces show a working
       thing. This one shows the working thing plus the reasoning that produced
-      it, including the twenty eight times the reasoning was wrong, the time I
+      it, including the thirty times the reasoning was wrong, the time I
       called something a bug and it was not, the feature I deleted after
       building it, and the afternoon the owner told me the whole thing was
       unusable and it was. If you want to know how I would behave on your
