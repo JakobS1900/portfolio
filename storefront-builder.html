@@ -346,6 +346,64 @@ section that already has a row       1 node,  0 swaps  0 of 8 dropped</div>
           in any of them.
         </p>
       </div>
+
+      <div class="bug">
+        <div class="tag">On the phone &middot; the button that lied</div>
+        <h4>Both save buttons did nothing, and one said it had worked</h4>
+        <p>
+          A <code>download</code> attribute on an anchor is the whole story in a
+          browser and does nothing at all inside a WebView, which ignores a
+          <code>blob:</code> link unless the native side handles it. Nothing
+          did. Pressing both export buttons produced no file in Downloads, none
+          in shared storage, none in the app's own sandbox, and nothing in the
+          system log. <b>The app announced "Downloaded a backup" anyway.</b>
+        </p>
+        <p>
+          That button exists to rescue someone's only copy of their page, so it
+          was the worst thing on the page to be wrong about, and the same code
+          backed the recovery button for a page that cannot be opened at all.
+          Neither web escape hatch was available: <code>navigator.share</code>
+          is absent in this WebView, and <code>showSaveFilePicker</code> exists
+          but rejects instantly without showing anything, which is worse than
+          being absent.
+        </p>
+        <p>
+          So the shell writes the file into its own directory, which needs no
+          permission, and offers it through the file provider the manifest
+          already declared. Android's share sheet decides where it goes, and no
+          dependency was added. The page now reports what happened rather than
+          assuming: a bridge that returns an error, or throws, counts as
+          failure and says so.
+        </p>
+      </div>
+
+      <div class="bug">
+        <div class="tag">Reviewing the code afterwards</div>
+        <h4>The one file that could produce an executable address had no test</h4>
+        <p>
+          The preview renderer turns compiled Markdown into DOM. It is the only
+          place in the application that builds an <code>href</code> or a
+          <code>src</code> out of text, so it is the only place an artist's
+          words could become something a browser acts on. It had <b>no test at
+          all</b>: nothing anywhere imported it. Its own comment said "the XSS
+          corpus test asserts exactly that". There was no such test.
+        </p>
+        <p>
+          The design did hold, for a reason worth stating. The link pattern
+          needs <code>](</code> adjacent, and the escaper turns an artist's
+          parentheses into escaped ones, so a refused link arrives as
+          <code>\[click\]\(javascript:...</code> and the backslash between them
+          stops the match. True, and <b>load-bearing while living in a different
+          module with nothing asserting it.</b> Breaking that coupling on
+          purpose produced seven live <code>javascript:</code> addresses.
+        </p>
+        <p>
+          The scheme is now checked where the value is used, as well as where it
+          is produced. Breaking the coupling again now produces nothing, so the
+          two defences are independent rather than one defence and one
+          assumption.
+        </p>
+      </div>
     </div>
 
     <p>
@@ -523,10 +581,10 @@ section that already has a row       1 node,  0 swaps  0 of 8 dropped</div>
     </ul>
 
     <div class="stat-row">
-      <div class="s"><div class="n">565</div><div class="l">Tests</div></div>
+      <div class="s"><div class="n">596</div><div class="l">Tests</div></div>
       <div class="s"><div class="n">14 kB</div><div class="l">App, gzipped</div></div>
       <div class="s"><div class="n">8</div><div class="l">Caught before users</div></div>
-      <div class="s"><div class="n">10</div><div class="l">Caught by using it</div></div>
+      <div class="s"><div class="n">12</div><div class="l">Caught by using it</div></div>
     </div>
 
     <h2>What I would tell you in an interview</h2>
@@ -554,7 +612,7 @@ section that already has a row       1 node,  0 swaps  0 of 8 dropped</div>
     <div class="callout" style="margin-top:34px">
       <b>Why this one is worth reading.</b> Most portfolio pieces show a working
       thing. This one shows the working thing plus the reasoning that produced
-      it, including the eighteen times the reasoning was wrong, the time I
+      it, including the twenty times the reasoning was wrong, the time I
       called something a bug and it was not, the feature I deleted after
       building it, and the afternoon the owner told me the whole thing was
       unusable and it was. If you want to know how I would behave on your
