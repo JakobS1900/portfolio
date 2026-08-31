@@ -526,6 +526,40 @@ visible    ~   ^   $</div>
           line break, four cards above.
         </p>
       </div>
+
+      <div class="bug">
+        <div class="tag">Four hours later &middot; caused by the card above</div>
+        <h4>The fix broke the screen whose entire job is telling the truth</h4>
+        <p>
+          Moving three characters to numeric references stopped rentry
+          publishing <code>\$45</code> and started the preview showing the
+          artist <code>&amp;#36;45</code>. The preview renders the compiled
+          output, so anything the compiler does for the host's benefit has to be
+          undone there. It knew three named entities and nothing else.
+        </p>
+        <p>
+          <b>The principle it broke is the one this project is built on.</b> The
+          preview exists to show what the host will actually produce, which is
+          why it renders compiled output rather than an internal picture of the
+          document. A preview showing plumbing is a preview lying, and it had
+          been live for four hours.
+        </p>
+        <p>
+          Two things the fix had to get right, both now tested rather than
+          asserted in a comment. Decoding a reference cannot produce markup:
+          every result goes into a text node, so a decoded <code>&lt;</code> is
+          a less-than sign and never the start of a tag. And <code>&amp;amp;</code>
+          is decoded last, mirroring the escaper encoding it first, so an artist
+          who literally types <code>&amp;#36;</code> still sees
+          <code>&amp;#36;</code> rather than a dollar sign.
+        </p>
+        <p>
+          I found it before it reached the phone, by asking what the preview
+          did with the new output instead of assuming a change to the escaper
+          stayed in the escaper. That question is what a holistic review across
+          the whole diff is for, and this change did not get one.
+        </p>
+      </div>
     </div>
 
     <p>
@@ -745,10 +779,10 @@ visible    ~   ^   $</div>
     </ul>
 
     <div class="stat-row">
-      <div class="s"><div class="n">647</div><div class="l">Tests</div></div>
+      <div class="s"><div class="n">652</div><div class="l">Tests</div></div>
       <div class="s"><div class="n">14 kB</div><div class="l">App, gzipped</div></div>
       <div class="s"><div class="n">8</div><div class="l">Caught before users</div></div>
-      <div class="s"><div class="n">17</div><div class="l">Caught by using it</div></div>
+      <div class="s"><div class="n">18</div><div class="l">Caught by using it</div></div>
     </div>
 
     <h2>What I would tell you in an interview</h2>
@@ -776,7 +810,7 @@ visible    ~   ^   $</div>
     <div class="callout" style="margin-top:34px">
       <b>Why this one is worth reading.</b> Most portfolio pieces show a working
       thing. This one shows the working thing plus the reasoning that produced
-      it, including the twenty five times the reasoning was wrong, the time I
+      it, including the twenty six times the reasoning was wrong, the time I
       called something a bug and it was not, the feature I deleted after
       building it, and the afternoon the owner told me the whole thing was
       unusable and it was. If you want to know how I would behave on your
