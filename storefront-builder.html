@@ -456,6 +456,36 @@ pause 250ms -> {"name":"Full colour bust","price":"120"}  kept</div>
           you are typing.
         </p>
       </div>
+
+      <div class="bug">
+        <div class="tag">Back on the phone &middot; found in a fix I had called verified</div>
+        <h4>My verification relaunched the app between every case</h4>
+        <p>
+          Back had been made to return to the previous screen instead of closing
+          the app, and I had checked it: from Preview it went to Build, from Copy
+          it went to Build, from Build it left. Every one of those was true.
+          Walking the paths a person actually walks, without restarting in
+          between, was not:
+        </p>
+        <div class="codeblock">Build -> Preview -> Copy                   then back -> Preview
+Build -> Preview -> Copy -> Build -> Copy  then back -> Preview</div>
+        <p>
+          I had pushed a history entry for every move, which gives plain browser
+          semantics: back retraces. That is right for pages and wrong for a tab
+          bar whose first screen is Build, and the stack grew without limit, so
+          toggling tabs ten times took ten presses to leave the app. At most one
+          entry now exists beyond the first screen.
+        </p>
+        <p>
+          <b>The interesting part is not the bug, it is that my check could not
+          have caught it.</b> Relaunching between cases reset the history every
+          time, so the state the defect lives in was destroyed before each
+          measurement. Each case passed honestly and the sequence was never
+          tested. That is the same failure as a suite that sets a field's value
+          in one assignment: not a wrong answer, a question that could only ever
+          come back clean.
+        </p>
+      </div>
     </div>
 
     <p>
@@ -675,10 +705,10 @@ pause 250ms -> {"name":"Full colour bust","price":"120"}  kept</div>
     </ul>
 
     <div class="stat-row">
-      <div class="s"><div class="n">623</div><div class="l">Tests</div></div>
+      <div class="s"><div class="n">625</div><div class="l">Tests</div></div>
       <div class="s"><div class="n">14 kB</div><div class="l">App, gzipped</div></div>
       <div class="s"><div class="n">8</div><div class="l">Caught before users</div></div>
-      <div class="s"><div class="n">15</div><div class="l">Caught by using it</div></div>
+      <div class="s"><div class="n">16</div><div class="l">Caught by using it</div></div>
     </div>
 
     <h2>What I would tell you in an interview</h2>
@@ -706,7 +736,7 @@ pause 250ms -> {"name":"Full colour bust","price":"120"}  kept</div>
     <div class="callout" style="margin-top:34px">
       <b>Why this one is worth reading.</b> Most portfolio pieces show a working
       thing. This one shows the working thing plus the reasoning that produced
-      it, including the twenty three times the reasoning was wrong, the time I
+      it, including the twenty four times the reasoning was wrong, the time I
       called something a bug and it was not, the feature I deleted after
       building it, and the afternoon the owner told me the whole thing was
       unusable and it was. If you want to know how I would behave on your
