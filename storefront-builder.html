@@ -584,9 +584,12 @@ visible    ~   ^   $</div>
           They are the product, in the sense that the compiler telling you what
           it compromised is the thing an artist would otherwise pay someone to
           know, and almost every check until then had been about typing,
-          layout and storage. The same pass confirmed the two hosts really do
+          layout and storage. The same pass confirmed the two hosts really did
           diverge on the phone, rentry taking two trailing spaces where the
-          portable baseline takes a backslash, and that a
+          portable baseline took a backslash. That divergence is gone now, and
+          not because it was papered over: verifying a third host later proved
+          the portable baseline had been the wrong one, and it moved to rentry's
+          form. The same pass also confirmed that a
           <code>javascript:</code> address reaches neither the preview nor the
           pasted output.
         </p>
@@ -1204,6 +1207,113 @@ first screen                    10 controls, all reachable, no scrolling</div>
       the feature. Both were found by building it.
     </p>
 
+    <h2>He asked for the feature I had talked him out of</h2>
+    <p>
+      Three weeks earlier I had offered quantity break pricing, one for twenty,
+      five for ninety, and he chose something simpler. I wrote down why: a
+      nested structure inside every item, more fields to fill in on a phone, and
+      a table that has to degrade on hosts without tables. I argued that a
+      second row reading "Bananas, 5 lb" said the same thing with nothing new
+      to learn, and I put that in the specification as a decision rather than a
+      gap.
+    </p>
+    <p>
+      Then he used it, and asked for it again. <b>The substitute I had relied on
+      does not work, and using it is the only way that was ever going to
+      surface.</b> A sibling row does not read as the same item at a different
+      quantity. It reads as a second product, because that is what a row in a
+      price list means. The seller has to repeat every detail on both rows or
+      leave the second one looking half finished.
+    </p>
+    <div class="callout">
+      <b>The specification argues with the old one rather than replacing it.</b>
+      The passage declining the feature is still there, quoted, followed by what
+      changed and why the original reasoning was sound and still lost. A
+      document that silently edits itself to agree with the code has stopped
+      being a thing the code is checked against. This is the third feature here
+      to work that way.
+    </div>
+    <p>
+      He also described a layout, and rather than implement a description I
+      built three of them as real Markdown, published them to the host, and
+      asked him to choose from output. That surfaced a cost neither of us had
+      said out loud: a table per item destroys the single price column a
+      customer reads down to compare things. He picked the one that survives a
+      host with no table support, which degrades to a heading and a list, over
+      the one closest to his description, which degrades to a list whose first
+      entry looks like a mistake.
+    </p>
+    <p>
+      <b>The new layout is conditional, and that is the whole design.</b> It
+      applies only to a section where somebody actually priced by quantity. An
+      artist selling three commission tiers would pay both of its costs, the
+      lost price column and twelve items becoming twelve tables, and get nothing
+      back. So they do not pay them: their section compiles to exactly the bytes
+      it did before, which the golden files check rather than assert.
+    </p>
+
+    <h2>"Works anywhere" worked on none of them</h2>
+    <p>
+      He wanted more hosts: text.is, ghostbin, pastebin, plain Markdown files.
+      Two of those do not exist as targets. ghostbin returns 502 on every
+      attempt to publish, so its behaviour is recoverable only from archived
+      source, and this project's rule is that a capability is observed or it is
+      not recorded. pastebin puts Markdown behind a paid tier, with the option
+      sitting in the form marked <code>disabled</code>.
+    </p>
+    <p>
+      text.is is real, and the research told me it runs the same engine as
+      rentry. Copying rentry's values across was one edit away and would have
+      passed every test I had.
+    </p>
+    <div class="callout warn">
+      <b>They are not the same host.</b> Driving text.is's own renderer, one
+      line per character: a backslash fails to escape three characters on rentry
+      and one here. And a trailing backslash, which rentry merely ignores, is
+      <i>destructive</i> on text.is. It consumes the newline and the space that
+      would have joined the two lines, so "each." and "Refunds" publish as
+      "each.Refunds". A family resemblance is not an observation.
+    </div>
+    <p>
+      That finding then reached backwards into a decision made months earlier.
+      The portable baseline, the one named "works anywhere" and used for any
+      host this build does not know, emitted the CommonMark backslash for a hard
+      line break. rentry swallows it. text.is destroys it.
+      <b>It was a working line break on none of the three hosts I have ever
+      verified, only on the specification.</b> Two trailing spaces are equally
+      valid CommonMark and worked on every renderer I probed, so that is what it
+      emits now.
+    </p>
+    <p>
+      Three existing tests asserted the old behaviour, one of them named for a
+      property I was about to break: that no line ends in whitespace. That was a
+      deliberate choice, not an accident, and it is a real cost, because an
+      editor stripping trailing whitespace silently removes the break. I kept
+      the property and narrowed it to lines that are not deliberate breaks, and
+      rewrote each test to argue with its earlier reasoning instead of quietly
+      flipping. The cost is named in the commit: this form loses a line break,
+      where the old one loses the space between two words on a live page.
+    </p>
+    <div class="callout">
+      <b>The fix I planned would have been worse than the bug.</b> The
+      Markdown file download handed over whatever host was selected, so saving a
+      file while rentry was picked gave you rentry's dialect. A file is not a
+      host: it goes to GitHub, to Obsidian, to a text editor. The fix was to
+      compile it portable, and that reasoning is still right. But portable was
+      emitting the exact hard break form that text.is destroys, so shipping the
+      planned fix alone would have handed him a file that breaks on the host the
+      same release added.
+    </div>
+    <p>
+      And then I wrote five tests for that download, and three of them were
+      worthless. Now that every shipped host emits identical bytes, "the file
+      matches the portable output" passes no matter which target the button
+      picked. <b>I kept them and wrote the limitation at the top of the file</b>
+      rather than deleting them or letting them look like proof, because they
+      become load bearing the moment a host diverges again, which has now
+      happened twice.
+    </p>
+
     <h2>What is enforced, not merely intended</h2>
     <p>
       A project of this size accumulates good intentions. These are the ones
@@ -1256,10 +1366,10 @@ first screen                    10 controls, all reachable, no scrolling</div>
     </ul>
 
     <div class="stat-row">
-      <div class="s"><div class="n">761</div><div class="l">Tests</div></div>
+      <div class="s"><div class="n">822</div><div class="l">Tests</div></div>
       <div class="s"><div class="n">14 kB</div><div class="l">App, gzipped</div></div>
       <div class="s"><div class="n">8</div><div class="l">Caught before users</div></div>
-      <div class="s"><div class="n">28</div><div class="l">Caught by using it</div></div>
+      <div class="s"><div class="n">30</div><div class="l">Caught by using it</div></div>
     </div>
 
     <h2>What I would tell you in an interview</h2>
@@ -1271,23 +1381,35 @@ first screen                    10 controls, all reachable, no scrolling</div>
     </p>
     <p>
       That changed when I finally pasted real output into rentry, and it changed
-      because the paste found a bug. They now differ on exactly one thing, the
-      hard line break, and that difference exists because the renderer disagreed
-      with the specification, not because it was designed in. Everything else in
-      the current section types still renders the same on both.
+      because the paste found a bug: the two hosts came to differ on the hard
+      line break, because the renderer disagreed with the specification.
     </p>
     <p>
-      What I would still tell you: one genuine divergence is a thin proof for an
-      architecture this deliberate. The payoff arrives with a third host, or
-      with a section type that uses rentry's own extensions. The machinery is
-      right and it is not yet earning its keep, and I would rather say that than
-      let a diagram imply otherwise.
+      I then wrote, in this section, that one divergence was thin proof and that
+      <i>the payoff arrives with a third host</i>. The third host arrived. It did
+      the opposite of what I predicted.
+    </p>
+    <p>
+      <b>Verifying text.is collapsed the divergence instead of widening it.</b>
+      It revealed that the portable baseline had been wrong all along, on a
+      construct rentry had already flagged and I had fixed in only one place. All
+      three hosts now produce byte identical output again, which is exactly what
+      I said I would not manufacture a difference to avoid.
+    </p>
+    <p>
+      So the honest position is unchanged and better evidenced: the
+      compatibility machinery is still mostly proved by synthetic hosts in the
+      tests, and it is still not earning its keep. What the real hosts have
+      proved is narrower and more useful than a diagram would be. Every
+      capability on every host now cites the observation it came from, with the
+      transcripts checked in, because the values nobody checked were the ones
+      that were wrong.
     </p>
 
     <div class="callout" style="margin-top:34px">
       <b>Why this one is worth reading.</b> Most portfolio pieces show a working
       thing. This one shows the working thing plus the reasoning that produced
-      it, including the thirty eight times the reasoning was wrong, the time I
+      it, including the forty three times the reasoning was wrong, the time I
       called something a bug and it was not, the feature I deleted after
       building it, and the afternoon the owner told me the whole thing was
       unusable and it was. If you want to know how I would behave on your
