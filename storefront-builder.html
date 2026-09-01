@@ -1019,10 +1019,23 @@ images    13 asked, 13 built</div>
       exactly the eight doubled full stops from a defect fixed two commits
       earlier: I was testing the deployed site, which was behind. Pointing it at
       the current build gave a byte-for-byte match. The second run found the same
-      thing again, and that time the cause was a stale bundler cache serving a
-      transform of engine source that had since changed. Both were the check
-      doing its job on the wrong artifact, and both would have read as a bug in
-      the app if I had stopped at the first number.
+      thing again, and both would have read as a bug in the app if I had stopped
+      at the first number.
+    </div>
+    <div class="callout warn">
+      <b>I wrote the cause of that second one down here, and it was wrong.</b> I
+      said a stale bundler cache. It came back a day later, so I ran the
+      experiment instead of guessing: change one line, build, compare the output
+      hash. From PowerShell the bundle changes. From the Git Bash shell it does
+      not, silently, with the build reporting nothing amiss. This project's own
+      instructions have said for weeks that every npm command has to run from
+      PowerShell, because the msys2 shell picks up a different npm cache. I had
+      read that rule, written half of it, and then broken it repeatedly while
+      diagnosing the symptom it causes.
+      <b>Two false diagnoses, one published on this page, from not following a
+      rule I already knew.</b> The correction is here rather than in place
+      because a page about claims that stopped people looking should not quietly
+      edit its own.
     </div>
 
     <h2>What is enforced, not merely intended</h2>
@@ -1077,7 +1090,7 @@ images    13 asked, 13 built</div>
     </ul>
 
     <div class="stat-row">
-      <div class="s"><div class="n">731</div><div class="l">Tests</div></div>
+      <div class="s"><div class="n">741</div><div class="l">Tests</div></div>
       <div class="s"><div class="n">14 kB</div><div class="l">App, gzipped</div></div>
       <div class="s"><div class="n">8</div><div class="l">Caught before users</div></div>
       <div class="s"><div class="n">25</div><div class="l">Caught by using it</div></div>
@@ -1108,7 +1121,7 @@ images    13 asked, 13 built</div>
     <div class="callout" style="margin-top:34px">
       <b>Why this one is worth reading.</b> Most portfolio pieces show a working
       thing. This one shows the working thing plus the reasoning that produced
-      it, including the thirty four times the reasoning was wrong, the time I
+      it, including the thirty six times the reasoning was wrong, the time I
       called something a bug and it was not, the feature I deleted after
       building it, and the afternoon the owner told me the whole thing was
       unusable and it was. If you want to know how I would behave on your
