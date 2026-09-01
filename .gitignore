@@ -13,3 +13,5 @@ dist/
 # gstack browse tool artifacts
 .gstack/
 .gstack-shots/
+# Editor backups. One was swept into a commit by git add -A.
+*.bak-*
