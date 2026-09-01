@@ -1038,6 +1038,172 @@ images    13 asked, 13 built</div>
       edit its own.
     </div>
 
+    <h2>The worst bug in the project came back, quieter</h2>
+    <p>
+      He installed it on a second phone, a Pixel, and reported that single
+      characters were going missing while he typed. Not every time. And whole
+      words coming out wrong when he swiped.
+    </p>
+    <p>
+      The keyboard no longer closed, which was the defect from three weeks
+      earlier, so this was the same seam failing in a way that is easy to
+      dismiss as a bad keyboard or a slow phone.
+    </p>
+    <div class="callout warn">
+      <b>The guard was checked when a repaint was scheduled, and never when it
+      ran.</b> A change made while a field has focus is deferred rather than
+      painted, so the field is not taken away mid-keystroke. Two hundred
+      milliseconds later it painted regardless, rebuilt the DOM, destroyed the
+      focused input, and Android tore down the InputConnection bound to it. A
+      character committed in that window had nowhere to land.
+    </div>
+    <p>
+      That timing is the whole explanation, including the part that sounds like
+      two separate bugs. A fifth of a second is nothing while thinking of the
+      next word, so tapping keys only lost a character sometimes. <b>A swipe
+      gesture commits nothing until it ends</b>, so it is a second or more with
+      no events at all, the timer always fires inside one, and the repaint then
+      writes the document back over a word the document has never been told
+      about. Swiping was not a second bug. It was the same one, made certain.
+    </p>
+    <p>
+      The reproduction is four lines: focus a field, put a character in it,
+      wait, and ask whether it is still the same element. It was not, and a
+      field holding <code>lmao</code> came back holding <code>lm</code>. That
+      test fails on the old code and passes on the new.
+    </p>
+    <p>
+      <b>My first fix did not work, and the reason mattered more than the fix.</b>
+      I put the guard at the other end of the same timer and the characters kept
+      going. Every other path into a state change repaints immediately, and one
+      of them fires at exactly the wrong moment: the first save of a new page
+      re-reads the page list, which repaints, which rebuilds the interface under
+      the field. <b>I had added that path four days earlier.</b> So the guard
+      went into the one function every repaint passes through, because a rule
+      enforced at each caller is a rule that lasts until the next caller.
+    </p>
+    <div class="callout">
+      <b>What I could not prove, and said so.</b> The device harness types by
+      injecting finished text through adb, and that skips the composing buffer
+      this bug lives in: it typed ten characters out of ten even on the broken
+      build. So I tested a proxy it could see. Typing into a heading on the old
+      build, the summary line above the field updated <i>while the keyboard was
+      still up</i>: the rebuild, visible on screen. On the fixed build it stays
+      put until you leave the field. Same phone, same steps, both builds. That
+      proves the mechanism and not the dropped character, and the difference is
+      worth keeping straight.
+    </div>
+
+    <h2>Undo, instead of asking</h2>
+    <p>
+      Three weeks ago a mis-tap deleted one of his sections and I added a
+      confirmation: "Delete Prices? This cannot be undone", with Keep offered
+      first. I have now taken it out.
+    </p>
+    <p>
+      Nielsen Norman Group's position is that a confirmation is the wrong tool
+      for anything reversible, because people automate their answer to it. It
+      gets clicked through unread, so it taxes every deliberate removal and
+      still does not prevent the accidental one. Material draws the same line.
+      Removing a section is an object in memory and an array splice; it was
+      permanent only because nothing had been built to remember it.
+    </p>
+    <p>
+      <b>The mis-tap was real and the confirmation was the wrong fix for it.</b>
+      Measuring the row on the phone it was built for, the three controls sat
+      four pixels apart, one of them the destructive one. That is the defect. It
+      is eight pixels between the arrows and twelve before remove now, and that
+      is what actually prevents the accident.
+    </p>
+    <p>
+      Removing takes effect at once and leaves an offer where the section was,
+      restoring contents and position rather than appending a blank one at the
+      end. It does not expire, because an undo that vanishes after four seconds
+      while somebody is scrolled elsewhere is a safety net that is not there
+      when it is reached for. Removing a <i>page</i> still asks: that is deleted
+      from storage rather than held in memory, and can carry a hundred sections.
+    </p>
+    <p>
+      The specification for it argues with the earlier one rather than replacing
+      it quietly, which is the rule the eleventh and twelfth features already
+      follow. A document that changes to match the code has stopped being
+      something the code is checked against.
+    </p>
+
+    <h2>Measuring an interface instead of having opinions about it</h2>
+    <p>
+      Asked whether the thing was actually pleasant to use, I had a research
+      agent pull published guidance with citations, and separately measured what
+      the interface costs at 360 by 720, the phone it was built on. Opinions
+      about usability are cheap. These are countable.
+    </p>
+    <div class="codeblock">opening a price section   7 fields rendered,  0 visible without scrolling
+gap between move and remove                  4px, 4px
+first screen                    10 controls, all reachable, no scrolling</div>
+    <p>
+      The first line is the one that would irritate a real person every single
+      time. Pressing Open rendered seven fields and put none of them on screen,
+      so the control looked like it had not worked and the remedy was to guess
+      that you should scroll. It is six of seven now, and it was wrong on both
+      routes in: pressing Open, and adding a section, which selects what it
+      adds. The first measurement only caught one of them.
+    </p>
+    <p>
+      Three decisions came back vindicated by sources rather than by taste,
+      which is worth as much as the defects. <b>The up and down arrows are the
+      normatively correct pattern</b>, not a compromise: WCAG 2.2's dragging
+      criterion uses this exact case as its worked example, and a drag-handle
+      list would fail it. Labels above fields rather than placeholders is
+      settled. And the copy button already did the thing the research says
+      matters most on Android: it selects the text first, announces success in a
+      live region, and on failure says so rather than showing a false "Copied".
+    </p>
+
+    <h2>Then he used it as a merchant, and the format was too small</h2>
+    <p>
+      "If they are selling food, one pound of bananas for twenty dollars." An
+      item was a name and a price, which is enough to sell a drawing, because a
+      drawing is one thing and the price is for all of it. <b>Twenty dollars of
+      bananas is not a price until you know it buys a pound.</b>
+    </p>
+    <p>
+      A unit and a variation were both expressible already, by writing them into
+      the item's name or its description, which makes them prose rather than
+      data: they cannot be a column, they cannot be consistent between items,
+      and they read as an afterthought because they are one.
+    </p>
+    <div class="codeblock">| Item       | Price        | Details                       |
+| Bananas    | $20 per lb   | Origin: Ecuador               |
+| Bananas    | $90 per 5 lb | Bulk: save $10                |
+| Pixel 6a   | $180 each    | Colour: black, Storage: 128GB |
+| Consulting | ask per hour |                               |</div>
+    <p>
+      Quantity-break pricing was offered and deliberately not taken. It is a
+      nested structure, several more fields on every item, and a table that has
+      to degrade on hosts without tables, and a second row reading "Bananas,
+      5 lb" says the same thing with nothing new to learn. That is in the
+      specification as a decision, not left as a gap for somebody to infer.
+    </p>
+    <div class="callout">
+      <b>The contract landed alone, and the guard fired on it.</b> This schema
+      crosses the engine, the app, the browser's storage and the export file, so
+      the project's oldest rule is that it changes first, by itself, before
+      anything reads it. The parity test failed on the change, which is it
+      working, and the regenerated snapshot is twenty two lines added with
+      nothing removed or altered. <b>Every golden file stayed byte
+      identical</b>, which is the evidence that a page using neither new field
+      compiles to exactly what it compiled to the day before.
+    </div>
+    <p>
+      Adding a column that appears only when it is used made it obvious that the
+      column already there did not. "What you get" was unconditional, so a
+      greengrocer listing weights and prices got a column of nothing on every
+      row: precisely the cost the image column has always been conditional to
+      avoid. And putting a unit after a price exposed <code>$ 20 per lb</code>,
+      a space in the one place a price should not have one. Neither of those was
+      the feature. Both were found by building it.
+    </p>
+
     <h2>What is enforced, not merely intended</h2>
     <p>
       A project of this size accumulates good intentions. These are the ones
@@ -1090,10 +1256,10 @@ images    13 asked, 13 built</div>
     </ul>
 
     <div class="stat-row">
-      <div class="s"><div class="n">741</div><div class="l">Tests</div></div>
+      <div class="s"><div class="n">761</div><div class="l">Tests</div></div>
       <div class="s"><div class="n">14 kB</div><div class="l">App, gzipped</div></div>
       <div class="s"><div class="n">8</div><div class="l">Caught before users</div></div>
-      <div class="s"><div class="n">25</div><div class="l">Caught by using it</div></div>
+      <div class="s"><div class="n">28</div><div class="l">Caught by using it</div></div>
     </div>
 
     <h2>What I would tell you in an interview</h2>
@@ -1121,7 +1287,7 @@ images    13 asked, 13 built</div>
     <div class="callout" style="margin-top:34px">
       <b>Why this one is worth reading.</b> Most portfolio pieces show a working
       thing. This one shows the working thing plus the reasoning that produced
-      it, including the thirty six times the reasoning was wrong, the time I
+      it, including the thirty eight times the reasoning was wrong, the time I
       called something a bug and it was not, the feature I deleted after
       building it, and the afternoon the owner told me the whole thing was
       unusable and it was. If you want to know how I would behave on your
