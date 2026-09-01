@@ -1314,6 +1314,136 @@ first screen                    10 controls, all reachable, no scrolling</div>
       happened twice.
     </p>
 
+    <h2>Being the customer, instead of asking whether it was good</h2>
+    <p>
+      Asked how complete the thing really was, I could have answered from the
+      test count. Instead I built two whole shops with it, as two people who are
+      not me: an illustrator selling commissions, and someone selling 3D prints,
+      which is the same shape of problem as Lego or supplements. Then I opened
+      it at phone width and counted what a stranger pays to use it.
+    </p>
+    <p>
+      An hour of that found six defects. Every one of them had been shipped, and
+      several had been shipped past me twice.
+    </p>
+    <div class="callout warn">
+      <b>The artist's email address silently vanished.</b> A contact link was
+      refused for not starting with http, and the LABEL survived, so the page
+      published a bullet reading "Email" that did nothing at all. Worse than
+      leaving it out, because it reads as the seller's mistake rather than the
+      tool's rule. The comment in the code justified refusing <code>mailto:</code>
+      on the grounds that nothing produced one. The first person to use the
+      thing produced one.
+    </div>
+    <p>
+      The 3D print shop announced <b>"Commissions are OPEN"</b> on its second
+      line, for a business that does not take commissions, because the wording
+      was written when the only customer was an artist. Its price list showed
+      "&pound;18 each" above "from 25 per model", with the currency on one line
+      and not the next, because the rule only priced a string that was purely a
+      number and "from 25" is one of the commonest ways there is to write a
+      price. The seller's own portrait was the one image on the page with empty
+      alt text.
+    </p>
+    <p>
+      <b>Two were worse than cosmetic, and both were my own inconsistency.</b>
+      Removing a section was undoable, because I had built that deliberately
+      three weeks earlier. Removing a product was instant and permanent. That is
+      exactly backwards: a shop has three sections and thirty products, and a
+      product holds a name, a price, a unit, a bulk table, several details and
+      an image address. Sections could be reordered and products could not, so
+      moving a bestseller to the top of a twenty item list meant deleting it and
+      retyping it, into the deletion that could not be undone.
+    </p>
+    <p>
+      And the first control on the page was a dropdown asking where the page
+      would be pasted. That question cannot be answered by someone who has just
+      arrived: they have made nothing to paste and have no reason to know what
+      rentry is. It also did nothing visible, because everything it affects is
+      on another tab, so the control that changed the most gave the least
+      feedback. It now sits on the Copy tab, above the output it rewrites and
+      the steps it rewrites.
+    </p>
+    <div class="callout">
+      <b>Writing the test for my own fix found a hole in it.</b> Addresses are
+      normalised before being checked, so a control character cannot hide
+      <code>javascript:</code>. That same strip turned
+      <code>mailto:has space@example.com</code> into something that passed, and
+      the space was then percent encoded into a clickable link to a mangled
+      address. A contact address must now not merely survive normalising, it
+      must not have needed it.
+    </div>
+
+    <h2>Four changes in a row broke no existing test</h2>
+    <p>
+      That is not the reassurance it sounds like. It is a coverage report.
+    </p>
+    <p>
+      Row removal had never been tested at that level, which is how it shipped
+      with no undo. The host picker's position was never asserted, so moving it
+      out of the header was invisible to the suite. The file download had no
+      test over the export surface at all, which is how it came to hand over
+      host-specific output. In each case the green suite was telling me the
+      truth about the code it covered and nothing about the code it did not.
+    </p>
+    <p>
+      <b>The tests I wrote for the download were themselves worthless, and I
+      kept them anyway with the reason written at the top.</b> Since every
+      shipped host now emits identical bytes, "the file matches the portable
+      output" passes whichever host the button picks. It cannot fail today. It
+      becomes load bearing the moment a host diverges again, which has already
+      happened twice, and saying so in the file is worth more than deleting
+      three tests or letting them look like proof.
+    </p>
+    <p>
+      One of the new tests then failed for a reason worth keeping: it hard coded
+      the default host, and the store is module state that outlives a single
+      test, so it passed or failed depending on which test ran before it. It
+      reads the target now.
+    </p>
+
+    <h2>The migration the mechanism had waited three versions for</h2>
+    <p>
+      The last gap was that a product could have one photograph. A print or a
+      knife wants a front, a back and a detail, and the gallery is a separate
+      section with no way to say which product a picture belongs to.
+    </p>
+    <p>
+      That is a schema change, and this schema crosses the engine, the app, the
+      browser's storage and the export file. <b>So it landed alone, and the
+      compiler deliberately went on showing only the first image.</b> That
+      sounds like a wasted commit and is the opposite: it means every golden
+      file had to stay byte identical, so any movement in them would have been a
+      defect rather than a feature. The rendering followed separately.
+    </p>
+    <div class="callout">
+      <b>This was the first migration the project has ever run.</b> The
+      mechanism was built at version 1 with nothing to migrate, on the argument
+      that it could not be added later: by the time a second version exists
+      there are already pages saved by a build that had no migration path, and
+      those pages cannot be reached retroactively. That argument was made
+      months ago and just got cashed, and the four steps written in that comment
+      are the four steps I followed.
+    </div>
+    <p>
+      Both guards fired: the parity snapshot, and a test asserting that no
+      migration had ever existed. The snapshot diff is three lines, the field
+      name, its type and the version number. A version 1 picture becomes the
+      first entry of the list, an item that had none gains nothing, and an
+      emptied field left as an empty string gains nothing either, because absent
+      and empty must not both be able to mean the same thing when the round trip
+      depends on telling them apart.
+    </p>
+    <p>
+      Several pictures now earn an item its own block, which is the rule
+      quantity pricing already follows and for the same reason: a table cell
+      cannot hold a row of images and stay readable on a phone. One picture
+      still fits a column, so an artist with a single sample image sees no
+      change at all. <b>The alt text counts the pictures that survived rather
+      than the ones entered</b>, so a refused address cannot leave the page
+      promising three images and showing two.
+    </p>
+
     <h2>What is enforced, not merely intended</h2>
     <p>
       A project of this size accumulates good intentions. These are the ones
@@ -1366,10 +1496,10 @@ first screen                    10 controls, all reachable, no scrolling</div>
     </ul>
 
     <div class="stat-row">
-      <div class="s"><div class="n">822</div><div class="l">Tests</div></div>
+      <div class="s"><div class="n">896</div><div class="l">Tests</div></div>
       <div class="s"><div class="n">14 kB</div><div class="l">App, gzipped</div></div>
       <div class="s"><div class="n">8</div><div class="l">Caught before users</div></div>
-      <div class="s"><div class="n">30</div><div class="l">Caught by using it</div></div>
+      <div class="s"><div class="n">38</div><div class="l">Caught by using it</div></div>
     </div>
 
     <h2>What I would tell you in an interview</h2>
@@ -1409,7 +1539,7 @@ first screen                    10 controls, all reachable, no scrolling</div>
     <div class="callout" style="margin-top:34px">
       <b>Why this one is worth reading.</b> Most portfolio pieces show a working
       thing. This one shows the working thing plus the reasoning that produced
-      it, including the forty three times the reasoning was wrong, the time I
+      it, including the forty nine times the reasoning was wrong, the time I
       called something a bug and it was not, the feature I deleted after
       building it, and the afternoon the owner told me the whole thing was
       unusable and it was. If you want to know how I would behave on your
