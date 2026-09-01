@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Work With Me - Jakob S.</title>
+<link rel="stylesheet" href="styles.css">
+<meta name="description" content="Fixed-price red-teaming for LLM features: can user text move your score, what can the model call, what happens to what it returns. Built on an open-source harness I wrote and published, including its own failure modes.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Work With Me - Jakob S.">
+<meta property="og:description" content="Fixed-price red-teaming for LLM features: can user text move your score, what can the model call, what happens to what it returns. Built on an open-source harness I wrote and published, including its own failure modes.">
+<meta property="og:url" content="https://jakobs1900.github.io/portfolio/work-with-me.html">
+<meta property="og:image" content="https://jakobs1900.github.io/portfolio/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<script>(function(){try{var t=localStorage.getItem('jsz-theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" href="index.html">jakob<b>.</b>s</a>
+    <nav class="links">
+      <a href="work-with-me.html" class="here">Work With Me</a>
+      <a href="index.html#work">Selected Work</a>
+      <a href="security.html">Security</a>
+      <a href="index.html#approach">Approach</a>
+      <a href="#start">Start</a>
+    </nav>
+    <button class="theme-toggle" onclick="toggleTheme()">Theme</button>
+  </div>
+</header>
+
+<main>
+  <section class="hero" style="padding-bottom:40px">
+    <div class="wrap">
+      <a class="backlink" href="index.html">&larr; Back</a>
+      <div class="eyebrow" style="margin-top:28px">
+        <span class="rule"></span>
+        <span class="readout">LLM security &middot; Fixed price</span>
+      </div>
+      <h1 class="title" style="max-width:21ch">You shipped an AI feature. Do you know what it can be talked into?</h1>
+      <p class="lede">
+        If user text reaches a model that produces a score, makes a decision, or
+        is allowed to call a tool, then your users can write directly to the
+        thing that decides. Most teams have never tested that surface, because
+        the tooling to test it barely exists. I wrote some of it. unbudged is on
+        PyPI, MIT, and it documents its own blind spots in the readme rather
+        than pretending it has none.
+      </p>
+      <div class="cta-row">
+        <a class="btn solid" href="#offers">See the packages &rarr;</a>
+        <a class="btn" href="https://github.com/JakobS1900/unbudged">Read the source first</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="offers" style="padding-top:64px">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="readout accent">01 &middot; Packages</span>
+          <h2 style="margin-top:14px">Fixed price. Written scope. No hourly surprises.</h2>
+        </div>
+        <p>Every package below has a fixed fee, a stated turnaround, and a
+          written list of what is not included. You will know the number before
+          I start.</p>
+      </div>
+
+      <div class="work">
+        <article class="card">
+          <span class="idx">01</span>
+          <div class="kind">Start here &middot; 5 to 8 business days</div>
+          <h3>LLM Feature Red-Team</h3>
+          <p>For a feature where user text reaches a model that produces a score,
+            makes a decision, or can call a tool. Three questions, answered with
+            evidence: can input move the outcome further than length alone
+            accounts for, what is the model actually authorized to call or spend,
+            and what happens to what it returns. You get every payload that moved
+            the number, a scored write-up, and a regression harness you keep and
+            can run in CI after I leave.</p>
+          <div class="stack">
+            <span class="chip">Prompt injection</span><span class="chip">Tool authority</span>
+            <span class="chip">Output handling</span><span class="chip">CI harness you keep</span>
+          </div>
+          <div class="price">
+            <span class="amt">$2,500</span>
+            <span class="was">then $4,000</span>
+          </div>
+          <div class="price-note">Founding rate, first three engagements. Scoped and fixed in writing before any work starts.</div>
+          <a class="btn solid" style="margin-top:18px" href="mailto:jakob.stanfield@ras-software.com?subject=LLM%20Feature%20Red-Team&amp;body=What%20the%20LLM%20feature%20does%3A%0ADoes%20it%20produce%20a%20score%20or%20a%20decision%3F%0ACan%20the%20model%20call%20tools%20or%20write%20to%20anything%3F%0AWhere%20does%20its%20output%20go%3F%0ADeadline%2C%20if%20any%3A">Scope a red-team &rarr;</a>
+        </article>
+
+        <article class="card">
+          <span class="idx">02</span>
+          <div class="kind">Whole app &middot; 5 business days</div>
+          <h3>Production Readiness Review</h3>
+          <p>The broader one. Your whole application against the published
+            fourteen-point checklist below, which includes the LLM surface but
+            does not go as deep on it. Written report where every finding carries
+            a reproduction path and a specific fix, all fourteen items scored
+            including the passes, and a prioritized plan with effort estimates. I
+            do not change your code in this package.</p>
+          <div class="stack">
+            <span class="chip">1 repo</span><span class="chip">Up to ~25k LOC</span>
+            <span class="chip">Recorded walkthrough</span><span class="chip">14 days of Q&amp;A</span>
+          </div>
+          <div class="price">
+            <span class="amt">$1,500</span>
+            <span class="was">then $2,500</span>
+          </div>
+          <div class="price-note">Founding rate, first five engagements. Not a fake discount, it ends at five.</div>
+          <a class="btn solid" style="margin-top:18px" href="mailto:jakob.stanfield@ras-software.com?subject=Production%20Readiness%20Review&amp;body=App%20URL%3A%0ARepo%20(language%20%2B%20rough%20size)%3A%0AWhat%20worries%20you%20most%3A%0ADeadline%2C%20if%20any%3A">Book a review &rarr;</a>
+        </article>
+
+        <article class="card">
+          <span class="idx">03</span>
+          <div class="kind">Deadline work &middot; 5 business days</div>
+          <h3>Security Questionnaire Response Pack</h3>
+          <p>An enterprise customer sent you a two hundred row security
+            spreadsheet and your deal is sitting behind it. I go through your
+            actual system, answer the questions truthfully, flag the ones where
+            the honest answer is currently no, and give you the shortest path to
+            turning those into a yes.</p>
+          <div class="stack">
+            <span class="chip">Vendor DD</span><span class="chip">Truthful answers</span>
+            <span class="chip">Gap list</span><span class="chip">Remediation order</span>
+          </div>
+          <div class="price"><span class="amt">$2,000</span></div>
+          <div class="price-note">Answers what is true today. This is not a compliance certification.</div>
+          <a class="btn solid" style="margin-top:18px" href="mailto:jakob.stanfield@ras-software.com?subject=Security%20Questionnaire%20Response%20Pack&amp;body=Who%20sent%20the%20questionnaire%3A%0AHow%20many%20questions%3A%0AWhen%20is%20it%20due%3A%0AStack%20summary%3A">Get it answered &rarr;</a>
+        </article>
+
+        <article class="card">
+          <span class="idx">04</span>
+          <div class="kind">Free &middot; 15 minutes, recorded</div>
+          <h3>Risk Teardown</h3>
+          <p>Not sure any of this applies to you. I record a short video walking
+            through your live app from the outside, name the top five things I
+            would look at first, and send it over. No call, no pitch attached.
+            If it turns out you are in good shape, I will say so and that is the
+            end of it.</p>
+          <div class="stack">
+            <span class="chip">No cost</span><span class="chip">No call required</span>
+            <span class="chip">Written permission first</span>
+          </div>
+          <div class="price"><span class="amt">Free</span><span class="was">10 slots</span></div>
+          <div class="price-note">Capped at ten, and I publish only the ones I am given permission to publish.</div>
+          <a class="btn" style="margin-top:18px" href="mailto:jakob.stanfield@ras-software.com?subject=Free%20Risk%20Teardown&amp;body=App%20URL%3A%0AI%20confirm%20I%20own%20or%20am%20authorized%20to%20request%20review%20of%20this%20application%3A%20yes%2Fno%0AMay%20I%20publish%20the%20teardown%3F%20yes%2Fno%2Fanonymized">Request a teardown &rarr;</a>
+        </article>
+      </div>
+
+      <div class="gate" style="margin-top:26px">
+        <b>If the report finds nothing rated Medium or above, you pay nothing.</b>
+        I would rather hand back an empty report and a refund than pad a list to
+        justify an invoice. The severity rubric I grade against is published
+        below, so you can hold me to it rather than take my word for it.
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="redteam">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="readout accent">02 &middot; The red-team, specifically</span>
+          <h2 style="margin-top:14px">Three questions, answered with evidence.</h2>
+        </div>
+        <p>This is the deep version of items 13 and 14 below, and it is the work
+          almost nobody else is selling with a public tool behind it.</p>
+      </div>
+
+      <div class="diff" style="grid-template-columns:1fr">
+        <div class="col" style="padding:0">
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">Q1</span><h3>Can user text move the number?</h3></div>
+            <p class="fc-them">I run your scorer against a corpus of known injection
+              payloads across seven families. Every probe is measured against a
+              neutral control string of exactly the same character length, because
+              appending anything at all nudges a scorer that reacts to length. Only
+              the excess over that control counts. Without the control this test
+              flags healthy systems and is worthless, which is why most informal
+              versions of it are.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">Q2</span><h3>What is the model actually allowed to do?</h3></div>
+            <p class="fc-them">Every tool, function and integration the model can
+              reach, and what each one can read, write, delete or spend. The common
+              finding is not an exotic jailbreak. It is a tool that was scoped for a
+              trusted caller and then wired to a model that takes instructions from
+              strangers.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">Q3</span><h3>What happens to what it returns?</h3></div>
+            <p class="fc-them">Model output rendered as HTML, passed to a shell,
+              used as a database identifier, or trusted as a routing decision. This
+              is the 2026 version of an injection bug and it is consistently the
+              least-defended part of an LLM feature.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">OUT</span><h3>What you keep</h3></div>
+            <p class="fc-me">A written report with every payload that moved the
+              score and by how much, the tool-authority map, and a <b>regression
+              harness wired into your test suite</b> so a future change that
+              reopens the hole fails CI instead of shipping. That harness is yours,
+              it is MIT, and it works after I am gone.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout" style="margin-top:28px">
+        <b>What this cannot tell you.</b> The harness compares against a fixed
+        corpus, so a clean run is a statement about those payloads and not proof
+        your feature is unbudgeable. It has a documented false-negative mode: a
+        scorer that penalises off-topic padding can mask a real injection, and there
+        is a worked example in the readme of a target that is genuinely injectable
+        and gets a clean result. It handles one turn, not a conversation. I would
+        rather you read that before hiring me than discover it afterwards.
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="checklist">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="readout accent">03 &middot; What gets checked</span>
+          <h2 style="margin-top:14px">The whole checklist, published.</h2>
+        </div>
+        <p>This is the scope of the Production Readiness Review. Most reviews keep
+          the checklist private so the scope can move after you pay. Mine is here.
+          Fourteen items, each scored with a written justification, whether it
+          passes or not.</p>
+      </div>
+
+      <div class="diff" style="grid-template-columns:1fr">
+        <div class="col" style="padding:0">
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">01</span><h3>Authentication</h3></div>
+            <p class="fc-them">Password hashing, session lifetime, refresh handling, lockout on repeated failure, second factor where it matters.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">02</span><h3>Authorization, IDOR and tenant isolation</h3></div>
+            <p class="fc-them">Whether a valid login can reach a record it does not own by changing a number in a URL, and whether one customer can see another customer's data.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">03</span><h3>Secrets and key handling</h3></div>
+            <p class="fc-them">Where keys live, what scope they carry, whether any of them reached a place the browser can read. I check the built bundle, not just the source.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">04</span><h3>Injection and SSRF</h3></div>
+            <p class="fc-them">Query construction, template rendering, and anywhere the server can be talked into fetching a URL an attacker chose.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">05</span><h3>File upload handling</h3></div>
+            <p class="fc-them">Type checked by real file signature rather than filename, size ceilings, storage location, and whether an upload can ever be served back as executable.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">06</span><h3>Rate limiting and abuse</h3></div>
+            <p class="fc-them">What one determined script costs you, on both the bill and the availability side. Cost ceilings on anything that fans out to a paid API.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">07</span><h3>Dependencies and supply chain</h3></div>
+            <p class="fc-them">Known advisories, pinning, install scripts, and whether anything in the tree is unmaintained enough to be a future problem.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">08</span><h3>Client bundle exposure and API over-fetch</h3></div>
+            <p class="fc-them">What the frontend is handed that it never displays. An endpoint returning the whole user row so the UI can show a name is a leak with a nice coat on.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">09</span><h3>Logging and PII</h3></div>
+            <p class="fc-them">Whether personal data ends up in plain text in a log, and which third-party dashboard it gets shipped to on the way.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">10</span><h3>Backups, migrations and rollback</h3></div>
+            <p class="fc-them">Whether a backup exists, whether it has ever been restored, and whether a bad deploy can be reversed without losing the last hour of customer data.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">11</span><h3>Error handling</h3></div>
+            <p class="fc-them">What a stack trace tells a stranger, what fails open that should fail closed, and what happens when a dependency you do not control stops answering.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">12</span><h3>CI and deploy gates</h3></div>
+            <p class="fc-them">Whether anything actually blocks a bad change from reaching production, or whether the pipeline is a formality that goes green regardless.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">13</span><h3>Prompt-injection surface and tool authority</h3></div>
+            <p class="fc-them">If user text reaches a model: whether that text can move a score or a decision, and exactly what the model is allowed to call, write or spend on its own.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">14</span><h3>LLM output handling</h3></div>
+            <p class="fc-them">What you do with what the model returns. Model output rendered as HTML, passed to a shell, or trusted as a database identifier is the 2026 version of an injection bug.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="rubric">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="readout accent">04 &middot; How findings are graded</span>
+          <h2 style="margin-top:14px">Severity, in writing, before you hire me.</h2>
+        </div>
+        <p>Severity is exploitability multiplied by blast radius. Publishing the
+          rubric is the point: it is what stops me inflating a report, and it is
+          what the no-findings refund is measured against.</p>
+      </div>
+
+      <div class="diff" style="grid-template-columns:1fr">
+        <div class="col" style="padding:0">
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">CRIT</span><h3>Critical</h3></div>
+            <p class="fc-them"><b>Reachable by an unauthenticated stranger, and it exposes or destroys data across every account.</b> Live secret in the client bundle. Public endpoint that returns any user's records. Fix before the next deploy.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">HIGH</span><h3>High</h3></div>
+            <p class="fc-them"><b>Needs a valid login or a specific condition, then crosses a trust boundary.</b> A logged-in user reaching another tenant's records. Unbounded spend on a paid API. Fix this sprint.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">MED</span><h3>Medium</h3></div>
+            <p class="fc-them"><b>Real, with a precondition or a limited blast radius.</b> PII in logs, a known advisory in a dependency you actually call, a missing rate limit on a cheap endpoint. Fix this quarter.</p>
+          </div>
+          <div class="fc">
+            <div class="fc-head"><span class="fc-n">LOW</span><h3>Low</h3></div>
+            <p class="fc-them"><b>Hardening and hygiene.</b> Worth doing, not worth waking anyone up for. Grouped in the report rather than itemized, so the list stays honest about what actually matters.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout" style="margin-top:28px">
+        <b>Why the free-if-clean offer is safe to make.</b> It sounds like it
+        creates an incentive to inflate. It does the opposite, because the rubric
+        above is public and every finding has to carry a reproduction path a
+        second engineer could follow. If I grade something Medium that is plainly
+        Low, you can see it. I also publish the known false negative in my own
+        open-source tool rather than quietly hoping nobody notices, which is the
+        same instinct pointed at my own work.
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="not-included">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="readout accent">05 &middot; What this is not</span>
+          <h2 style="margin-top:14px">The exclusions, up front.</h2>
+        </div>
+        <p>Fixed price only works if both sides know where the edges are. These
+          are written into the engagement, not discovered halfway through it.</p>
+      </div>
+
+      <div class="diff">
+        <div class="col them">
+          <h3><span class="dot"></span> Not included</h3>
+          <ul class="checks">
+            <li><span class="sym">&#10005;</span><div><b>I do not change your code.</b><small>The review is a diagnosis. Fixes are a separate engagement, scoped from the findings.</small></div></li>
+            <li><span class="sym">&#10005;</span><div><b>No compliance certification.</b><small>Not SOC 2, HIPAA, PCI or GDPR sign-off. I am not an auditor and will not pretend to be one.</small></div></li>
+            <li><span class="sym">&#10005;</span><div><b>No penetration testing without separate written authorization.</b><small>I read code and observe the app as a normal user unless you sign something that says otherwise.</small></div></li>
+            <li><span class="sym">&#10005;</span><div><b>No infrastructure review beyond what is in the repo.</b><small>Cloud and network configuration is a $500 add-on.</small></div></li>
+            <li><span class="sym">&#10005;</span><div><b>No mobile apps, no ongoing monitoring.</b><small>Monitoring is the retainer. Mobile is out of scope entirely for now.</small></div></li>
+            <li><span class="sym">&#10005;</span><div><b>Not a guarantee that no vulnerability exists.</b><small>It is a careful pass against a stated checklist by one experienced person. Anyone promising more is selling you something.</small></div></li>
+          </ul>
+        </div>
+        <div class="col me">
+          <h3><span class="dot"></span> What you can hold me to</h3>
+          <ul class="checks">
+            <li><span class="sym">&#10003;</span><div><b>Delivered inside five business days of access.</b><small>From the day I have the repo and written authorization, not from the day you pay.</small></div></li>
+            <li><span class="sym">&#10003;</span><div><b>Every finding has a reproduction path.</b><small>A file and line, or a request another engineer can replay. No vague "consider reviewing" filler.</small></div></li>
+            <li><span class="sym">&#10003;</span><div><b>Every finding has a specific fix.</b><small>Not a link to a standards document. What to change, where.</small></div></li>
+            <li><span class="sym">&#10003;</span><div><b>All fourteen checklist items scored.</b><small>Including the ones that pass, with the reason they pass. Coverage is verifiable.</small></div></li>
+            <li><span class="sym">&#10003;</span><div><b>One round of written questions inside 14 days.</b><small>Included. You should not need a second invoice to understand the first one.</small></div></li>
+            <li><span class="sym">&#10003;</span><div><b>Nothing Medium or above means no charge.</b><small>Graded against the published rubric.</small></div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="after">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="readout accent">06 &middot; After the review</span>
+          <h2 style="margin-top:14px">If you want the findings closed, not just listed.</h2>
+        </div>
+        <p>Optional, and deliberately priced after the diagnosis rather than
+          before it. I will not quote a repair on a codebase I have not read.</p>
+      </div>
+
+      <div class="work">
+        <article class="card">
+          <span class="idx">06</span>
+          <div class="kind">1 to 2 weeks</div>
+          <h3>Repair Sprint</h3>
+          <p>Every Critical and High from your report, fixed. A regression test
+            per fix so it cannot come back silently, pull requests with review
+            notes you can read, a re-verification pass, and a handover document.
+            The scope is the report you already have, which is the only reason a
+            fixed price on someone else's codebase is honest.</p>
+          <div class="stack">
+            <span class="chip">Regression test per fix</span><span class="chip">Reviewed PRs</span>
+            <span class="chip">Re-verified</span>
+          </div>
+          <div class="price"><span class="amt">$3,500 to $6,000</span></div>
+          <div class="price-note">$750 of your review fee credited if booked within 30 days.</div>
+        </article>
+
+        <article class="card">
+          <span class="idx">07</span>
+          <div class="kind">Monthly &middot; about 1 day a week</div>
+          <h3>Release Readiness Retainer</h3>
+          <p>A review gate on each release, dependency and advisory watch, a
+            quarterly re-run of the full checklist, security questions answered
+            on demand, and I answer your customers' security questionnaires for
+            you. That last one is why this pays for itself: it turns a blocked
+            enterprise deal into an unblocked one.</p>
+          <div class="stack">
+            <span class="chip">Pre-release gate</span><span class="chip">CVE watch</span>
+            <span class="chip">Questionnaires handled</span>
+          </div>
+          <div class="price"><span class="amt">$1,200 to $2,500</span><span class="was">per month</span></div>
+          <div class="price-note">Month to month. Thirty days notice, no annual lock-in.</div>
+        </article>
+      </div>
+
+      <div class="callout" style="margin-top:26px">
+        <b>Agencies and studios.</b> If you build client apps and want this as a
+        white-label step before handover, I do the review under your name at a
+        wholesale rate. You keep the client relationship and the margin. Ask me
+        for the partner sheet.
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="start">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="readout accent">07 &middot; How it starts</span>
+          <h2 style="margin-top:14px">Four steps, and the first one is free.</h2>
+        </div>
+        <p>No discovery call unless you want one. I would rather send you
+          something you can watch at 11pm than book thirty minutes of your
+          Tuesday.</p>
+      </div>
+
+      <div class="appr">
+        <div>
+          <div class="prose" style="padding-top:0">
+            <ul>
+              <li><b>You send the app URL and a sentence about what worries you.</b>
+                Email is fine. If you do not know what worries you, say that, it
+                is a normal answer.</li>
+              <li><b>I confirm scope and price in writing, and you authorize the review.</b>
+                Written authorization is required before I look at anything.
+                This protects both of us and it is not negotiable.</li>
+              <li><b>You pay the fixed fee and I start.</b> Five business days
+                from access. Payment upfront at the founding rate, split into
+                two milestones above $3,000.</li>
+              <li><b>You get the report, the scored checklist, and a recorded
+                walkthrough.</b> Then two weeks of written questions, included.
+                What you do with it is entirely your call, including nothing.</li>
+            </ul>
+          </div>
+          <div class="cta-row">
+            <a class="btn solid" href="mailto:jakob.stanfield@ras-software.com?subject=Production%20Readiness%20Review&amp;body=App%20URL%3A%0ARepo%20(language%20%2B%20rough%20size)%3A%0AWhat%20worries%20you%20most%3A%0ADeadline%2C%20if%20any%3A">Start with an email &rarr;</a>
+            <a class="btn" href="security.html">Read how I think about this</a>
+          </div>
+        </div>
+        <div class="diagram">
+          <div class="note">// the engagement</div>
+          <div class="row"><span class="box">you email</span><span class="arr">&rarr;</span><span class="box">scope fixed</span></div>
+          <div class="row" style="padding-left:0"><span class="note">written authorization &darr;</span></div>
+          <div class="row"><span class="box a">review &middot; 5 days</span><span class="arr">&rarr;</span><span class="box">report</span></div>
+          <div class="note" style="margin-top:14px">// optional, priced after</div>
+          <div class="row"><span class="box">repair sprint</span><span class="box">retainer</span></div>
+          <div class="note" style="margin-top:14px">// nothing Medium or above = no charge</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <h2>Send the URL. I will tell you what I see.</h2>
+    <div class="meta">
+      <span class="readout">Contact</span><br>
+      <a href="mailto:jakob.stanfield@ras-software.com">jakob.stanfield@ras-software.com</a><br>
+      <a href="https://github.com/JakobS1900">github.com/JakobS1900</a><br>
+      <a href="https://www.linkedin.com/in/jakob-stanfield-65a4b85a/">linkedin.com/in/jakob-stanfield</a><br>
+      <span style="color:var(--ink-faint)">Written scope. Fixed price. Your repo stays yours.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script data-goatcounter="https://js101923.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</body>
+</html>

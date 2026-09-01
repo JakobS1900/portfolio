@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Storefront Builder - the app</title>
+<link rel="stylesheet" href="styles.css">
+<meta name="description" content="Build a commission page for rentry.co without learning Markdown. Free in your browser, or install it on Android. Nothing you write leaves your phone.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Storefront Builder - the app">
+<meta property="og:description" content="Build a commission page for rentry.co without learning Markdown. Free in your browser, or install it on Android. Nothing you write leaves your phone.">
+<meta property="og:url" content="https://jakobs1900.github.io/portfolio/storefront-builder-app.html">
+<meta property="og:image" content="https://jakobs1900.github.io/portfolio/og-image.png">
+<style>
+  .shots {
+    display: grid; gap: 26px; margin: 34px 0 0;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  }
+  .shot { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .shot img {
+    width: 100%; height: auto; display: block; border-radius: 14px;
+    border: 1px solid var(--line, #2a2a2a); background: #111;
+  }
+  .shot figcaption { font-size: 0.92rem; line-height: 1.5; color: var(--ink-soft, #888); }
+  .shot b { color: var(--ink, inherit); }
+  .buy { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+  .price-line {
+    display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: baseline;
+    margin-top: 14px; font-size: 0.95rem; color: var(--ink-soft, #888);
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" href="index.html">jakob<b>.</b>s</a>
+    <nav class="links">
+      <a href="work-with-me.html">Work With Me</a>
+      <a href="index.html#work" class="here">Selected Work</a>
+      <a href="security.html">Security</a>
+      <a href="index.html#approach">Approach</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <button class="theme-toggle" onclick="toggleTheme()">Theme</button>
+  </div>
+</header>
+
+<main class="wrap-narrow">
+  <div class="article-head">
+    <a class="backlink" href="index.html#work">&larr; Selected Work</a>
+    <div class="eyebrow" style="margin-top:26px">
+      <span class="rule"></span>
+      <span class="readout">The app &middot; Free &middot; Android and web</span>
+    </div>
+    <h1>Your commission page, without learning Markdown.</h1>
+    <p class="sub">
+      Fill in what you charge, drop in your art, and press copy. You get a
+      finished page ready to paste into rentry.co, laid out properly, with
+      tables that line up and prices that survive the paste.
+    </p>
+
+    <div class="buy">
+      <a class="btn" href="https://jakobs1900.github.io/markdown-storefront-builder/">Use it in your browser</a>
+      <a class="btn" href="https://github.com/JakobS1900/markdown-storefront-builder/releases/latest">Download for Android</a>
+      <a class="btn" href="https://rentry.co/q7nyo28n">See a page it made</a>
+    </div>
+    <div class="price-line">
+      <span>Free, both of them.</span>
+      <span>No account.</span>
+      <span>No upload.</span>
+      <span>Works with no signal.</span>
+    </div>
+  </div>
+
+  <article class="prose">
+    <h2>You sell art. Not tables.</h2>
+    <p>
+      A lot of illustrators run their commission page on rentry.co or somewhere
+      like it. Free, no account, nobody taking a cut. It is a genuinely good
+      choice and it has exactly one problem: the page is written in Markdown.
+    </p>
+    <p>
+      So you end up learning table syntax at midnight, or paying somebody forty
+      dollars to lay out a price list you could have described out loud in
+      thirty seconds. That is what this removes.
+    </p>
+
+    <h2>What using it looks like</h2>
+
+    <div class="shots">
+      <figure class="shot">
+        <img src="shots/app-build.png" alt="The Build screen, showing the sections of a page with controls to reorder or remove each one, and buttons to add another." width="540" height="1026" loading="lazy">
+        <figcaption><b>Build.</b> Add a section and fill it in. About you, prices, a gallery, text, headings. Drag nothing, learn nothing, and reorder with the arrows.</figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="shots/app-preview.png" alt="The Preview screen, showing the finished page rendered with headings, italics and an image." width="540" height="1026" loading="lazy">
+        <figcaption><b>Preview.</b> See it the way the site will show it, before you paste anything, and it tells you where it is only an approximation.</figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="shots/app-pages.png" alt="The saved pages list, showing two pages, which one is open, and a button to start a new one." width="540" height="1026" loading="lazy">
+        <figcaption><b>Keep several.</b> One page per shop, or a draft beside the live one. Open any of them, or start another.</figcaption>
+      </figure>
+    </div>
+
+    <h2>It tells you when it had to compromise</h2>
+    <p>
+      This is the part that is different from a text editor. Every paste site
+      renders a slightly different dialect of Markdown, so a page that is correct
+      on one can be quietly wrong on another. The app knows what each site can
+      actually do.
+    </p>
+    <p>
+      Where a site cannot do something, your page degrades to something that
+      still reads properly, and you are told what it gave up and why, pointing at
+      the section it happened in. It never silently drops your work and it never
+      pretends a compromise did not happen.
+    </p>
+
+    <h2>Nothing you write leaves your device</h2>
+    <p>
+      There is no account, no server, and no upload. Your pages are stored in the
+      app on your phone. The compiling and the preview all happen on the device,
+      which is also why it keeps working with no signal at all.
+    </p>
+    <p>
+      You can save a backup file whenever you like, and open it again later, on
+      this device or another one. That file is yours and it is plain text.
+    </p>
+
+    <h2>A page it actually produced</h2>
+    <p>
+      Not a mockup. A whole shop built in the app and pasted into the real site:
+      <a href="https://rentry.co/q7nyo28n">rentry.co/q7nyo28n</a>. Twelve
+      sections, three price tables with a photo and a spec list on every item, a
+      gallery, shipping bands, returns, and terms.
+    </p>
+    <p>
+      Every one of the 79 things the compiler asked the site to build came out
+      the other side: 9 headings, 4 tables, 14 rows, 13 images, 22 bullets, 12
+      runs of bold, 5 links. The shop is invented, and the page says so on its
+      first line.
+    </p>
+
+    <h2>What it does not do yet</h2>
+    <p>
+      Said here rather than discovered later.
+    </p>
+    <ul>
+      <li><b>It does not host your images.</b> The image field takes a web
+        address. Upload at imgur.com, which needs no account, and paste the
+        address back. That is the flow most people are already using.</li>
+      <li><b>It knows two sites.</b> rentry.co, and a portable setting that works
+        almost anywhere else. More can be added, and each one has to be checked
+        against the real site rather than its documentation.</li>
+      <li><b>One device at a time.</b> Moving a page to another phone means
+        saving a backup and opening it there. There is no sync and no account,
+        which is the same decision as the privacy one above.</li>
+      <li><b>Tested on one handset.</b> A Moto G7 on Android 10, thoroughly. If
+        it misbehaves on yours I would genuinely like to know.</li>
+    </ul>
+
+    <div class="callout" style="margin-top:34px">
+      <b>Where it is going.</b> A paid version on Google Play is planned, mostly
+      so the thing has a proper home, an update channel and somewhere to report
+      a bug. The browser version stays as it is. If you want telling when that
+      happens, or you have hit something broken,
+      <a href="mailto:jakob.stanfield@ras-software.com">email me</a>.
+    </div>
+
+    <h2>If you are here to look at the code</h2>
+    <p>
+      The source is public and readable, and there is a long engineering write-up
+      of how it was built, including the defects that only turned up by holding
+      the thing in one hand on a bus.
+    </p>
+    <div class="cta-row" style="margin-top:20px">
+      <a class="btn" href="storefront-builder.html">Read the case study</a>
+      <a class="btn" href="https://github.com/JakobS1900/markdown-storefront-builder">Source on GitHub</a>
+    </div>
+  </article>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <h2>This is the standard I review other people's apps against.</h2>
+    <div class="meta">
+      <span class="readout">Contact</span><br>
+      <a href="https://github.com/JakobS1900">github.com/JakobS1900</a><br>
+      <a href="https://www.linkedin.com/in/jakob-stanfield-65a4b85a/">linkedin.com/in/jakob-stanfield</a><br>
+      <a href="mailto:jakob.stanfield@ras-software.com">jakob.stanfield@ras-software.com</a><br>
+      <span style="color:var(--ink-faint)">Built with AI. Reviewed by me.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script data-goatcounter="https://js101923.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</body>
+</html>
