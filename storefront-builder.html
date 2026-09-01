@@ -1444,6 +1444,90 @@ first screen                    10 controls, all reachable, no scrolling</div>
       promising three images and showing two.
     </p>
 
+    <h2>I diagnosed a bug that was not there</h2>
+    <p>
+      Everything above went onto the real phone as a signed release. I installed
+      it, took a screenshot, and got a blank white screen. I said so, out loud,
+      and called it a real regression.
+    </p>
+    <p>
+      It was not. The app had been working perfectly the entire time.
+    </p>
+    <div class="callout warn">
+      <b>A screenshot of a sleeping phone is a white PNG.</b> The screen had
+      timed out during the ten minutes of building. Three captures came back
+      identical at 9,652 bytes, which should have been the tell: that is not a
+      rendered screen, it is a blank one. <code>dumpsys power</code> said
+      <code>mWakefulness=Dozing</code>, and I had checked exactly that at the
+      start of the run and not again before capturing.
+    </div>
+    <p>
+      What it cost: a rebuild, a reinstall, and an investigation into whether
+      the service worker was serving a stale shell after an update. I had a
+      plausible mechanism for that, wrote it out, and tested it by relaunching.
+      The relaunch was still blank, which killed the theory and should have
+      moved me off the app sooner than it did.
+    </p>
+    <p>
+      <b>What actually ended it was refusing to keep guessing.</b> I rebuilt
+      with the WebView made inspectable, signed with the same key so the update
+      would install over the top and his saved pages would survive, attached a
+      debugger, and asked the page what it contained. One call:
+    </p>
+    <div class="codeblock">body text:  "Storefront builder / Your pages (2) / Open Heading... "
+buttons:    24
+#app html:  3142 characters</div>
+    <p>
+      Fully rendered, 24 controls, his two pages listed. The screenshots were
+      wrong, not the app. I then removed the debugging access, rebuilt, and
+      confirmed the release had no debug socket, because leaving somebody's
+      shipped app inspectable to fix my own mistake is not a trade worth making.
+    </p>
+    <p>
+      This is the same hazard that cost four device runs earlier in the project,
+      and it caught me again in a worse form: last time it hung, which is
+      obvious, and this time it produced a confident wrong answer, which is not.
+      It is written into the project's rules now with the specific tell, that a
+      capture under about twenty kilobytes is a sleeping screen until proven
+      otherwise, and the specific fix, that wakefulness is checked immediately
+      before each capture rather than once per run.
+    </p>
+
+    <h2>What the phone actually confirmed</h2>
+    <p>
+      With the debugger attached, everything from these rounds was verified on
+      the device rather than only in tests: no host picker in the header, the
+      Copy tab offering all three hosts, and the price form carrying the bulk
+      pricing and picture fields. Typing one item produced the row controls,
+      with no move buttons, correctly, because there was only one item to move.
+    </p>
+    <p>
+      The compiler then ran on the phone and produced this from what had been
+      typed into it, which is the whole product in four lines:
+    </p>
+    <div class="codeblock">#### Dragon, 18
+
+| Quantity | Price |
+| 1 | 18 |   | 3 | 48 |
+
+![Dragon](https://i.imgur.com/e.png)</div>
+    <p>
+      <b>The update also carried a schema change, and his saved pages opened.</b>
+      They were written by the previous version, at schema version 1, and the
+      app listed both and opened one that compiled correctly. That is the
+      migration doing its job on real stored data rather than on a fixture,
+      which is the only test of it that was ever going to matter.
+    </p>
+    <p>
+      I had typed a test item into one of his pages to check the controls, so I
+      removed it afterwards and confirmed the section was back to the "0 items"
+      it started at. <b>The removal was addressed by the control's own name
+      rather than its position</b>, because getting that wrong on this device
+      has already destroyed his work once. I also set his screen to stay awake
+      while charging in order to finish, and set it back afterwards, because it
+      is his device setting and not mine.
+    </p>
+
     <h2>What is enforced, not merely intended</h2>
     <p>
       A project of this size accumulates good intentions. These are the ones
@@ -1539,7 +1623,7 @@ first screen                    10 controls, all reachable, no scrolling</div>
     <div class="callout" style="margin-top:34px">
       <b>Why this one is worth reading.</b> Most portfolio pieces show a working
       thing. This one shows the working thing plus the reasoning that produced
-      it, including the forty nine times the reasoning was wrong, the time I
+      it, including the fifty times the reasoning was wrong, the time I
       called something a bug and it was not, the feature I deleted after
       building it, and the afternoon the owner told me the whole thing was
       unusable and it was. If you want to know how I would behave on your
