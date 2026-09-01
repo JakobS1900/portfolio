@@ -1528,6 +1528,63 @@ buttons:    24
       is his device setting and not mine.
     </p>
 
+    <h2>Closing the gap I had written down and left open</h2>
+    <p>
+      The accessibility gate ran axe over the interface and switched
+      <b>colour contrast</b> off, with the reason stated in the file: the test
+      environment is jsdom, which lays nothing out and computes no colours, so a
+      contrast number from it would be a number that means nothing. The project
+      notes called it "its one honest gap" and pointed at a manual checklist.
+    </p>
+    <p>
+      Stating a limitation is better than hiding one, and it is not the same as
+      fixing it. A manual pass is a pass nobody reruns. So the claim that this
+      interface is readable rested on my having looked at it.
+    </p>
+    <p>
+      <b>It runs in a real browser now</b>, and it runs twice. Headless Chrome
+      with real layout, axe with only the contrast rule, once with
+      <code>prefers-color-scheme: light</code> and once with <code>dark</code>.
+      Both palettes ship, and testing one of them is testing half the users.
+    </p>
+    <div class="codeblock">light: 144 elements, 13 sections, 3 fields, 2 hints, 0 contrast failure(s)
+dark:  144 elements, 13 sections, 3 fields, 2 hints, 0 contrast failure(s)</div>
+    <div class="callout">
+      <b>The counts in that output are the interesting part, not the zero.</b>
+      An empty page has almost no coloured text on it, so a contrast gate
+      pointed at the empty shell would report zero failures forever and mean
+      nothing. It loads the bundled example storefront and opens a section, and
+      then it <i>refuses to report a pass</i> unless at least three sections and
+      three fields were genuinely on screen when it measured.
+    </div>
+    <p>
+      That guard is there for a specific reason. Earlier the same day I wrote
+      three tests that were green and worthless, kept them, and wrote the reason
+      at the top of the file. Writing a fourth would have been worse than not
+      noticing the first three.
+    </p>
+    <p>
+      <b>Then I made it fail on purpose, which is the only thing that turns a
+      script into a gate.</b> Weakening one colour token in the light palette:
+    </p>
+    <div class="codeblock">#f3-hint  contrast 1.52 (foreground #cfcdc9, background #fbfaf8) expected 4.5:1
+#f2-hint  contrast 1.58 (foreground #cfcdc9, background #ffffff) expected 4.5:1
+dark: 0 contrast failure(s)</div>
+    <p>
+      It named both elements, both colours and both ratios, and the dark palette
+      correctly kept passing, because the two palettes are separate token sets
+      and I had only broken one. That last detail is what tells me the two runs
+      are genuinely independent rather than one run reported twice. The colour
+      was then restored byte identically.
+    </p>
+    <p>
+      Both palettes pass as they stand, so nothing needed fixing. <b>That is
+      worth saying precisely because it was not known before, it was
+      believed.</b> The difference between those two is the whole reason the
+      gate exists, and it is the same difference as between a host capability
+      somebody assumed and one somebody observed.
+    </p>
+
     <h2>What is enforced, not merely intended</h2>
     <p>
       A project of this size accumulates good intentions. These are the ones
@@ -1547,12 +1604,15 @@ buttons:    24
       <li><b>Accessibility</b> runs axe-core over the rendered interface plus
         assertions a machine cannot make: that every control has a real name,
         that no placeholder stands in for a label, that the touch target minimum
-        is actually in the stylesheet. Colour contrast is switched off with the
-        reason stated, because the test environment lays nothing out and the
-        number would be meaningless. It now also renders the page switcher,
-        which only exists when a second page is saved: a gate that never draws a
+        is actually in the stylesheet. It also renders the page switcher, which
+        only exists when a second page is saved: a gate that never draws a
         control is the exact failure this page already documents, and knowing
         that is only worth something if it changes what gets written next.</li>
+      <li><b>Colour contrast</b> runs axe in headless Chrome, which has real
+        layout, over the example storefront, in the light palette and again in
+        the dark one. This used to be the sentence above admitting it was
+        switched off. See below: closing it was mostly a matter of refusing to
+        let it pass on an empty page.</li>
       <li><b>The gate now runs against the build that ships</b>, not just the
         richer one. Which build gets tested used to depend on an environment
         file, so a contributor's machine and the CI checked different interfaces
