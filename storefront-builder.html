@@ -1585,6 +1585,83 @@ dark: 0 contrast failure(s)</div>
       somebody assumed and one somebody observed.
     </p>
 
+    <h2>The gate I could not break, and what that taught me</h2>
+    <p>
+      The service worker decides what somebody who visited last week sees when
+      they come back. Get it wrong and they get a stale shell, or a cached page
+      pointing at a script that no longer exists, which is a blank screen with
+      nothing in the console. On a link sent to strangers, that is the worst
+      class of bug there is.
+    </p>
+    <p>
+      There were tests for it. They read <code>sw.js</code> as <b>text</b> and
+      asserted it contained the right lines: that the cache is named after the
+      build id, that activate deletes older caches, that the new worker takes
+      over immediately. All true, all present, and <b>none of them ever ran
+      it.</b> The question of what a returning visitor actually gets was being
+      answered by reading the source.
+    </p>
+    <p>
+      So I made it deploy. One build is served and cached by the worker, a
+      second is deployed over it with a different asset hash and the first one
+      deleted, which is what hashed filenames mean in practice, and then a
+      visitor reloads. It works: they are on the new build by the second reload,
+      and nothing is blank or half updated on the way.
+    </p>
+    <div class="callout warn">
+      <b>Then I tried to break it on purpose, and failed twice.</b> A gate that
+      has never failed is not a gate, so this mattered more than the passing
+      run, and both failures taught me something about the system that its own
+      comments had implied wrongly.
+    </div>
+    <p>
+      <b>First: I shipped the new build with the old cache id.</b> That should
+      strand everybody, because the cache is named after the id and activate
+      only deletes caches that do not match. The gate passed, correctly. The
+      worker answers from cache and then refreshes in the background, so entries
+      get overwritten with the new build even inside the same cache. The version
+      stamp is the belt; <b>the background refresh is the braces, and the braces
+      are doing the work.</b> The comment in the file says the id "must change
+      whenever the build output changes, or returning visitors keep the old
+      shell". That turns out to be the second line of defence, not the first.
+    </p>
+    <p>
+      <b>Second: I broke the worker being deployed.</b> Also passed, also
+      correctly, and this one is obvious in hindsight: the worker in control
+      during a deploy is the one <i>already installed</i>. The incoming one has
+      not run yet. Only sabotaging the installed worker can strand anybody.
+    </p>
+    <p>
+      Doing that, an ordinary naive cache-first worker with no background
+      refresh, finally produced the real failure:
+    </p>
+    <div class="codeblock">second reload   running A   FAIL  the returning visitor is on the new build
+third visit     running A   FAIL  still on the new build after a refresh 404'd</div>
+    <p>
+      Stuck on the first build through every reload, silently, forever. That is
+      the shape most hand-written service workers have, and it is now the gate's
+      own self test, so anyone editing that file can confirm in one command that
+      the check still bites.
+    </p>
+    <div class="callout">
+      <b>One of my assertions was also simply wrong, and I corrected it rather
+      than deleting it.</b> I had demanded that nothing ask the server for the
+      asset a deploy removes. Exactly one background refresh does, and gets a
+      404. It cannot do harm, because that refresh only writes to the cache when
+      the response is ok, and the visitor had already been served from cache
+      before it ran. One discarded request is what stale-while-revalidate costs.
+      The gate now asserts the thing that would actually matter, that a failed
+      refresh poisons nothing, checked on a third visit, and keeps the count
+      visible as information rather than as a verdict.
+    </div>
+    <p>
+      Two gates went in this way on the same day, and both said the same thing
+      about the project: the parts nobody had executed were the parts nobody
+      could vouch for. Contrast was believed rather than known. Updating was
+      read rather than run. Neither turned out to be broken, and I would not
+      have been able to say so beforehand, which is the entire difference.
+    </p>
+
     <h2>What is enforced, not merely intended</h2>
     <p>
       A project of this size accumulates good intentions. These are the ones
@@ -1613,6 +1690,10 @@ dark: 0 contrast failure(s)</div>
         the dark one. This used to be the sentence above admitting it was
         switched off. See below: closing it was mostly a matter of refusing to
         let it pass on an empty page.</li>
+      <li><b>Updating</b> deploys a second build over a cached first one in a
+        real browser and checks that a returning visitor ends up on the new one.
+        The tests before it read the service worker as text and asserted it
+        contained the right lines. None of them ran it.</li>
       <li><b>The gate now runs against the build that ships</b>, not just the
         richer one. Which build gets tested used to depend on an environment
         file, so a contributor's machine and the CI checked different interfaces
