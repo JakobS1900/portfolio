@@ -27,6 +27,10 @@
   .stat-row .s{background:var(--raise); padding:18px 16px}
   .stat-row .n{font-family:var(--serif); font-size:26px; font-weight:600; letter-spacing:-.01em}
   .stat-row .l{font-family:var(--mono); font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; color:var(--ink-faint); margin-top:6px}
+  .demo{margin:34px 0 0}
+  .demo img{width:100%; height:auto; display:block; border-radius:14px; border:1px solid var(--line); background:var(--raise)}
+  .demo figcaption{margin-top:12px; font-size:13.5px; line-height:1.6; color:var(--ink-soft)}
+  .demo figcaption b{color:var(--ink)}
 </style>
 </head>
 <body>
@@ -74,6 +78,20 @@
       Every architecture review and every bug it caught is committed alongside
       the code, including the ones that make me look slow.
     </div>
+
+    <figure class="demo">
+      <img src="shots/storefront-demo.gif"
+           alt="A recorded session: opening the template picker, choosing Art commissions, opening the Prices section, typing a new price, the preview beside it catching up, then the Copy tab showing the compiled Markdown for rentry.co and changing to text.is."
+           width="760" height="464" loading="lazy">
+      <figcaption>
+        <b>Twelve seconds of the real thing.</b> Start from a template, open a
+        section, change a price, watch the preview catch up, and copy the
+        Markdown out for the host you picked. Nothing here is a mockup: the
+        frames are captured from the built app in headless Chrome by a script
+        in the repository, which fails the run if any step it was told to
+        perform found nothing to press.
+      </figcaption>
+    </figure>
   </div>
 
   <article class="prose">
@@ -1721,8 +1739,8 @@ third visit     running A   FAIL  still on the new build after a refresh 404'd</
     </ul>
 
     <div class="stat-row">
-      <div class="s"><div class="n">896</div><div class="l">Tests</div></div>
-      <div class="s"><div class="n">14 kB</div><div class="l">App, gzipped</div></div>
+      <div class="s"><div class="n">991</div><div class="l">Tests</div></div>
+      <div class="s"><div class="n">23 kB</div><div class="l">App, gzipped</div></div>
       <div class="s"><div class="n">8</div><div class="l">Caught before users</div></div>
       <div class="s"><div class="n">38</div><div class="l">Caught by using it</div></div>
     </div>
